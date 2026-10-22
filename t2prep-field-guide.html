@@ -187,6 +187,19 @@ pre.mermaid{background:var(--paper); border:1px solid var(--paper-line); padding
   font-family:'IBM Plex Mono'; width:90px; padding:5px 7px; border:1px solid var(--card-edge);
   background:var(--card-bg); color:var(--ink); border-radius:3px;
 }
+.check-row select{
+  font-family:'IBM Plex Mono'; font-size:.78rem; padding:5px 7px; border:1px solid var(--card-edge);
+  background:var(--card-bg); color:var(--ink); border-radius:3px;
+}
+.hi-cell{color:var(--blue); font-weight:600}
+.note{
+  margin-top:14px; padding:10px 12px; border-left:3px solid var(--link); background:var(--paper);
+  font-size:.86rem; color:var(--ink-dim);
+}
+.gallery{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+.gallery .shape{flex:1; min-width:84px; text-align:center}
+.gallery .shape svg{width:100%; height:60px}
+.gallery .shape span{display:block; font-family:'IBM Plex Mono'; font-size:.62rem; color:var(--ink-dim); margin-top:3px}
 
 .legend{display:flex; gap:16px; flex-wrap:wrap; font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); margin:4px 0 26px}
 .legend span{display:inline-flex; align-items:center; gap:5px}
@@ -238,6 +251,9 @@ pre.mermaid{background:var(--paper); border:1px solid var(--paper-line); padding
         <div class="menu-row"><a class="jump" href="#m09" data-label="09 Sign Chart">9:SIGN CHART</a><span class="num">±</span></div>
         <div class="menu-row"><a class="jump" href="#m10" data-label="10 Applied Models">0:APPLIED</a><span class="num">t,$</span></div>
         <div class="menu-row"><a class="jump" href="#m11" data-label="11 Answer Checker">A:CHECK</a><span class="num">✓</span></div>
+        <div class="menu-row"><a class="jump" href="#m12" data-label="12 Parent Function Transformer">B:TRANSFORM</a><span class="num">a,h,k</span></div>
+        <div class="menu-row"><a class="jump" href="#m13" data-label="13 Zeros→Factored Form">C:ZEROS→F(X)</a><span class="num">deg n</span></div>
+        <div class="menu-row"><a class="jump" href="#m14" data-label="14 Zero-Chain Solver">D:ZERO CHAIN</a><span class="num">k→</span></div>
       </div>
       <div class="calc-keys"><div class="k"></div><div class="k"></div><div class="k"></div><div class="k wide"></div><div class="k"></div></div>
     </div>
@@ -362,6 +378,8 @@ F --> G</pre>
         <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
         <div class="screen"><span class="dim">prgm2:QUADAN</span>
 A=1  B=-4  C=-5
+h=-B/(2A)=-(-4)/2=2
+k=h(2)=4-8-5=-9
 <span class="hi">VERTEX: (2,-9)</span>
 OPENS: UP (A&gt;0)
 <span class="hi">AXIS: x=2</span>
@@ -452,6 +470,7 @@ x=(-1±i√11)/2
     <h2>Vertex / Zeros Reconstructor</h2>
     <div class="prose">
       <p>A parabola is fully determined by three numbers: a <a class="jump" href="#m02" data-label="02 vertex">vertex</a> $(h,k)$ and one more point $(x_1,y_1)$ it passes through. Substitute both into <dfn>vertex form</dfn> $f(x)=a(x-h)^2+k$ and solve for the one unknown, $a$, which fixes how narrow or wide the graph is and whether it reflects. This is the reverse of the <a class="jump" href="#m02" data-label="02 Quadratic Analyzer">quadratic analyzer</a>: that routine starts from $a,b,c$ and finds $(h,k)$; this one starts from $(h,k)$ and a point and finds $a$.</p>
+      <p>The same two-unknowns-one-point idea works for any function with one well-defined key point, not just a parabola — see <a class="jump" href="#m12" data-label="12 Parent Function Transformer">program B, the parent-function transformer</a>. It breaks down for a cubic or quartic with several turning points, since no single point plays the role $(h,k)$ plays here; those are handled instead by <a class="jump" href="#m13" data-label="13 Zeros→Factored Form">program C</a>, which anchors on zeros rather than a vertex.</p>
     </div>
 
     <figure class="visual">
@@ -567,6 +586,7 @@ k = 4  (x-4)
     <h2>Polynomial Zero Analyzer</h2>
     <div class="prose">
       <p>For a factored polynomial, each factor $(x-r)^p$ contributes a <dfn>zero</dfn> at $x=r$ with <dfn>multiplicity</dfn> $p$: odd multiplicity crosses the x-axis, even multiplicity touches and turns back — the same rule the <a class="jump" href="#m09" data-label="09 Sign-Chart Solver">sign-chart solver</a> relies on to decide whether a region's sign flips. The <dfn>end behavior</dfn> is set by the <dfn>degree</dfn> (sum of all multiplicities) and the <dfn>leading coefficient</dfn>: even degree means both ends point the same way, odd degree means opposite ways; a positive leading coefficient rises right, negative falls right.</p>
+      <p>This routine reads zeros off an already-factored $f(x)$. Running it backward — zeros in, factored form out — is <a class="jump" href="#m13" data-label="13 Zeros→Factored Form">program C</a>. Handed one zero $k$ instead of the whole factored form, <a class="jump" href="#m14" data-label="14 Zero-Chain Solver">program D</a> divides it out and solves for the rest.</p>
     </div>
 
     <figure class="visual">
@@ -662,10 +682,14 @@ F --> G[Disp domain, intercepts, VA, HA, holes]</pre>
         <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
         <div class="screen"><span class="dim">prgm7:RATAN</span>
 f(x)=(7x+4)/(1-2x)
+denom=0: 1-2x=0 → x=1/2
+gcd(num,den)=1 → no hole
 DOM: x≠1/2
+num=0: 7x+4=0 → x=-4/7
 X-INT: (-4/7,0)
 <span class="hi">V.A.: x=1/2</span>
-<span class="hi">H.A.: y=-7/2</span>
+deg num=deg den=1
+<span class="hi">H.A.: y=7/-2=-7/2</span>
 HOLES: none</div>
       </div>
     </div>
@@ -910,7 +934,242 @@ f(.2)=5(.008)-.04-7+7
     </div>
   </section>
 
-  <p class="foot">All eleven answers above are copied from the Review 2 answer key (M1414 REVIEW2_U23) and reproduced by the routine's own stated logic, not looked up and pasted in. Figures are schematic sketches for mechanism, not precision plots.</p>
+  <!-- ============ 12 PARENT FUNCTION TRANSFORMER ============ -->
+  <section class="card" id="m12">
+    <div class="eyebrow"><span>PROGRAM 12</span><span class="path">prgm → T2PREP → B</span></div>
+    <h2>Parent Function Transformer</h2>
+    <div class="prose">
+      <p>A <dfn>parent function</dfn> is the simplest member of a family of curves: $y=x$, $y=|x|$, $y=x^2$, $y=\sqrt{x}$, $y=x^3$, $y=1/x$. Every other member of that family is a <dfn>transformation</dfn> of the parent, $f(x)=a\cdot\text{parent}(x-h)+k$. $h$ sits inside the parenthesis and shifts the graph horizontally (<span style="color:var(--blue); font-weight:600">blue</span>); $k$ sits outside and shifts it vertically (<span style="color:var(--red); font-weight:600">red</span>); $a$ stretches, compresses, or reflects the shape (<span style="color:var(--ochre); font-weight:600">ochre</span>). This is exactly the <a class="jump" href="#m02" data-label="02 vertex form">vertex-form</a> idea from program 2, generalized past parabolas.</p>
+      <p>Give the routine a <dfn>known point</dfn> $(h,k)$ — the vertex for quadratic or absolute value, the inflection point for a cubic, the center for a reciprocal, or any point at all for a line — plus <dfn>one more point</dfn> $(x_1,y_1)$ the curve passes through, and it solves $a=\dfrac{y_1-k}{\text{parent}(x_1-h)}$.</p>
+    </div>
+
+    <figure class="visual">
+      <div class="gallery">
+        <div class="shape"><svg viewBox="0 0 70 60" role="img" aria-label="Linear parent function"><line x1="8" y1="52" x2="62" y2="8" stroke="var(--ochre)" stroke-width="2"/></svg><span>LINEAR</span></div>
+        <div class="shape"><svg viewBox="0 0 70 60" role="img" aria-label="Absolute value parent function"><polyline points="8,10 35,52 62,10" fill="none" stroke="var(--ochre)" stroke-width="2"/></svg><span>ABS VALUE</span></div>
+        <div class="shape"><svg viewBox="0 0 70 60" role="img" aria-label="Quadratic parent function"><path d="M8,8 Q35,70 62,8" fill="none" stroke="var(--ochre)" stroke-width="2"/></svg><span>QUADRATIC</span></div>
+        <div class="shape"><svg viewBox="0 0 70 60" role="img" aria-label="Square root parent function"><path d="M8,52 Q20,8 62,8" fill="none" stroke="var(--ochre)" stroke-width="2"/></svg><span>SQUARE ROOT</span></div>
+        <div class="shape"><svg viewBox="0 0 70 60" role="img" aria-label="Cubic parent function"><path d="M8,12 C30,12 25,48 35,30 C45,12 40,48 62,48" fill="none" stroke="var(--ochre)" stroke-width="2"/></svg><span>CUBIC</span></div>
+        <div class="shape"><svg viewBox="0 0 70 60" role="img" aria-label="Reciprocal parent function"><path d="M8,8 Q20,30 35,30" fill="none" stroke="var(--ochre)" stroke-width="2"/><path d="M62,52 Q50,30 35,30" fill="none" stroke="var(--ochre)" stroke-width="2"/></svg><span>RECIPROCAL</span></div>
+      </div>
+      <figcaption>Fig. 10 — the six families this routine can fit</figcaption>
+    </figure>
+
+    <div class="tool">
+      <div class="tool-label">Mechanism — pick a type, enter the two points</div>
+      <div class="check-row">
+        <label class="mono" for="m12type">type</label>
+        <select id="m12type">
+          <option value="linear">linear — y=x</option>
+          <option value="abs">absolute value — y=|x|</option>
+          <option value="quad" selected>quadratic — y=x²</option>
+          <option value="sqrt">square root — y=√x</option>
+          <option value="cubic">cubic — y=x³</option>
+          <option value="recip">reciprocal — y=1/x</option>
+        </select>
+      </div>
+      <div class="check-row">
+        <label class="mono">known pt (h,k)</label>
+        <input type="number" id="m12h" value="3" step="any" style="width:70px">
+        <input type="number" id="m12k" value="-3" step="any" style="width:70px">
+      </div>
+      <div class="check-row">
+        <label class="mono">2nd pt (x₁,y₁)</label>
+        <input type="number" id="m12x1" value="5" step="any" style="width:70px">
+        <input type="number" id="m12y1" value="1" step="any" style="width:70px">
+      </div>
+      <div class="stepper-out" id="m12out"></div>
+      <figure class="visual" style="margin-top:10px">
+        <svg viewBox="0 -10 360 300" role="img" aria-label="Transformed curve that redraws live from the chosen type and points">
+          <line x1="0" y1="200" x2="360" y2="200" stroke="currentColor" opacity=".3"/>
+          <line id="m12axis" x1="180" y1="-10" x2="180" y2="290" stroke="var(--blue)" stroke-width="1.3" stroke-dasharray="3 4"/>
+          <g id="m12curve"></g>
+          <circle id="m12k1" cx="180" cy="20" r="4.5" fill="var(--red)"/>
+          <circle id="m12p2" cx="180" cy="20" r="4" fill="var(--blue)"/>
+        </svg>
+        <figcaption>Fig. 11 — known point (red) and second point (blue) pin down a, h, k for the chosen family</figcaption>
+      </figure>
+    </div>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Select function type] --> B[Prompt known point h,k]
+B --> C[Prompt second point x1,y1]
+C --> D["a = (y1-k) / parent(x1-h)"]
+D --> E{parent(x1-h) defined?}
+E -- no --> F[Disp domain error, request new point]
+E -- yes --> G["f(x) = a·parent(x-h) + k"]
+G --> H[Disp translation sentence]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running B:TRANSFORM, type=QUADRATIC</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgmB:XFORM</span>
+TYPE: QUADRATIC  parent=x²
+KNOWN PT (h,k): (3,-3)
+2ND PT (x1,y1): (5,1)
+a=(y1-k)/(x1-h)²
+a=(1-(-3))/(5-3)²=4/4
+<span class="hi">a = 1</span>
+<span class="hi">f(x)=(x-3)²-3</span>
+shift right 3 (blue)
+shift up -3 (red)
+no stretch (a=1)</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 7a</div>
+      <p>Same graph as program 4: vertex $(3,-3)$, point $(5,1)$, type QUADRATIC.</p>
+      <p>$a=\dfrac{1-(-3)}{(5-3)^2}=\dfrac{4}{4}=1$</p>
+      <div class="result">ANSWER: $f(x)=(x-3)^2-3$ — matches key 7a, and matches program 4's answer exactly, since vertex form is this routine's quadratic case.</div>
+    </div>
+    <div class="note">Not from the review — illustrating a non-quadratic case: type ABSOLUTE VALUE, known point $(2,1)$, second point $(4,5)$. $a=\dfrac{5-1}{|4-2|}=\dfrac{4}{2}=2$, so $f(x)=2|x-2|+1$. Try it above by switching the type.</div>
+  </section>
+
+  <!-- ============ 13 ZEROS → FACTORED FORM ============ -->
+  <section class="card" id="m13">
+    <div class="eyebrow"><span>PROGRAM 13</span><span class="path">prgm → T2PREP → C</span></div>
+    <h2>Zeros + Point → Factored Form</h2>
+    <div class="prose">
+      <p>A cubic, a quartic, or anything beyond a parabola can have several turning points, so there's no single $(h,k)$ for <a class="jump" href="#m12" data-label="12 Parent Function Transformer">program B</a> to anchor on. What stays well-defined at any degree is the set of <a class="jump" href="#m06" data-label="06 zeros">zeros</a> and their <a class="jump" href="#m06" data-label="06 multiplicities">multiplicities</a>, read straight off the x-intercepts of a graph. Knowing them fixes $f(x)=a(x-r_1)^{m_1}(x-r_2)^{m_2}\cdots$ up to the one remaining unknown, the <dfn>leading coefficient</dfn> $a$ — any nonzero multiple of a factored polynomial has the exact same zeros, so zeros alone can't pin down $a$. One more point off the x-axis, often the y-intercept, does: substitute it and solve.</p>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 -10 340 240" role="img" aria-label="Cubic curve with three x-intercepts and a y-intercept used to solve for the leading coefficient">
+        <line x1="20" y1="110" x2="320" y2="110" stroke="currentColor" opacity=".3"/>
+        <line x1="20" y1="10" x2="20" y2="210" stroke="currentColor" opacity=".3"/>
+        <path d="M30,40 C70,110 70,170 110,110 C150,50 180,230 270,180" fill="none" stroke="var(--ochre)" stroke-width="2.2"/>
+        <circle cx="60" cy="110" r="4.5" fill="var(--blue)"/><text x="40" y="128" font-size="9" font-family="IBM Plex Mono" fill="var(--blue)">-4</text>
+        <circle cx="110" cy="110" r="4.5" fill="var(--blue)"/><text x="100" y="128" font-size="9" font-family="IBM Plex Mono" fill="var(--blue)">-1</text>
+        <circle cx="230" cy="110" r="4.5" fill="var(--blue)"/><text x="222" y="128" font-size="9" font-family="IBM Plex Mono" fill="var(--blue)">3</text>
+        <circle cx="20" cy="140" r="4.5" fill="var(--red)"/><text x="26" y="150" font-size="9" font-family="IBM Plex Mono" fill="var(--red)">(0,-3)</text>
+      </svg>
+      <figcaption>Fig. 12 — three zeros fix the factors; the y-intercept (red) fixes a</figcaption>
+    </figure>
+
+    <div class="tool">
+      <div class="tool-label">Mechanism — step through solving for a</div>
+      <div class="stepper-out" id="m13out">Step 0 of 3 — press Next to begin.</div>
+      <div style="display:flex; gap:8px">
+        <button class="btn ghost" id="m13prev" disabled>◀ Prev</button>
+        <button class="btn" id="m13next">Next ▶</button>
+      </div>
+    </div>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Enter zeros + multiplicities] --> B["f(x) = a·Π(x-ri)^mi, a unknown"]
+B --> C[Enter one extra point not on x-axis]
+C --> D[Substitute point, evaluate product of factors]
+D --> E["solve a = y1 / product"]
+E --> F[Disp complete factored form]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running C:ZEROS→F(X)</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgmC:ZEROFX</span>
+ZEROS: -4,-1,3 (each ×1)
+f(x)=a(x+4)(x+1)(x-3)
+PT: (0,-3)
+-3=a(4)(1)(-3)
+-3=-12a
+<span class="hi">a = 1/4</span>
+<span class="hi">f(x)=¼(x+4)(x+1)(x-3)</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 21</div>
+      <p>Graph shows zeros at $-4,-1,3$, each a crossing (multiplicity 1), and y-intercept $(0,-3)$.</p>
+      <p>$f(x)=a(x+4)(x+1)(x-3)$, so $-3=a(4)(1)(-3)=-12a \Rightarrow a=\dfrac14$.</p>
+      <div class="result">ANSWER: $f(x)=\dfrac14(x+4)(x+1)(x-3)$ — matches key 21, and the leading coefficient is not ±1, exactly the case the problem flags.</div>
+    </div>
+  </section>
+
+  <!-- ============ 14 ZERO-CHAIN SOLVER ============ -->
+  <section class="card" id="m14">
+    <div class="eyebrow"><span>PROGRAM 14</span><span class="path">prgm → T2PREP → D</span></div>
+    <h2>Zero-Chain Solver</h2>
+    <div class="prose">
+      <p>Given one <a class="jump" href="#m06" data-label="06 zero">zero</a> $k$ of a polynomial, <a class="jump" href="#m05" data-label="05 Synthetic Division">synthetic division</a> by $(x-k)$ peels it off and leaves a quotient one degree lower, with remainder $0$ confirming $k$ really is a zero. If that quotient is quadratic, hand it to the <a class="jump" href="#m03" data-label="03 Exact Quadratic Solver">exact solver</a> — real or <a class="jump" href="#m01" data-label="01 Radical/Complex">complex</a> roots both fall out the same way. Chaining these two routines turns "one zero is $k$" into the complete zero list or the <a class="jump" href="#m06" data-label="06 Polynomial Zero Analyzer">complete factored form</a>, whichever the problem asks for.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-label">Mechanism — reveal the division column by column</div>
+      <figure class="visual" style="margin-top:0">
+        <table class="mono" style="border-collapse:collapse; margin:0 auto" id="m14table">
+          <tr>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">-8</td>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">1</td>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">8</td>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">-3</td>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">-24</td>
+          </tr>
+          <tr>
+            <td></td><td></td><td class="cell14" data-v="-8" style="padding:4px 10px; color:var(--ochre)"></td><td class="cell14" data-v="0" style="padding:4px 10px; color:var(--ochre)"></td><td class="cell14" data-v="24" style="padding:4px 10px; color:var(--ochre)"></td>
+          </tr>
+          <tr>
+            <td></td><td style="padding:4px 10px" class="cell14" data-v="1"></td><td style="padding:4px 10px" class="cell14" data-v="0"></td><td style="padding:4px 10px" class="cell14" data-v="-3"></td><td style="padding:4px 10px" class="cell14 hi-cell" data-v="0"></td>
+          </tr>
+        </table>
+      </figure>
+      <div style="display:flex; gap:8px"><button class="btn" id="m14next">Reveal next column ▶</button><button class="btn ghost" id="m14reset">Reset</button></div>
+      <div class="stepper-out" id="m14out">Press reveal to begin.</div>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 0 320 90" role="img" aria-label="Number line showing the given zero negative eight and the two zeros from the leftover quadratic, plus or minus root three">
+        <line x1="20" y1="45" x2="300" y2="45" stroke="currentColor" opacity=".4"/>
+        <circle cx="50" cy="45" r="5" fill="var(--red)"/><text x="28" y="66" font-size="10" font-family="IBM Plex Mono" fill="var(--red)">k=-8 given</text>
+        <circle cx="200" cy="45" r="5" fill="var(--blue)"/><text x="178" y="66" font-size="10" font-family="IBM Plex Mono" fill="var(--blue)">-√3</text>
+        <circle cx="250" cy="45" r="5" fill="var(--blue)"/><text x="235" y="66" font-size="10" font-family="IBM Plex Mono" fill="var(--blue)">√3</text>
+      </svg>
+      <figcaption>Fig. 13 — one given zero (red) plus two solved from the leftover quadratic (blue)</figcaption>
+    </figure>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Enter coeffs, known zero k] --> B[Synthetic divide by k]
+B --> C{remainder = 0?}
+C -- no --> D[k is not a zero — stop]
+C -- yes --> E{quotient degree}
+E -- "1" --> F[read remaining zero directly]
+E -- "2" --> G[send quotient to Exact Solver]
+F & G --> H[Disp full zero list]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running D:ZERO CHAIN</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgmD:ZCHAIN</span>
+f(x)=x³+8x²-3x-24
+k = -8
+synthetic÷: R=0 ✓
+QUOTIENT: x²-3
+→ send to prgm3
+x²=3 → x=±√3
+<span class="hi">ZEROS: -8, √3, -√3</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 27a</div>
+      <p>$f(x)=x^3+8x^2-3x-24$, given $k=-8$.</p>
+      <p>Synthetic division by $-8$ leaves quotient $x^2-3$ with remainder $0$; the square root property gives $x=\pm\sqrt3$.</p>
+      <div class="result">ANSWER: $x=-8,\ \sqrt3,\ -\sqrt3$ — matches key 27a.</div>
+    </div>
+  </section>
+
+  <p class="foot">Answers tagged "Source — M1414 Review 2" above are copied from the Review 2 answer key (M1414 REVIEW2_U23) and reproduced by each routine's own stated logic, not looked up and pasted in. The one item marked "Not from the review" is illustrative only. Figures are schematic sketches for mechanism, not precision plots.</p>
 
 </div>
 </main>
@@ -1044,5 +1303,91 @@ f(.2)=5(.008)-.04-7+7
     var ok=Math.abs(val)<1e-6;
     out.innerHTML = 'f('+x+') = 5('+x+')³ − ('+x+')² − 35('+x+') + 7 = <strong style="color:'+(ok?'var(--blue)':'var(--red)')+'">'+val.toFixed(6)+'</strong> — '+(ok?'VERIFIED root':'not a root');
   });
+
+  // ---------- 12: parent function transformer ----------
+  var m12type=document.getElementById('m12type'), m12h=document.getElementById('m12h'), m12k=document.getElementById('m12k'),
+      m12x1=document.getElementById('m12x1'), m12y1=document.getElementById('m12y1'), m12out=document.getElementById('m12out'),
+      m12axis=document.getElementById('m12axis'), m12curve=document.getElementById('m12curve'),
+      m12k1=document.getElementById('m12k1'), m12p2=document.getElementById('m12p2');
+  var m12names={linear:'x', abs:'|x|', quad:'x²', sqrt:'√x', cubic:'x³', recip:'1/x'};
+  function m12parent(type,t){
+    switch(type){
+      case 'linear': return t;
+      case 'abs': return Math.abs(t);
+      case 'quad': return t*t;
+      case 'sqrt': return t>=0 ? Math.sqrt(t) : NaN;
+      case 'cubic': return t*t*t;
+      case 'recip': return t!==0 ? 1/t : NaN;
+    }
+  }
+  function m12render(){
+    var type=m12type.value, h=parseFloat(m12h.value), k=parseFloat(m12k.value), x1=parseFloat(m12x1.value), y1=parseFloat(m12y1.value);
+    if([h,k,x1,y1].some(isNaN)) return;
+    var denom=m12parent(type, x1-h);
+    if(isNaN(denom) || denom===0){
+      m12out.innerHTML='Domain error: parent('+(x1-h).toFixed(2)+') is undefined for type '+type+' — choose a different 2nd point.';
+      m12curve.innerHTML='';
+      return;
+    }
+    var a=(y1-k)/denom;
+    var aStr=a.toFixed(3).replace(/\.?0+$/,'')||'0';
+    var hTerm = h>=0 ? '-'+h : '+'+Math.abs(h);
+    var kTerm = k>=0 ? '+'+k : String(k);
+    var eq = aStr+'·'+m12names[type].replace('x','(x'+hTerm+')')+kTerm;
+    m12out.innerHTML =
+      'a = (y₁−k) ÷ parent(x₁−h) = ('+y1+'−('+k+')) ÷ parent('+x1+'−('+h+'))<br>'+
+      'a = '+(y1-k).toFixed(3)+' ÷ '+denom.toFixed(3)+' = <strong style="color:var(--ochre)">'+aStr+'</strong><br>'+
+      '<strong>f(x) = '+eq+'</strong><br>'+
+      '<span style="color:var(--blue)">h='+h+' shifts inside</span> &nbsp; <span style="color:var(--red)">k='+k+' shifts outside</span> &nbsp; <span style="color:var(--ochre)">a='+aStr+' scales/reflects</span>';
+
+    var originX=180, originY=160, sx=26, sy=16;
+    var px=function(x){return originX+(x-h)*sx;};
+    var py=function(y){var v=originY-(y-k)*sy; return Math.max(-30,Math.min(320,v));};
+    var runs=[], run=[];
+    for(var dx=-5; dx<=5; dx+=0.2){
+      var val=m12parent(type,dx);
+      if(isNaN(val)){ if(run.length>1) runs.push(run); run=[]; continue; }
+      var y=a*val+k, x=h+dx;
+      run.push(px(x).toFixed(1)+','+py(y).toFixed(1));
+    }
+    if(run.length>1) runs.push(run);
+    m12curve.innerHTML = runs.map(function(r){return '<path d="M'+r.join(' L')+'" fill="none" stroke="var(--ochre)" stroke-width="2.2"/>';}).join('');
+    m12axis.setAttribute('x1',px(h)); m12axis.setAttribute('x2',px(h));
+    m12k1.setAttribute('cx',px(h)); m12k1.setAttribute('cy',py(k));
+    m12p2.setAttribute('cx',px(x1)); m12p2.setAttribute('cy',py(y1));
+  }
+  [m12type,m12h,m12k,m12x1,m12y1].forEach(function(el){ el.addEventListener('input',m12render); el.addEventListener('change',m12render); });
+  m12render();
+
+  // ---------- 13: zeros→factored form stepper ----------
+  var m13steps=[
+    "f(x) = a(x+4)(x+1)(x-3)   (zeros -4,-1,3; a unknown)",
+    "use the y-intercept (0,-3): -3 = a(0+4)(0+1)(0-3)",
+    "-3 = a(4)(1)(-3) = -12a",
+    "a = -3 / -12 = 1/4   →   f(x) = (1/4)(x+4)(x+1)(x-3)"
+  ];
+  var m13i=0, m13out=document.getElementById('m13out'), m13prev=document.getElementById('m13prev'), m13next=document.getElementById('m13next');
+  function m13render(){
+    m13out.textContent = m13i===0 ? "Step 0 of "+(m13steps.length-1)+" — press Next to begin." : "Step "+m13i+" of "+(m13steps.length-1)+" — "+m13steps[m13i];
+    m13prev.disabled = m13i===0;
+    m13next.disabled = m13i===m13steps.length-1;
+  }
+  m13next.addEventListener('click',function(){ if(m13i<m13steps.length-1){m13i++; m13render();} });
+  m13prev.addEventListener('click',function(){ if(m13i>0){m13i--; m13render();} });
+  m13render();
+
+  // ---------- 14: zero-chain synthetic division reveal ----------
+  var m14cells=Array.from(document.querySelectorAll('#m14table .cell14'));
+  var m14idx=0;
+  function m14render(){
+    m14cells.forEach(function(c,i){ c.textContent = i<m14idx ? c.getAttribute('data-v') : ''; });
+    document.getElementById('m14next').disabled = m14idx>=m14cells.length;
+    document.getElementById('m14out').textContent = m14idx===0
+      ? 'Press reveal to walk through dividing x³+8x²-3x-24 by (x+8).'
+      : (m14idx>=m14cells.length ? 'Quotient reads 1, 0, -3 → x²+0x-3 = x²-3. Remainder 0 confirms k=-8 is a zero.' : '');
+  }
+  document.getElementById('m14next').addEventListener('click',function(){ if(m14idx<m14cells.length){m14idx++; m14render();} });
+  document.getElementById('m14reset').addEventListener('click',function(){ m14idx=0; m14render(); });
+  m14render();
 })();
 </script>
