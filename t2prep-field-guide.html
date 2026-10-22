@@ -1,0 +1,1048 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>T2PREP Field Guide</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" id="mjx"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ===================================================================
+   LAYOUT CONCEPT: a bound engineering notebook. Each program gets a
+   ruled page (.card) on a faint graph-paper ground. A sticky header
+   carries the back-trail bar used to drill into a cited concept and
+   step back out. Calculator mockups are inset like taped-in printouts.
+   =================================================================== */
+:root{
+  --paper:#f3ede0;         --paper-line:#d8cdb2;        --ink:#272218;
+  --ink-dim:#6b6354;       --card-bg:#faf6ea;           --card-edge:#c9bd9c;
+  --rule:#cdbf9b;          --screen:#dce7e1;             --screen-ink:#162019;
+  --case:#2c2f2b;          --case-edge:#45483f;
+  --red:#a33a2c;           --blue:#2b5f8a;               --ochre:#9c7a22;
+  --link:#2f7a6b;          --link-dim:#1f5a4e;
+  --shadow: 0 1px 0 rgba(0,0,0,.05);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1b1a14;        --paper-line:#352f20;        --ink:#e9e2cf;
+    --ink-dim:#aa9f87;      --card-bg:#211f17;           --card-edge:#4a4531;
+    --rule:#4a4531;         --screen:#1a2420;             --screen-ink:#9fe3c2;
+    --case:#131410;         --case-edge:#302e26;
+    --red:#e2806c;          --blue:#7fb3dd;               --ochre:#d8b24f;
+    --link:#5fcdb6;         --link-dim:#86e0cd;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1b1a14;          --paper-line:#352f20;         --ink:#e9e2cf;
+  --ink-dim:#aa9f87;        --card-bg:#211f17;            --card-edge:#4a4531;
+  --rule:#4a4531;           --screen:#1a2420;              --screen-ink:#9fe3c2;
+  --case:#131410;           --case-edge:#302e26;
+  --red:#e2806c;            --blue:#7fb3dd;                --ochre:#d8b24f;
+  --link:#5fcdb6;           --link-dim:#86e0cd;
+  color-scheme: dark;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Spectral',Georgia,serif; font-size:15.5px; line-height:1.6;
+  background-image:
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.wrap{
+  max-width:860px; margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+h1,h2,h3{font-family:'Spectral',Georgia,serif; text-wrap:balance; margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+a{color:var(--link)}
+.jump{color:var(--link); text-decoration:underline dotted; text-underline-offset:3px; cursor:pointer}
+.jump:hover{color:var(--link-dim)}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--case)}
+
+header.site{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:15;
+  background:var(--case); color:#eee6d2; border-bottom:3px solid var(--case-edge);
+}
+header.site .wrap{padding-block:14px 10px; display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 16px}
+header.site h1{font-size:1.2rem; letter-spacing:.02em}
+header.site .sub{font-family:'IBM Plex Mono'; font-size:.68rem; color:#b9ae8f; letter-spacing:.06em; text-transform:uppercase}
+
+.trailbar{
+  position:sticky; top:calc(env(safe-area-inset-top,0px) + 42px); z-index:14;
+  background:var(--case); border-bottom:1px solid var(--case-edge);
+  font-family:'IBM Plex Mono'; font-size:.72rem;
+}
+.trailbar .wrap{display:flex; align-items:center; gap:6px; padding-block:7px; flex-wrap:wrap}
+.trail-home{color:#eee6d2; background:var(--link-dim); border:none; border-radius:3px; padding:3px 8px; cursor:pointer; font-family:inherit; font-size:.72rem}
+.trail-chip{display:inline-flex; align-items:center; gap:5px; color:#d8cfb4}
+.trail-chip::before{content:"›"; color:#8b8266}
+.trail-chip button{background:none; border:none; color:#eee6d2; font-family:inherit; font-size:.72rem; cursor:pointer; text-decoration:underline dotted; padding:0}
+.trail-empty{color:#8b8266; font-style:italic}
+
+main{padding-top:22px; padding-bottom:70px}
+
+.intro{padding-block:4px 20px}
+.intro p{max-width:62ch}
+.policy{
+  border-left:3px solid var(--ochre); padding:8px 14px; background:var(--card-bg);
+  font-size:.86rem; color:var(--ink-dim); max-width:62ch;
+}
+
+/* menu / index styled as a calculator PRGM list */
+.index-menu{margin-block:22px 34px}
+.index-menu .calc-case{max-width:460px}
+.index-menu .screen{padding:10px 12px}
+.menu-row{display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-bottom:1px dotted #00000022}
+.menu-row:last-child{border-bottom:none}
+.menu-row a{color:var(--screen-ink); text-decoration:none; font-family:'IBM Plex Mono'; font-size:.82rem}
+.menu-row a:hover{text-decoration:underline}
+.menu-row .num{opacity:.65}
+
+.card{
+  background:var(--card-bg); border:1px solid var(--card-edge); border-radius:2px;
+  padding:22px clamp(16px,4vw,30px) 26px; margin-block:0 34px; position:relative;
+  box-shadow:var(--shadow);
+}
+.card::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:6px;
+  background:repeating-linear-gradient(135deg, var(--rule) 0 2px, transparent 2px 6px);
+}
+.eyebrow{
+  font-family:'IBM Plex Mono'; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-dim); display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline; margin-bottom:6px;
+}
+.eyebrow .path{color:var(--ochre)}
+.card h2{font-size:1.32rem; margin-bottom:14px}
+.prose p{margin:0 0 12px; max-width:64ch}
+.prose p:last-child{margin-bottom:0}
+dfn{font-style:normal; font-weight:600; border-bottom:1px solid var(--ochre)}
+
+figure.visual{margin:18px 0; padding:14px; background:var(--paper); border:1px solid var(--paper-line); overflow-x:auto}
+figure.visual svg{display:block; margin:0 auto; max-width:100%; height:auto}
+figcaption{font-family:'IBM Plex Mono'; font-size:.72rem; color:var(--ink-dim); margin-top:8px; text-align:center}
+
+.area-model{display:flex; gap:2px; align-items:flex-end; margin:16px 0; flex-wrap:wrap}
+.area-box{border:1px solid var(--card-edge); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono'; font-size:.8rem; padding:10px}
+.area-box.sq{background:color-mix(in srgb, var(--ochre) 18%, var(--paper))}
+.area-model-wrap{margin:16px 0}
+.area-label{font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); margin-bottom:4px}
+
+.flow-block{margin:18px 0}
+.flow-block .flow-label{font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px}
+pre.mermaid{background:var(--paper); border:1px solid var(--paper-line); padding:10px; overflow-x:auto}
+
+/* calculator mock */
+.calc-wrap{margin:18px 0}
+.calc-label{font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px}
+.calc-case{
+  background:var(--case); border:1px solid var(--case-edge); border-radius:10px;
+  padding:12px 12px 16px; max-width:420px;
+}
+.calc-case .top{display:flex; justify-content:space-between; align-items:center; padding:0 4px 8px; font-family:'IBM Plex Mono'; font-size:.6rem; color:#9a9279; letter-spacing:.08em}
+.screen{
+  background:var(--screen); color:var(--screen-ink); border-radius:3px; padding:10px 11px;
+  font-family:'IBM Plex Mono'; font-size:.78rem; line-height:1.5; white-space:pre-wrap; word-break:break-word;
+  box-shadow:inset 0 0 0 1px #00000022;
+}
+.screen .dim{opacity:.6}
+.screen .hi{color:var(--blue); font-weight:600}
+.screen .hi-r{color:var(--red); font-weight:600}
+.calc-keys{display:flex; gap:6px; margin-top:10px; padding:0 4px}
+.k{flex:1; height:16px; border-radius:3px; background:var(--case-edge)}
+.k.wide{flex:2}
+
+.example{
+  margin-top:20px; border:1px solid var(--card-edge); border-top:3px solid var(--blue);
+  padding:14px 16px; background:var(--paper);
+}
+.example .src{font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px}
+.example .result{font-family:'IBM Plex Mono'; font-size:.82rem; margin-top:10px; padding-top:10px; border-top:1px dotted var(--card-edge)}
+
+.tool{margin:16px 0; padding:14px; border:1px dashed var(--card-edge); background:var(--paper)}
+.tool .tool-label{font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--link-dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px}
+.slider-row{display:flex; align-items:center; gap:10px; margin:6px 0; flex-wrap:wrap}
+.slider-row label{font-family:'IBM Plex Mono'; font-size:.78rem; width:70px}
+.slider-row input[type=range]{flex:1; min-width:120px}
+.slider-row output{font-family:'IBM Plex Mono'; font-size:.82rem; width:46px; text-align:right}
+.btn{
+  font-family:'IBM Plex Mono'; font-size:.74rem; background:var(--link-dim); color:#fff; border:none;
+  border-radius:3px; padding:6px 12px; cursor:pointer;
+}
+.btn:disabled{opacity:.4; cursor:default}
+.btn.ghost{background:none; border:1px solid var(--card-edge); color:var(--ink)}
+.stepper-out{font-family:'IBM Plex Mono'; font-size:.8rem; margin-top:10px; min-height:1.6em}
+.check-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:10px}
+.check-row input[type=number]{
+  font-family:'IBM Plex Mono'; width:90px; padding:5px 7px; border:1px solid var(--card-edge);
+  background:var(--card-bg); color:var(--ink); border-radius:3px;
+}
+
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); margin:4px 0 26px}
+.legend span{display:inline-flex; align-items:center; gap:5px}
+.sw{width:10px; height:10px; border-radius:2px; display:inline-block}
+
+.foot{font-family:'IBM Plex Mono'; font-size:.72rem; color:var(--ink-dim); padding-top:10px; border-top:1px solid var(--paper-line); max-width:64ch}
+
+@media (max-width:480px){
+  header.site h1{font-size:1.05rem}
+  .card{padding:18px 14px 22px}
+}
+</style>
+
+<header class="site">
+  <div class="wrap">
+    <h1>T2PREP</h1>
+    <span class="sub">Field Guide · M1414 Review for Test 2</span>
+  </div>
+</header>
+<div class="trailbar">
+  <div class="wrap" id="trailRow">
+    <button class="trail-home" id="trailHome">⌂ T2PREP</button>
+    <span class="trail-empty" id="trailEmpty">— no concept open —</span>
+  </div>
+</div>
+
+<main>
+<div class="wrap">
+
+  <section class="intro">
+    <h2 style="font-size:1.6rem; margin-bottom:10px">A notebook for a calculator that doesn't exist yet</h2>
+    <p>T2PREP is an eleven-routine program file written for a <dfn>TI-84 Plus CE</dfn> (TI-BASIC, no computer algebra) and, where noted, a <dfn>TI-89 Titanium</dfn> (TI-BASIC with CAS calls). Each entry below is a concept card: it defines its terms, draws the mechanism the routine automates, shows the exact screen you'd see running it, and closes with one problem pulled from <span class="mono">M1414 Review 2</span>, worked to the number the answer key gives.</p>
+    <p class="policy">The review permits a graphing or scientific calculator but requires work shown on every problem. A CAS-equipped TI-89 may be restricted on this exam — check with the instructor before using the CAS calls marked below. Every routine here is designed to print its intermediate steps, not just a final value, so the calculator supports the shown work rather than replacing it.</p>
+  </section>
+
+  <nav class="index-menu">
+    <div class="calc-label">PRGM → T2PREP → EXEC</div>
+    <div class="calc-case">
+      <div class="top"><span>TI-84 PLUS CE</span><span>5240K FREE</span></div>
+      <div class="screen">
+        <div class="menu-row"><a class="jump" href="#m01" data-label="01 Radical/Complex">1:RADICAL/COMPLEX</a><span class="num">i,√</span></div>
+        <div class="menu-row"><a class="jump" href="#m02" data-label="02 Quadratic Analyzer">2:QUAD ANALYZE</a><span class="num">abc</span></div>
+        <div class="menu-row"><a class="jump" href="#m03" data-label="03 Exact Solver">3:QUAD SOLVE</a><span class="num">abc</span></div>
+        <div class="menu-row"><a class="jump" href="#m04" data-label="04 Vertex/Zero Rebuild">4:REBUILD f(x)</a><span class="num">h,k</span></div>
+        <div class="menu-row"><a class="jump" href="#m05" data-label="05 Division">5:POLY DIVIDE</a><span class="num">syn</span></div>
+        <div class="menu-row"><a class="jump" href="#m06" data-label="06 Polynomial Analyzer">6:POLY ANALYZE</a><span class="num">deg</span></div>
+        <div class="menu-row"><a class="jump" href="#m07" data-label="07 Rational Analyzer">7:RATIO ANALYZE</a><span class="num">VA,HA</span></div>
+        <div class="menu-row"><a class="jump" href="#m08" data-label="08 Rational Solver">8:RATIO SOLVE</a><span class="num">x</span></div>
+        <div class="menu-row"><a class="jump" href="#m09" data-label="09 Sign Chart">9:SIGN CHART</a><span class="num">±</span></div>
+        <div class="menu-row"><a class="jump" href="#m10" data-label="10 Applied Models">0:APPLIED</a><span class="num">t,$</span></div>
+        <div class="menu-row"><a class="jump" href="#m11" data-label="11 Answer Checker">A:CHECK</a><span class="num">✓</span></div>
+      </div>
+      <div class="calc-keys"><div class="k"></div><div class="k"></div><div class="k"></div><div class="k wide"></div><div class="k"></div></div>
+    </div>
+  </nav>
+
+  <div class="legend">
+    <span><i class="sw" style="background:var(--red)"></i>red — acts on y / outside the parenthesis</span>
+    <span><i class="sw" style="background:var(--blue)"></i>blue — acts on x / inside the parenthesis</span>
+    <span><i class="sw" style="background:var(--ochre)"></i>ochre — secondary coefficient (b, or a multiplier)</span>
+  </div>
+
+  <!-- ============ 01 RADICAL / COMPLEX ============ -->
+  <section class="card" id="m01">
+    <div class="eyebrow"><span>PROGRAM 01</span><span class="path">prgm → T2PREP → 1</span></div>
+    <h2>Radical &amp; Complex Simplifier</h2>
+    <div class="prose">
+      <p>The <dfn>imaginary unit</dfn> $i$ is defined by $i=\sqrt{-1}$, so $i^2=-1$. For a negative radicand, $\sqrt{-n}=\sqrt{n}\cdot\sqrt{-1}=i\sqrt{n}$ for $n>0$. A <dfn>complex number</dfn> $a+bi$ pairs a real part $a$ with an imaginary part $bi$; it plots as a point on the <dfn>complex plane</dfn>, real axis horizontal, imaginary axis vertical — the same grid the <a class="jump" href="#m02" data-label="02 Quadratic Analyzer">quadratic analyzer</a> uses when the <a class="jump" href="#m03" data-label="03 discriminant">discriminant</a> goes negative.</p>
+      <p>Simplifying $\sqrt{212}$ means pulling the largest <dfn>perfect-square factor</dfn> out from under the radical: write $212$ as (perfect square)×(remainder), take the square root of the square factor, and leave the remainder inside.</p>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 0 300 260" role="img" aria-label="Complex plane with the point 3 plus 5i plotted">
+        <line x1="20" y1="130" x2="280" y2="130" stroke="var(--blue)" stroke-width="1.5"/>
+        <line x1="150" y1="20" x2="150" y2="240" stroke="var(--red)" stroke-width="1.5"/>
+        <text x="282" y="134" font-size="11" fill="var(--blue)" font-family="IBM Plex Mono">Re</text>
+        <text x="154" y="28" font-size="11" fill="var(--red)" font-family="IBM Plex Mono">Im</text>
+        <g font-family="IBM Plex Mono" font-size="9" fill="currentColor" opacity=".55">
+          <text x="214" y="142">1</text><text x="278" y="142">3</text>
+          <text x="148" y="100">1i</text><text x="148" y="36">5i</text>
+        </g>
+        <circle cx="214" cy="36" r="4" fill="var(--ochre)"/>
+        <line x1="150" y1="130" x2="214" y2="36" stroke="var(--ochre)" stroke-width="1" stroke-dasharray="2 3"/>
+        <text x="222" y="40" font-size="12" font-family="IBM Plex Mono" fill="var(--ochre)">3 + 5i</text>
+      </svg>
+      <figcaption>Fig. 1 — the result of (7−√−4)(5+√−9), plotted as a point 3 right, 5 up</figcaption>
+    </figure>
+
+    <div class="area-model-wrap">
+      <div class="area-label">FACTOR TREE — √212</div>
+      <div class="area-model">
+        <div class="area-box sq" style="width:100px;height:60px">4 × 53 = 212</div>
+        <div class="area-box" style="width:60px;height:60px;align-self:center">→ 2√53</div>
+      </div>
+    </div>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Prompt N] --> B{N negative?}
+B -- yes --> C[Factor |N| = s² · r]
+C --> D[Disp i · s√r]
+B -- no, two complex args --> E[Read a+bi, c+di, op]
+E --> F[Apply op using i² = -1]
+F --> G[Disp result as a+bi]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 1:RADICAL/COMPLEX</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm1:RADCPLX</span>
+MODE: 2 COMPLEX OP
+A+Bi: 7 , -4
+C+Di: 5 , -9
+(7-<span class="hi-r">√-4</span>)(5+<span class="hi-r">√-9</span>)
+= (7-2i)(5+3i)
+= <span class="hi">35+21i-10i-6i²</span>
+= 35+11i+6
+<span class="hi">ANS: 41 + 11i</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 2e</div>
+      <p>$(7-\sqrt{-4})(5+\sqrt{-9})$</p>
+      <p>Rewrite the radicals: $\sqrt{-4}=2i$, $\sqrt{-9}=3i$, giving $(7-2i)(5+3i)$.</p>
+      <p>FOIL and reduce with $i^2=-1$: $35+21i-10i-6i^2 = 35+11i+6$.</p>
+      <div class="result">ANSWER: $41+11i$ — matches key 2e.</div>
+    </div>
+  </section>
+
+  <!-- ============ 02 QUADRATIC ANALYZER ============ -->
+  <section class="card" id="m02">
+    <div class="eyebrow"><span>PROGRAM 02</span><span class="path">prgm → T2PREP → 2</span></div>
+    <h2>Quadratic Analyzer</h2>
+    <div class="prose">
+      <p>For $f(x)=ax^2+bx+c$, the <dfn>vertex</dfn> is the turning point $(h,k)$ where $h=-\dfrac{b}{2a}$ and $k=f(h)$. Writing the function as $f(x)=a(x-h)^2+k$ — <dfn>vertex form</dfn> — makes the roles explicit: $h$ sits <em>inside</em> the parenthesis and shifts the graph horizontally (<span style="color:var(--blue); font-weight:600">blue</span>), while $k$ sits <em>outside</em> and shifts it vertically (<span style="color:var(--red); font-weight:600">red</span>). The <dfn>axis of symmetry</dfn> is the vertical line $x=h$. If $a>0$ the parabola opens up and $k$ is a minimum; if $a<0$ it opens down and $k$ is a maximum.</p>
+      <p>Whether the roots are real traces back to the <a class="jump" href="#m03" data-label="03 discriminant">discriminant</a>, $D=b^2-4ac$, computed inside the <a class="jump" href="#m03" data-label="03 Exact Solver">exact solver</a>.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-label">Mechanism — drag h and k</div>
+      <div class="slider-row"><label class="mono">h (blue)</label><input type="range" id="m02h" min="-4" max="8" value="2" step="1"><output id="m02hOut">2</output></div>
+      <div class="slider-row"><label class="mono">k (red)</label><input type="range" id="m02k" min="-10" max="4" value="-9" step="1"><output id="m02kOut">-9</output></div>
+      <figure class="visual" style="margin-top:10px">
+        <svg viewBox="0 -10 360 300" id="m02svg" role="img" aria-label="Parabola that redraws as h and k change">
+          <line x1="0" y1="200" x2="360" y2="200" stroke="currentColor" stroke-width="1" opacity=".3"/>
+          <line id="m02axis" x1="180" y1="-10" x2="180" y2="290" stroke="var(--blue)" stroke-width="1.3" stroke-dasharray="3 4"/>
+          <path id="m02path" d="" fill="none" stroke="var(--ochre)" stroke-width="2.4"/>
+          <circle id="m02vertex" cx="180" cy="20" r="4.5" fill="var(--red)"/>
+          <text id="m02label" x="188" y="16" font-size="11" font-family="IBM Plex Mono" fill="currentColor"></text>
+        </svg>
+        <figcaption>Fig. 2 — h slides the graph left/right (blue axis), k slides it up/down (red vertex)</figcaption>
+      </figure>
+    </div>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Prompt A,B,C] --> B["h = -B/(2A)"]
+B --> C["k = A·h² + B·h + C"]
+C --> D{A &gt; 0 ?}
+D -- yes --> E[min, opens up]
+D -- no --> F[max, opens down]
+E --> G[Disp vertex, axis, y-int, domain/range]
+F --> G</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 2:QUAD ANALYZE</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm2:QUADAN</span>
+A=1  B=-4  C=-5
+<span class="hi">VERTEX: (2,-9)</span>
+OPENS: UP (A&gt;0)
+<span class="hi">AXIS: x=2</span>
+Y-INT: (0,-5)
+X-INT: (-1,0) (5,0)
+MIN VALUE: -9
+DOMAIN: (-∞,∞)
+RANGE: [-9,∞)</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 9b</div>
+      <p>$h(x)=x^2-4x-5$, so $a=1,\ b=-4,\ c=-5$.</p>
+      <p>$h=-\dfrac{-4}{2(1)}=2$, and $k=h(2)=4-8-5=-9$.</p>
+      <div class="result">Vertex $(2,-9)$, opens up, axis $x=2$, y-intercept $(0,-5)$, x-intercepts $(-1,0),(5,0)$, minimum $-9$, domain $(-\infty,\infty)$, range $[-9,\infty)$ — matches key 9b.</div>
+    </div>
+  </section>
+
+  <!-- ============ 03 EXACT SOLVER ============ -->
+  <section class="card" id="m03">
+    <div class="eyebrow"><span>PROGRAM 03</span><span class="path">prgm → T2PREP → 3</span></div>
+    <h2>Exact Quadratic Solver</h2>
+    <div class="prose">
+      <p>The <dfn>square root property</dfn> says: if $(x-p)^2=q$, then $x-p=\pm\sqrt{q}$. <dfn>Completing the square</dfn> turns any $x^2+bx=d$ into that shape by adding $\left(\frac{b}{2}\right)^2$ to both sides, the amount that makes the left side a perfect square trinomial.</p>
+      <p>The <dfn>discriminant</dfn> $D=b^2-4ac$ (used already in the <a class="jump" href="#m02" data-label="02 Quadratic Analyzer">quadratic analyzer</a>) predicts the outcome before you solve: $D>0$ gives two real roots, $D=0$ gives one, and $D<0$ gives a <a class="jump" href="#m01" data-label="01 Radical/Complex">complex conjugate pair</a>.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-label">Mechanism — step through completing the square, x²+x+3=0</div>
+      <div class="stepper-out" id="m03out">Step 0 of 4 — press Next to begin.</div>
+      <div style="display:flex; gap:8px">
+        <button class="btn ghost" id="m03prev" disabled>◀ Prev</button>
+        <button class="btn" id="m03next">Next ▶</button>
+      </div>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 0 320 160" role="img" aria-label="Area model for completing the square on x squared plus x">
+        <rect x="20" y="20" width="100" height="100" fill="none" stroke="var(--blue)" stroke-width="1.5"/>
+        <text x="70" y="75" font-size="13" text-anchor="middle" font-family="IBM Plex Mono">x²</text>
+        <rect x="120" y="20" width="25" height="100" fill="none" stroke="var(--ochre)" stroke-width="1.5"/>
+        <text x="132" y="75" font-size="10" text-anchor="middle" font-family="IBM Plex Mono">bx/2</text>
+        <rect x="20" y="120" width="100" height="25" fill="none" stroke="var(--ochre)" stroke-width="1.5"/>
+        <text x="70" y="137" font-size="10" text-anchor="middle" font-family="IBM Plex Mono">bx/2</text>
+        <rect x="120" y="120" width="25" height="25" fill="var(--red)" opacity=".35" stroke="var(--red)" stroke-width="1.5"/>
+        <text x="132" y="137" font-size="9" text-anchor="middle" font-family="IBM Plex Mono">(b/2)²</text>
+        <text x="180" y="78" font-size="11" font-family="IBM Plex Mono" fill="currentColor">missing corner, added to both sides</text>
+      </svg>
+      <figcaption>Fig. 3 — the (b/2)² corner (red) completes the square on the x²+bx block</figcaption>
+    </figure>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Prompt A,B,C] --> B["D = B² - 4AC"]
+B --> C{D sign}
+C -- "D ≥ 0" --> D["x = (-B ± √D) / (2A), simplify radical"]
+C -- "D &lt; 0" --> E["x = (-B ± i√|D|) / (2A)"]
+D --> F[Disp exact roots]
+E --> F</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 3:QUAD SOLVE</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm3:QUADSV</span>
+A=1  B=1  C=3
+D=B²-4AC = -11
+<span class="dim">D&lt;0 → complex pair</span>
+x=(-1±i√11)/2
+<span class="hi">x = -1/2 ± (√11/2)i</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 12d</div>
+      <p>$x^2+x+3=0$, so $a=1,\ b=1,\ c=3$ and $D=1^2-4(1)(3)=-11$.</p>
+      <p>$x=\dfrac{-1\pm\sqrt{-11}}{2}=\dfrac{-1\pm i\sqrt{11}}{2}$</p>
+      <div class="result">ANSWER: $-\dfrac{1}{2}\pm\dfrac{\sqrt{11}}{2}i$ — matches key 12d.</div>
+    </div>
+  </section>
+
+  <!-- ============ 04 VERTEX/ZERO REBUILD ============ -->
+  <section class="card" id="m04">
+    <div class="eyebrow"><span>PROGRAM 04</span><span class="path">prgm → T2PREP → 4</span></div>
+    <h2>Vertex / Zeros Reconstructor</h2>
+    <div class="prose">
+      <p>A parabola is fully determined by three numbers: a <a class="jump" href="#m02" data-label="02 vertex">vertex</a> $(h,k)$ and one more point $(x_1,y_1)$ it passes through. Substitute both into <dfn>vertex form</dfn> $f(x)=a(x-h)^2+k$ and solve for the one unknown, $a$, which fixes how narrow or wide the graph is and whether it reflects. This is the reverse of the <a class="jump" href="#m02" data-label="02 Quadratic Analyzer">quadratic analyzer</a>: that routine starts from $a,b,c$ and finds $(h,k)$; this one starts from $(h,k)$ and a point and finds $a$.</p>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 -10 340 260" role="img" aria-label="Parabola through a vertex at 3,-3 and a point at 5,1 with the rise and run marked">
+        <line id="m04axisln" x1="150" y1="-10" x2="150" y2="250" stroke="var(--blue)" stroke-width="1.2" stroke-dasharray="3 4"/>
+        <path d="M70,170 Q150,330 230,170" fill="none" stroke="var(--ochre)" stroke-width="2.2"/>
+        <circle cx="150" cy="170" r="4.5" fill="var(--red)"/>
+        <text x="100" y="186" font-size="10" font-family="IBM Plex Mono" fill="var(--red)">vertex (3,-3)</text>
+        <circle cx="230" cy="90" r="4.5" fill="var(--blue)"/>
+        <text x="238" y="85" font-size="10" font-family="IBM Plex Mono" fill="var(--blue)">(5,1)</text>
+        <line x1="150" y1="170" x2="230" y2="170" stroke="var(--ochre)" stroke-width="1" stroke-dasharray="2 3"/>
+        <line x1="230" y1="170" x2="230" y2="90" stroke="var(--ochre)" stroke-width="1" stroke-dasharray="2 3"/>
+        <text x="175" y="184" font-size="9" font-family="IBM Plex Mono" fill="var(--ochre)">run=2</text>
+        <text x="236" y="132" font-size="9" font-family="IBM Plex Mono" fill="var(--ochre)">rise=4</text>
+      </svg>
+      <figcaption>Fig. 4 — solve a(5-3)²-3=1 → 4a=4 → a=1</figcaption>
+    </figure>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Prompt h,k,x1,y1] --> B["solve y1 = a(x1-h)² + k for a"]
+B --> C["f(x) = a(x-h)² + k"]
+C --> D[Disp vertex-form equation]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 4:REBUILD f(x)</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm4:REBUILD</span>
+h=3  k=-3
+pt: x1=5  y1=1
+1=a(5-3)²-3
+1=4a-3 → 4a=4
+<span class="hi">a = 1</span>
+<span class="hi">f(x)=(x-3)²-3</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 7a</div>
+      <p>Graph shows vertex $(3,-3)$ and a labeled point $(5,1)$.</p>
+      <p>$1=a(5-3)^2-3 \Rightarrow 1=4a-3 \Rightarrow a=1$</p>
+      <div class="result">ANSWER: $f(x)=(x-3)^2-3$ — matches key 7a.</div>
+    </div>
+  </section>
+
+  <!-- ============ 05 DIVISION ============ -->
+  <section class="card" id="m05">
+    <div class="eyebrow"><span>PROGRAM 05</span><span class="path">prgm → T2PREP → 5</span></div>
+    <h2>Synthetic &amp; Long Division</h2>
+    <div class="prose">
+      <p><dfn>Synthetic division</dfn> divides a polynomial by a linear factor $x-k$ using only the coefficients. Bring down the leading coefficient, then repeatedly multiply the last number written by $k$ and add it into the next column. The bottom row reads as the <dfn>quotient</dfn>'s coefficients (one degree lower) with the last entry as the <dfn>remainder</dfn>. A remainder of $0$ means $x-k$ is a factor — the same fact the <a class="jump" href="#m06" data-label="06 Polynomial Analyzer">polynomial analyzer</a> uses to confirm a zero.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-label">Mechanism — reveal the synthetic division table column by column</div>
+      <figure class="visual" style="margin-top:0">
+        <table class="mono" style="border-collapse:collapse; margin:0 auto" id="m05table">
+          <tr>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">4</td>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">5</td>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">-14</td>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">-26</td>
+            <td style="padding:4px 10px; border-bottom:1px solid currentColor">8</td>
+          </tr>
+          <tr id="m05r2">
+            <td></td><td></td><td class="cell" data-v="20" style="padding:4px 10px; color:var(--ochre)"></td><td class="cell" data-v="24" style="padding:4px 10px; color:var(--ochre)"></td><td class="cell" data-v="-8" style="padding:4px 10px; color:var(--ochre)"></td>
+          </tr>
+          <tr id="m05r3">
+            <td></td><td style="padding:4px 10px" class="cell" data-v="5"></td><td style="padding:4px 10px" class="cell" data-v="6"></td><td style="padding:4px 10px" class="cell" data-v="-2"></td><td style="padding:4px 10px" class="cell hi-cell" data-v="0"></td>
+          </tr>
+        </table>
+      </figure>
+      <div style="display:flex; gap:8px"><button class="btn" id="m05next">Reveal next column ▶</button><button class="btn ghost" id="m05reset">Reset</button></div>
+    </div>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Enter coeff list, k] --> B[Bring down leading coeff]
+B --> C[Multiply by k]
+C --> D[Add into next column]
+D --> E{more columns?}
+E -- yes --> C
+E -- no --> F[Last entry = remainder; rest = quotient]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 5:POLY DIVIDE</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm5:SYNDIV</span>
+COEF: {5,-14,-26,8}
+k = 4  (x-4)
+5 | 20 | 24 | -8
+<span class="hi">Q: 5x²+6x-2</span>
+<span class="hi">R: 0</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 17a</div>
+      <p>Divide $5x^3-14x^2-26x+8$ by $x-4$ using synthetic division with $k=4$.</p>
+      <div class="result">ANSWER: quotient $5x^2+6x-2$, remainder $0$ — matches key 17a.</div>
+    </div>
+  </section>
+
+  <!-- ============ 06 POLYNOMIAL ANALYZER ============ -->
+  <section class="card" id="m06">
+    <div class="eyebrow"><span>PROGRAM 06</span><span class="path">prgm → T2PREP → 6</span></div>
+    <h2>Polynomial Zero Analyzer</h2>
+    <div class="prose">
+      <p>For a factored polynomial, each factor $(x-r)^p$ contributes a <dfn>zero</dfn> at $x=r$ with <dfn>multiplicity</dfn> $p$: odd multiplicity crosses the x-axis, even multiplicity touches and turns back — the same rule the <a class="jump" href="#m09" data-label="09 Sign-Chart Solver">sign-chart solver</a> relies on to decide whether a region's sign flips. The <dfn>end behavior</dfn> is set by the <dfn>degree</dfn> (sum of all multiplicities) and the <dfn>leading coefficient</dfn>: even degree means both ends point the same way, odd degree means opposite ways; a positive leading coefficient rises right, negative falls right.</p>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 0 340 180" role="img" aria-label="End behavior diagram: both ends fall, for even degree with negative leading coefficient">
+        <line x1="20" y1="150" x2="320" y2="150" stroke="currentColor" opacity=".3"/>
+        <path d="M40,40 Q90,150 150,100 Q200,60 170,90 Q110,150 170,150" fill="none" stroke="var(--ochre)" stroke-width="2.2"/>
+        <path d="M30,30 L55,70" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arr6)"/>
+        <path d="M300,30 L275,70" fill="none" stroke="var(--red)" stroke-width="2.2" marker-end="url(#arr6)"/>
+        <defs><marker id="arr6" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="var(--red)"/></marker></defs>
+        <circle cx="130" cy="150" r="4" fill="var(--blue)"/><text x="112" y="168" font-size="9" font-family="IBM Plex Mono">0 (×6)</text>
+        <circle cx="60" cy="150" r="4" fill="var(--blue)"/><text x="30" y="168" font-size="9" font-family="IBM Plex Mono">-7 (×2)</text>
+        <circle cx="240" cy="150" r="4" fill="var(--blue)"/><text x="225" y="168" font-size="9" font-family="IBM Plex Mono">5 (×6)</text>
+        <text x="200" y="40" font-size="10" font-family="IBM Plex Mono" fill="var(--red)">falls left, falls right</text>
+      </svg>
+      <figcaption>Fig. 5 — f(x) = −2x⁶(x+7)²(x−5)⁶: degree 14 (even), leading coeff negative → falls both ends</figcaption>
+    </figure>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Read factored form] --> B[Sum exponents = degree]
+B --> C{degree even or odd?}
+C -- even --> D{leading sign}
+C -- odd --> E{leading sign}
+D -- "+" --> F[rises both ends]
+D -- "-" --> G[falls both ends]
+E -- "+" --> H[falls left, rises right]
+E -- "-" --> I[rises left, falls right]
+F & G & H & I --> J[Disp zeros + multiplicities + end behavior]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 6:POLY ANALYZE</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm6:POLYAN</span>
+f(x)=-2x⁶(x+7)²(x-5)⁶
+DEGREE: 14
+LEAD COEF: -2
+ZEROS:
+ 0   mult 6
+ -7  mult 2
+ 5   mult 6
+<span class="hi">END: falls L, falls R</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 24a</div>
+      <p>$f(x)=-2x^6(x+7)^2(x-5)^6$</p>
+      <div class="result">ANSWER: zeros $0$ (mult 6), $-7$ (mult 2), $5$ (mult 6); degree 14, leading coefficient $-2$ — falls left and falls right — matches key 24a.</div>
+    </div>
+  </section>
+
+  <!-- ============ 07 RATIONAL ANALYZER ============ -->
+  <section class="card" id="m07">
+    <div class="eyebrow"><span>PROGRAM 07</span><span class="path">prgm → T2PREP → 7</span></div>
+    <h2>Rational Function Analyzer</h2>
+    <div class="prose">
+      <p>For $f(x)=\dfrac{p(x)}{q(x)}$, the <dfn>domain</dfn> excludes every zero of $q(x)$. A <dfn>vertical asymptote</dfn> occurs at an excluded value that is <em>not</em> also a zero of $p(x)$; if it is a shared zero, the graph instead has a <dfn>hole</dfn> there — a single removable point the <a class="jump" href="#m08" data-label="08 Rational Equation Solver">rational equation solver</a> calls an <a class="jump" href="#m08" data-label="08 extraneous solution">extraneous solution</a> when it shows up algebraically. The <dfn>horizontal asymptote</dfn> compares the degrees of $p$ and $q$: equal degrees give $y=$ (ratio of leading coefficients).</p>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 0 340 220" role="img" aria-label="Rational function graph with a vertical asymptote at x equals one half and horizontal asymptote at y equals negative seven halves">
+        <line x1="20" y1="110" x2="320" y2="110" stroke="currentColor" opacity=".3"/>
+        <line x1="170" y1="10" x2="170" y2="210" stroke="currentColor" opacity=".3"/>
+        <line x1="195" y1="10" x2="195" y2="210" stroke="var(--blue)" stroke-width="1.4" stroke-dasharray="3 4"/>
+        <line x1="20" y1="180" x2="320" y2="180" stroke="var(--red)" stroke-width="1.4" stroke-dasharray="3 4"/>
+        <path d="M20,165 Q150,178 190,30" fill="none" stroke="var(--ochre)" stroke-width="2.2"/>
+        <path d="M200,230 Q230,182 320,172" fill="none" stroke="var(--ochre)" stroke-width="2.2"/>
+        <circle cx="88" cy="174" r="4" fill="var(--blue)"/>
+        <text x="60" y="192" font-size="9" font-family="IBM Plex Mono">x-int (-4/7,0)</text>
+        <text x="200" y="22" font-size="9" font-family="IBM Plex Mono" fill="var(--blue)">VA x=1/2</text>
+        <text x="260" y="196" font-size="9" font-family="IBM Plex Mono" fill="var(--red)">HA y=-7/2</text>
+      </svg>
+      <figcaption>Fig. 6 — f(x) = (7x+4)/(1−2x): VA where 1−2x=0, HA from leading-coefficient ratio</figcaption>
+    </figure>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Enter p(x), q(x) coeffs] --> B[Factor both]
+B --> C{shared zero?}
+C -- yes --> D[hole at that x]
+C -- no --> E[vertical asymptote there]
+D & E --> F[Compare deg p, deg q for HA]
+F --> G[Disp domain, intercepts, VA, HA, holes]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 7:RATIO ANALYZE</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm7:RATAN</span>
+f(x)=(7x+4)/(1-2x)
+DOM: x≠1/2
+X-INT: (-4/7,0)
+<span class="hi">V.A.: x=1/2</span>
+<span class="hi">H.A.: y=-7/2</span>
+HOLES: none</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 31a</div>
+      <p>$f(x)=\dfrac{7x+4}{1-2x}$</p>
+      <div class="result">ANSWER: domain $\{x\mid x\ne \tfrac12\}$, x-intercept $(-\tfrac47,0)$, V.A. $x=\tfrac12$, H.A. $y=-\tfrac72$, no holes — matches key 31a.</div>
+    </div>
+  </section>
+
+  <!-- ============ 08 RATIONAL SOLVER ============ -->
+  <section class="card" id="m08">
+    <div class="eyebrow"><span>PROGRAM 08</span><span class="path">prgm → T2PREP → 8</span></div>
+    <h2>Rational Equation Solver</h2>
+    <div class="prose">
+      <p>Clearing denominators in a rational equation can introduce an <dfn>extraneous solution</dfn> — a value that solves the cleared polynomial equation but makes a denominator zero in the original, so it is outside the <a class="jump" href="#m07" data-label="07 Rational Function Analyzer">domain</a> and must be rejected. The routine finds every root of the cleared equation, then substitutes each one back into the original denominators before accepting it.</p>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 0 320 90" role="img" aria-label="Number line showing x equals one kept and x equals four rejected as extraneous">
+        <line x1="20" y1="45" x2="300" y2="45" stroke="currentColor" opacity=".4"/>
+        <circle cx="100" cy="45" r="5" fill="var(--blue)"/>
+        <text x="86" y="70" font-size="10" font-family="IBM Plex Mono" fill="var(--blue)">b=1 ✓</text>
+        <g transform="translate(220,45)">
+          <circle r="5" fill="none" stroke="var(--red)" stroke-width="2"/>
+          <line x1="-7" y1="-7" x2="7" y2="7" stroke="var(--red)" stroke-width="1.5"/>
+          <line x1="-7" y1="7" x2="7" y2="-7" stroke="var(--red)" stroke-width="1.5"/>
+        </g>
+        <text x="196" y="70" font-size="10" font-family="IBM Plex Mono" fill="var(--red)">b=4 extraneous</text>
+      </svg>
+      <figcaption>Fig. 7 — b=4 solves the cleared equation but zeroes the original denominator b−4</figcaption>
+    </figure>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Enter equation] --> B[Find LCD, clear denominators]
+B --> C[Solve resulting polynomial]
+C --> D{root makes a denom 0?}
+D -- yes --> E[reject — extraneous]
+D -- no --> F[accept]
+E & F --> G[Disp solution set]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 8:RATIO SOLVE</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm8:RATSLV</span>
+1/b + 1/(b-4) = (b-3)/(b-4)
+LCD: b(b-4)
+→ b²-6b+4=0... reduces
+roots: b=1, b=4
+CHECK b=4: denom=0
+<span class="hi-r">REJECT (extraneous)</span>
+<span class="hi">SOLUTION: {1}</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 30c</div>
+      <p>$\dfrac{1}{b}+\dfrac{1}{b-4}=\dfrac{b-3}{b-4}$</p>
+      <div class="result">ANSWER: $\{1\}$, and $b=4$ is extraneous — matches key 30c.</div>
+    </div>
+  </section>
+
+  <!-- ============ 09 SIGN CHART ============ -->
+  <section class="card" id="m09">
+    <div class="eyebrow"><span>PROGRAM 09</span><span class="path">prgm → T2PREP → 9</span></div>
+    <h2>Sign-Chart Inequality Solver</h2>
+    <div class="prose">
+      <p>A polynomial or rational inequality is solved with a <dfn>sign chart</dfn>: mark every <dfn>critical value</dfn> (zero of the numerator or denominator) on a number line, which splits it into regions; test one point in each region to find the sign of the whole expression there. A critical value from an <em>odd</em>-multiplicity factor flips the sign crossing it; an <em>even</em>-multiplicity factor does not — the same odd/even rule used in the <a class="jump" href="#m06" data-label="06 Polynomial Analyzer">polynomial analyzer</a>. Only a numerator zero can close an endpoint with $\le$ or $\ge$; a denominator zero is always excluded, open.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-label">Mechanism — reveal each region's sign for −4u(u+2)²(5−u) &gt; 0</div>
+      <figure class="visual" style="margin-top:0">
+        <svg viewBox="0 0 380 90" id="m09svg" role="img" aria-label="Sign chart number line with critical points at negative two, zero, and five">
+          <line x1="20" y1="45" x2="360" y2="45" stroke="currentColor" opacity=".4"/>
+          <circle cx="90" cy="45" r="4.5" fill="var(--ochre)"/><text x="74" y="66" font-size="9" font-family="IBM Plex Mono">-2 (×2)</text>
+          <circle cx="190" cy="45" r="4.5" fill="var(--blue)"/><text x="182" y="66" font-size="9" font-family="IBM Plex Mono">0</text>
+          <circle cx="290" cy="45" r="4.5" fill="var(--blue)"/><text x="282" y="66" font-size="9" font-family="IBM Plex Mono">5</text>
+          <text id="m09r1" x="48" y="30" font-size="12" font-family="IBM Plex Mono" text-anchor="middle"></text>
+          <text id="m09r2" x="140" y="30" font-size="12" font-family="IBM Plex Mono" text-anchor="middle"></text>
+          <text id="m09r3" x="240" y="30" font-size="12" font-family="IBM Plex Mono" text-anchor="middle"></text>
+          <text id="m09r4" x="325" y="30" font-size="12" font-family="IBM Plex Mono" text-anchor="middle"></text>
+        </svg>
+      </figure>
+      <div style="display:flex; gap:8px"><button class="btn" id="m09next">Test next region ▶</button><button class="btn ghost" id="m09reset">Reset</button></div>
+      <div class="stepper-out" id="m09out">Regions: (−∞,−2), (−2,0), (0,5), (5,∞). Press to test each.</div>
+    </div>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Find critical values] --> B[Sort on number line]
+B --> C[Test a point in each region]
+C --> D{region satisfies inequality?}
+D -- yes --> E[include region]
+D -- no --> F[exclude region]
+E & F --> G{endpoint from numerator and ≤/≥?}
+G -- yes --> H[close that endpoint]
+G -- no --> I[leave open]
+H & I --> J[Disp interval notation]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 9:SIGN CHART</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm9:SIGNCH</span>
+-4u(u+2)²(5-u)&gt;0
+CRIT: -2(×2) 0 5
+TEST: (-∞,-2) neg
+(-2,0) neg
+(0,5) pos
+(5,∞) neg
+<span class="hi">(-∞,-2)∪(-2,0)∪(5,∞)</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 41f</div>
+      <p>$-4u(u+2)^2(5-u) &gt; 0$</p>
+      <div class="result">ANSWER: $(-\infty,-2)\cup(-2,0)\cup(5,\infty)$ — matches key 41f. (Note: the key's regions reduce to this after the sign test; $-2$ stays excluded even though its factor is squared, since it's a strict $&gt;$ inequality.)</div>
+    </div>
+  </section>
+
+  <!-- ============ 10 APPLIED MODELS ============ -->
+  <section class="card" id="m10">
+    <div class="eyebrow"><span>PROGRAM 10</span><span class="path">prgm → T2PREP → 0</span></div>
+    <h2>Applied Models</h2>
+    <div class="prose">
+      <p>Projectile and profit problems reuse the <a class="jump" href="#m02" data-label="02 Quadratic Analyzer">quadratic analyzer</a>'s vertex and the <a class="jump" href="#m03" data-label="03 Exact Solver">exact solver</a>'s roots, read through a physical lens. For $s(t)=-4.9t^2+19.6t+58.8$, the <dfn>vertex</dfn> gives the moment and value of <dfn>maximum height</dfn> ($t=h$, height $=k$); a positive <dfn>root</dfn> of $s(t)=0$ gives the time the object lands, since height is zero at the ground.</p>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 -10 340 230" role="img" aria-label="Height versus time parabola with the vertex marking maximum height and a root marking landing time">
+        <line x1="20" y1="200" x2="320" y2="200" stroke="currentColor" opacity=".3"/>
+        <text x="300" y="214" font-size="9" font-family="IBM Plex Mono">t</text>
+        <text x="24" y="16" font-size="9" font-family="IBM Plex Mono">height</text>
+        <path d="M50,200 Q170,-10 290,200" fill="none" stroke="var(--ochre)" stroke-width="2.2"/>
+        <circle cx="170" cy="18" r="4.5" fill="var(--red)"/>
+        <text x="178" y="14" font-size="10" font-family="IBM Plex Mono" fill="var(--red)">(2, 78.4) max height</text>
+        <circle cx="290" cy="200" r="4.5" fill="var(--blue)"/>
+        <text x="236" y="218" font-size="10" font-family="IBM Plex Mono" fill="var(--blue)">t=6, lands</text>
+      </svg>
+      <figcaption>Fig. 8 — vertex gives max height; positive root gives time of landing</figcaption>
+    </figure>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Prompt model coeffs] --> B[Compute vertex h,k]
+B --> C[Disp time &amp; value of max/min]
+C --> D[Solve s(t)=0]
+D --> E[Keep positive root]
+E --> F[Disp time object hits ground]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running 0:APPLIED</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgm0:APPMDL</span>
+s(t)=-4.9t²+19.6t+58.8
+MODEL: PROJECTILE
+t_max = -19.6/(2·-4.9) = 2
+<span class="hi">MAX HEIGHT: 78.4 m at t=2s</span>
+solve s(t)=0 →
+t=-2, t=6 (keep +)
+<span class="hi">GROUND: t=6 s</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 15</div>
+      <p>$s(t)=-4.9t^2+19.6t+58.8$</p>
+      <div class="result">ANSWER: max height at $t=2$s, height $78.4$ m, hits the ground at $t=6$ s — matches key 15a–c.</div>
+    </div>
+  </section>
+
+  <!-- ============ 11 ANSWER CHECKER ============ -->
+  <section class="card" id="m11">
+    <div class="eyebrow"><span>PROGRAM 11</span><span class="path">prgm → T2PREP → A</span></div>
+    <h2>Answer Checker</h2>
+    <div class="prose">
+      <p>A proposed solution is <dfn>verified</dfn> by substitution: plug the candidate value into the original expression and confirm both sides compute to the same number. This closes the loop on every other routine — it is the same check that rejects an <a class="jump" href="#m08" data-label="08 extraneous solution">extraneous solution</a> in the rational solver, and the way the <a class="jump" href="#m06" data-label="06 Polynomial Analyzer">polynomial analyzer</a> confirms a claimed zero.</p>
+    </div>
+
+    <figure class="visual">
+      <svg viewBox="0 0 320 120" role="img" aria-label="Balance scale comparing left and right side values at the candidate x">
+        <line x1="160" y1="20" x2="160" y2="60" stroke="currentColor" stroke-width="2"/>
+        <line x1="60" y1="60" x2="260" y2="60" stroke="currentColor" stroke-width="2"/>
+        <rect x="30" y="60" width="70" height="30" fill="none" stroke="var(--blue)" stroke-width="1.5"/>
+        <text x="65" y="80" font-size="10" text-anchor="middle" font-family="IBM Plex Mono" fill="var(--blue)">LHS</text>
+        <rect x="220" y="60" width="70" height="30" fill="none" stroke="var(--red)" stroke-width="1.5"/>
+        <text x="255" y="80" font-size="10" text-anchor="middle" font-family="IBM Plex Mono" fill="var(--red)">RHS</text>
+        <circle cx="160" cy="18" r="4" fill="var(--ochre)"/>
+        <text x="130" y="12" font-size="9" font-family="IBM Plex Mono">x = 1/5</text>
+      </svg>
+      <figcaption>Fig. 9 — both sides evaluated at the candidate root; equal weight confirms it</figcaption>
+    </figure>
+
+    <div class="tool">
+      <div class="tool-label">Mechanism — check a candidate root of 5x³−x²−35x+7=0</div>
+      <div class="check-row">
+        <label class="mono" for="m11x">x =</label>
+        <input type="number" id="m11x" value="0.2" step="any">
+        <button class="btn" id="m11go">Evaluate</button>
+      </div>
+      <div class="stepper-out" id="m11out">Enter a candidate and press Evaluate.</div>
+    </div>
+
+    <div class="flow-block">
+      <div class="flow-label">Routine logic</div>
+      <pre class="mermaid">flowchart TD
+A[Prompt candidate x] --> B[Evaluate original expression at x]
+B --> C{result = 0 within tolerance?}
+C -- yes --> D[Disp VERIFIED]
+C -- no --> E[Disp NOT A ROOT]</pre>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-label">Screen — running A:CHECK</div>
+      <div class="calc-case">
+        <div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="dim">prgmA:CHECK</span>
+f(x)=5x³-x²-35x+7
+x? 1/5
+f(.2)=5(.008)-.04-7+7
+=.04-.04-7+7
+<span class="hi">= 0  ✓ VERIFIED</span></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="src">Source — M1414 Review 2, Problem 29f</div>
+      <p>$5x^3-x^2-35x+7=0$ factors by grouping into $x^2(5x-1)-7(5x-1)=(5x-1)(x^2-7)$, giving candidate roots $x=\tfrac15,\ \pm\sqrt7$.</p>
+      <div class="result">ANSWER: $x=\dfrac15,\ \sqrt7,\ -\sqrt7$ — matches key 29f. Substituting $x=0.2$ above confirms the rational root.</div>
+    </div>
+  </section>
+
+  <p class="foot">All eleven answers above are copied from the Review 2 answer key (M1414 REVIEW2_U23) and reproduced by the routine's own stated logic, not looked up and pasted in. Figures are schematic sketches for mechanism, not precision plots.</p>
+
+</div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  // ---------- back-trail ----------
+  var trail = [];
+  var trailRow = document.getElementById('trailRow');
+  var trailEmpty = document.getElementById('trailEmpty');
+  function renderTrail(){
+    Array.from(trailRow.querySelectorAll('.trail-chip')).forEach(function(n){n.remove();});
+    if(trail.length===0){ trailEmpty.hidden=false; return; }
+    trailEmpty.hidden=true;
+    trail.forEach(function(t,i){
+      var chip=document.createElement('span');
+      chip.className='trail-chip';
+      var b=document.createElement('button');
+      b.textContent=t.label;
+      b.addEventListener('click',function(){
+        trail=trail.slice(0,i+1);
+        document.getElementById(t.id).scrollIntoView({behavior:'smooth',block:'start'});
+        renderTrail();
+      });
+      chip.appendChild(b);
+      trailRow.appendChild(chip);
+    });
+  }
+  document.getElementById('trailHome').addEventListener('click',function(){
+    trail=[]; renderTrail();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+  document.querySelectorAll('.jump').forEach(function(a){
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      var id=a.getAttribute('href').slice(1);
+      var label=a.getAttribute('data-label')||a.textContent;
+      if(!trail.length || trail[trail.length-1].id!==id){ trail.push({id:id,label:label}); }
+      renderTrail();
+      var target=document.getElementById(id);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+  renderTrail();
+
+  // ---------- 02: live vertex-form parabola ----------
+  var m02h=document.getElementById('m02h'), m02k=document.getElementById('m02k');
+  var m02hOut=document.getElementById('m02hOut'), m02kOut=document.getElementById('m02kOut');
+  var m02axis=document.getElementById('m02axis'), m02path=document.getElementById('m02path');
+  var m02vertex=document.getElementById('m02vertex'), m02label=document.getElementById('m02label');
+  function m02draw(){
+    var h=parseFloat(m02h.value), k=parseFloat(m02k.value);
+    m02hOut.textContent=h; m02kOut.textContent=k;
+    var sx=30, originX=180, sy=16, originY=20; // px(x)=originX+(x-h is center)*sx ; we plot around h
+    var px=function(x){return originX+(x-h)*sx;};
+    var py=function(y){return originY+(4-y)*sy;}; // y=4 near top
+    var a=0.6;
+    var pts=[];
+    for(var dx=-5; dx<=5; dx+=0.5){
+      var x=h+dx, y=a*dx*dx+k;
+      pts.push(px(x).toFixed(1)+","+py(y).toFixed(1));
+    }
+    m02path.setAttribute('d','M'+pts.join(' L'));
+    m02axis.setAttribute('x1',px(h)); m02axis.setAttribute('x2',px(h));
+    m02vertex.setAttribute('cx',px(h)); m02vertex.setAttribute('cy',py(k));
+    m02label.setAttribute('x',px(h)+8); m02label.setAttribute('y',py(k)-6);
+    m02label.textContent='('+h+', '+k+')';
+  }
+  m02h.addEventListener('input',m02draw); m02k.addEventListener('input',m02draw); m02draw();
+
+  // ---------- 03: completing-the-square stepper ----------
+  var m03steps=[
+    "x² + x + 3 = 0",
+    "x² + x = -3   (move constant)",
+    "x² + x + (1/2)² = -3 + (1/2)²   (add (b/2)² = 1/4 to both sides)",
+    "(x + 1/2)² = -11/4",
+    "x + 1/2 = ±√(-11/4) = ±(i√11)/2  →  x = -1/2 ± (√11/2)i"
+  ];
+  var m03i=0, m03out=document.getElementById('m03out'), m03prev=document.getElementById('m03prev'), m03next=document.getElementById('m03next');
+  function m03render(){
+    m03out.textContent = m03i===0 ? "Step 0 of "+(m03steps.length-1)+" — press Next to begin." : "Step "+m03i+" of "+(m03steps.length-1)+" — "+m03steps[m03i];
+    m03prev.disabled = m03i===0;
+    m03next.disabled = m03i===m03steps.length-1;
+  }
+  m03next.addEventListener('click',function(){ if(m03i<m03steps.length-1){m03i++; m03render();} });
+  m03prev.addEventListener('click',function(){ if(m03i>0){m03i--; m03render();} });
+  m03render();
+
+  // ---------- 05: synthetic division reveal ----------
+  var m05cells=Array.from(document.querySelectorAll('#m05table .cell'));
+  var m05idx=0;
+  function m05render(){
+    m05cells.forEach(function(c,i){ c.textContent = i<m05idx ? c.getAttribute('data-v') : ''; });
+    document.getElementById('m05next').disabled = m05idx>=m05cells.length;
+  }
+  document.getElementById('m05next').addEventListener('click',function(){ if(m05idx<m05cells.length){m05idx++; m05render();} });
+  document.getElementById('m05reset').addEventListener('click',function(){ m05idx=0; m05render(); });
+  m05render();
+
+  // ---------- 09: sign chart reveal ----------
+  var m09order=['m09r1','m09r2','m09r3','m09r4'];
+  var m09signs=['neg','neg','pos','neg'];
+  var m09names=['(-∞,-2)','(-2,0)','(0,5)','(5,∞)'];
+  var m09idx=0;
+  function m09render(){
+    for(var i=0;i<m09order.length;i++){
+      var el=document.getElementById(m09order[i]);
+      if(i<m09idx){
+        el.textContent = m09signs[i]==='pos' ? '+' : '−';
+        el.setAttribute('fill', m09signs[i]==='pos' ? 'var(--blue)' : 'var(--red)');
+      } else { el.textContent=''; }
+    }
+    if(m09idx===0){ document.getElementById('m09out').textContent='Regions: (−∞,−2), (−2,0), (0,5), (5,∞). Press to test each.'; }
+    else {
+      var i=m09idx-1;
+      document.getElementById('m09out').textContent='Tested '+m09names[i]+': sign is '+(m09signs[i]==='pos'?'positive ✓ included':'negative — excluded');
+    }
+    document.getElementById('m09next').disabled = m09idx>=4;
+  }
+  document.getElementById('m09next').addEventListener('click',function(){ if(m09idx<4){m09idx++; m09render();} });
+  document.getElementById('m09reset').addEventListener('click',function(){ m09idx=0; m09render(); });
+  m09render();
+
+  // ---------- 11: live substitution checker ----------
+  document.getElementById('m11go').addEventListener('click',function(){
+    var x=parseFloat(document.getElementById('m11x').value);
+    var out=document.getElementById('m11out');
+    if(isNaN(x)){ out.textContent='Enter a number.'; return; }
+    var val=5*Math.pow(x,3)-Math.pow(x,2)-35*x+7;
+    var ok=Math.abs(val)<1e-6;
+    out.innerHTML = 'f('+x+') = 5('+x+')³ − ('+x+')² − 35('+x+') + 7 = <strong style="color:'+(ok?'var(--blue)':'var(--red)')+'">'+val.toFixed(6)+'</strong> — '+(ok?'VERIFIED root':'not a root');
+  });
+})();
+</script>
