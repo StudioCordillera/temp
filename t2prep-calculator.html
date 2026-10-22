@@ -1,0 +1,812 @@
+<title>T2PREP Calculator</title>
+<style>
+:root{
+  --util:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --blue:#1d5ca6;
+  --cbody1:#363940; --cbody2:#1e2024; --ckey:#2c2f35; --ckeyt:#f1f2f4; --cnum:#e9eaed; --cnumt:#1a1c20;
+  --c2nd:#2f84d6; --calpha:#3d9f4a; --c2l:#7fc2ff; --cal:#8ad384; --lcdbg:#ffffff; --lcdink:#0c0c0c;
+  --sbbg:#dfe3ea; --sbink:#1c4c98;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px 16px;background:#cfd6d2;font:14px system-ui,sans-serif}
+/* the calculator */
+.calc{width:min(100%,348px);margin-inline:auto;background:linear-gradient(172deg,var(--cbody1),var(--cbody2));border-radius:20px 20px 42px 42px;
+  padding:12px 11px 22px;color:var(--ckeyt);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 16px 30px -16px rgba(0,0,0,.6);outline:none;
+  user-select:none;-webkit-user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.calc:focus-visible{box-shadow:0 0 0 3px var(--blue),0 16px 30px -16px rgba(0,0,0,.6)}
+.calc .brand{display:flex;justify-content:space-between;font:700 8.5px/1 var(--util);letter-spacing:.12em;color:#c3c8cf;padding:2px 7px 9px}
+.calc .bezel{background:#0b0c0e;border-radius:10px;padding:8px}
+.calc .lcd{position:relative;container-type:inline-size;aspect-ratio:4/3;width:100%;background:var(--lcdbg);color:var(--lcdink);display:flex;flex-direction:column;overflow:hidden;border-radius:2px}
+.calc .sb{flex:0 0 11%;background:var(--sbbg);color:var(--sbink);display:flex;align-items:center;gap:2cqw;padding:0 1.6cqw;font:700 3.05cqw/1 var(--util);white-space:nowrap;overflow:hidden}
+.calc .sbt{flex:1;overflow:hidden}
+.calc .busy{width:6cqw;height:1.3cqw;visibility:hidden;background:repeating-linear-gradient(90deg,var(--sbink) 0 1cqw,transparent 1cqw 2cqw)}
+.calc .busy.on{visibility:visible;animation:busy .5s linear infinite}
+.calc .busy.pz{visibility:visible;background:repeating-linear-gradient(90deg,var(--sbink) 0 .5cqw,transparent .5cqw 1.6cqw)}
+@keyframes busy{to{background-position:2cqw 0}}
+.calc .bat{width:5.6cqw;height:2.8cqw;border:.45cqw solid var(--sbink);border-radius:.5cqw;padding:.35cqw;background:linear-gradient(90deg,var(--sbink) 72%,transparent 72%) content-box;flex:none}
+.calc .rows{flex:1;display:grid;grid-template-rows:repeat(10,1fr);padding:.6cqw .9cqw;font-family:var(--util);font-weight:500;font-size:5.75cqw;line-height:1}
+.calc .row{display:grid;grid-template-columns:repeat(26,1fr);min-height:0}
+.calc .row span{display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:pre}
+.calc .row .inv{background:var(--lcdink);color:var(--lcdbg)}
+.calc .row .cur{animation:blink 1.1s steps(1) infinite}
+@keyframes blink{0%,54%{background:var(--lcdink);color:var(--lcdbg)}55%,100%{background:transparent;color:var(--lcdink)}}
+@media (prefers-reduced-motion:reduce){.calc .row .cur{animation:none;background:var(--lcdink);color:var(--lcdbg)}.calc .busy.on{animation:none}}
+.calc .keys{display:grid;grid-template-columns:repeat(5,1fr);gap:8px 7px;margin-top:13px}
+.calc .key{display:flex;flex-direction:column;gap:2px;background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer;min-width:0}
+.calc .key .lab{display:flex;justify-content:space-between;gap:2px;font:600 7px/1 var(--util);height:8px;padding:0 1px;white-space:nowrap;overflow:hidden;text-transform:uppercase}
+.calc .key .lab i{font-style:normal;overflow:hidden}
+.calc .lab .s{color:var(--c2l)} .calc .lab .a{color:var(--cal)}
+.calc .key .face{height:25px;border-radius:6px 6px 10px 10px;background:var(--ckey);color:var(--ckeyt);display:flex;align-items:center;justify-content:center;
+  font:600 11px/1 var(--util);box-shadow:0 2px 0 #0a0b0d,inset 0 1px 0 rgba(255,255,255,.1);white-space:nowrap}
+.calc .key.num .face{background:var(--cnum);color:var(--cnumt);font-size:13px}
+.calc .key.sec .face{background:var(--c2nd);color:#fff}
+.calc .key.alp .face{background:var(--calpha);color:#fff}
+.calc .key.ent .face{background:#3a3e46}
+.calc .key.fn .face{height:15px;border-radius:4px;font-size:8.5px;background:#4a4e57}
+.calc .key:active .face,.calc .key.hit .face{transform:translateY(1px);box-shadow:0 1px 0 #0a0b0d;filter:brightness(1.18)}
+.calc .key:focus-visible{outline:none}
+.calc .key:focus-visible .face{outline:2px solid var(--c2l);outline-offset:1px}
+.calc .pad{grid-column:4/6;grid-row:2/4;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+  background:radial-gradient(circle at 50% 50%,#2b2e35 0 58%,transparent 59%);aspect-ratio:auto;min-height:62px}
+.calc .pad button{background:none;border:0;color:#d3d7de;font:12px/1 var(--util);cursor:pointer;padding:0;border-radius:50%}
+.calc .pad button:active,.calc .pad button.hit{color:#fff;background:rgba(255,255,255,.14)}
+.calc .pad button:focus-visible{outline:2px solid var(--c2l)}
+.note{max-width:348px;margin:14px auto 0;color:#50544f;font:12px/1.5 var(--util);text-align:center}
+.note b{color:#2e3430}
+</style>
+<!-- data-prog names the program that auto-runs on load; omit it for a blank home screen -->
+<div id="calc"></div>
+<p class="note">Click keys, or focus the calculator and type. <b>PRGM</b> opens the T2PREP list — 14 programs covering M1414 Review 2. Press <b>2nd</b>+key for the blue label, <b>ALPHA</b>+key for the green one.</p>
+<script>
+(()=>{
+'use strict';
+const COLS=26, ROWS=10;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const QUIT={quit:true};
+class TIErr{constructor(e){this.err=e}}
+const ERR=e=>{throw new TIErr(e)};
+
+/* ---------- number display, TI style ---------- */
+function strip(s){ if(s.includes('.')) s=s.replace(/0+$/,'').replace(/\.$/,''); return s; }
+function fmtReal(v){
+  if(Object.is(v,-0)) v=0;
+  const a=Math.abs(v); let s;
+  if(a!==0&&(a>=1e10||a<1e-3)){ const [m,e]=v.toExponential(9).split('e'); s=strip(m)+'ᴇ'+(+e); }
+  else s=strip(v.toPrecision(10));
+  s=s.replace(/^(-?)0\./,'$1.');
+  return s.replace(/-/g,'⁻');
+}
+function fmt(v){
+  if(Array.isArray(v)) return '{'+v.map(fmt).join(' ')+'}';
+  if(v&&typeof v==='object'){
+    if('r' in v) return v.r;
+    if('re' in v){ const re=v.re, im=v.im, ia=Math.abs(im), is=ia===1?'':fmtReal(ia);
+      if(re===0) return (im<0?'⁻':'')+is+'i'; return fmtReal(re)+(im<0?'−':'+')+is+'i'; }
+  }
+  if(typeof v==='string') return v;
+  return fmtReal(v);
+}
+const fmtN=(v,d=3)=>{ if(!isFinite(v)) return '—'; let s=String(Math.round(v*10**d)/10**d); if(s==='-0') s='0'; return s.replace('-','−'); };
+
+/* ---------- expression evaluator (tokens as shown on screen) ---------- */
+function pwr(b,e){
+  if(b===0&&e<0) ERR('DIVIDE BY 0');
+  if(b===0&&e===0) ERR('DOMAIN');
+  if(b<0&&!Number.isInteger(e)){ const r=1/e, rr=Math.round(r); if(Math.abs(r-rr)<1e-9&&rr%2!==0) return -Math.pow(-b,e); ERR('NONREAL ANSWERS'); }
+  const v=Math.pow(b,e); if(!isFinite(v)||Math.abs(v)>=1e100) ERR('OVERFLOW'); return v;
+}
+const FUNCS=new Set(['sin(','cos(','tan(','sin⁻¹(','cos⁻¹(','tan⁻¹(','ln(','log(','√(','e^(','10^(','abs(']);
+function evaluate(toks,env){
+  let i=0; const n=toks.length;
+  if(!n) ERR('SYNTAX');
+  const peek=()=>toks[i];
+  const isNum=t=>t!==undefined&&/^[0-9.]$/.test(t);
+  const starts=t=>t!==undefined&&(isNum(t)||t==='ᴇ'||t==='π'||t==='e'||t==='i'||t==='('||t==='{'||FUNCS.has(t)||t==='L₁'||t==='L₂'||t==='Ans'||t==='⁻'||/^[A-Zθ]$/.test(t));
+  const chk=v=>{ if(typeof v==='number'){ if(isNaN(v)) ERR('DOMAIN'); if(!isFinite(v)||Math.abs(v)>=1e100) ERR('OVERFLOW'); } return v; };
+  const num=v=>{ if(typeof v!=='number') ERR('DATA TYPE'); return v; };
+  const ang=env.angle==='DEGREE'?Math.PI/180:1;
+  function expr(){ let v=term(); while(peek()==='+'||peek()==='−'){ const op=toks[i++]; const r=term(); v=chk(op==='+'?num(v)+num(r):num(v)-num(r)); } return v; }
+  function term(){ let v=unary(); for(;;){ const t=peek();
+      if(t==='*'||t==='/'){ i++; const r=unary(); if(t==='/'){ if(num(r)===0) ERR('DIVIDE BY 0'); v=chk(num(v)/r); } else v=chk(num(v)*num(r)); }
+      else if(starts(t)){ const r=unary(); v=chk(num(v)*num(r)); } else break; } return v; }
+  function unary(){ if(peek()==='⁻'){ i++; return chk(-num(unary())); } return power(); }
+  function power(){ let b=postfix(); while(peek()==='^'){ i++; let e; if(peek()==='⁻'){ i++; e=-num(postfix()); } else e=num(postfix()); b=pwr(num(b),e); } return b; }
+  function postfix(){ let v=primary(); while(peek()==='²'||peek()==='⁻¹'){ const t=toks[i++]; if(t==='²') v=chk(num(v)*v); else { if(num(v)===0) ERR('DIVIDE BY 0'); v=chk(1/v); } } return v; }
+  function number(){ let s=''; while(isNum(peek())) s+=toks[i++];
+    if((s.match(/\./g)||[]).length>1||s==='.') ERR('SYNTAX');
+    let m=s===''?1:parseFloat(s);
+    if(peek()==='ᴇ'){ i++; let sg=1; if(peek()==='⁻'){ i++; sg=-1; } let d=''; while(peek()!==undefined&&/^[0-9]$/.test(peek())) d+=toks[i++]; if(!d) ERR('SYNTAX'); m=m*Math.pow(10,sg*parseInt(d,10)); }
+    return chk(m); }
+  function close(){ if(peek()===')'){ i++; return; } if(peek()!==undefined&&peek()!==','&&peek()!=='}') ERR('SYNTAX'); }
+  function primary(){
+    const t=peek();
+    if(t===undefined) ERR('SYNTAX');
+    if(isNum(t)||t==='ᴇ') return number();
+    if(/^[A-Zθ]$/.test(t)){ i++; return env.vars[t]??0; }
+    if(t==='π'){ i++; return Math.PI; }
+    if(t==='e'){ i++; return Math.E; }
+    if(t==='Ans'){ i++; return env.ans??0; }
+    if(t==='i') ERR('DATA TYPE');
+    if(t==='('){ i++; const v=expr(); close(); return v; }
+    if(t==='{'){ i++; const a=[num(expr())]; while(peek()===','){ i++; a.push(num(expr())); } if(peek()==='}') i++; else if(peek()!==undefined) ERR('SYNTAX'); return a; }
+    if(t==='L₁'||t==='L₂'){ i++; return (env.lists[t]||[]).slice(); }
+    if(FUNCS.has(t)){ i++; const x=num(expr()); close(); return chk(fn(t,x)); }
+    ERR('SYNTAX');
+  }
+  function fn(t,x){
+    switch(t){
+      case 'sin(': return Math.sin(x*ang);
+      case 'cos(': return Math.cos(x*ang);
+      case 'tan(': return Math.tan(x*ang);
+      case 'sin⁻¹(': if(Math.abs(x)>1) ERR('DOMAIN'); return Math.asin(x)/ang;
+      case 'cos⁻¹(': if(Math.abs(x)>1) ERR('DOMAIN'); return Math.acos(x)/ang;
+      case 'tan⁻¹(': return Math.atan(x)/ang;
+      case 'ln(': if(x===0) ERR('DOMAIN'); if(x<0) ERR('NONREAL ANSWERS'); return Math.log(x);
+      case 'log(': if(x===0) ERR('DOMAIN'); if(x<0) ERR('NONREAL ANSWERS'); return Math.log10(x);
+      case '√(': if(x<0) ERR('NONREAL ANSWERS'); return Math.sqrt(x);
+      case 'e^(': return Math.exp(x);
+      case '10^(': return Math.pow(10,x);
+      case 'abs(': return Math.abs(x);
+    }
+  }
+  const v=expr();
+  if(i<n) ERR('SYNTAX');
+  return v;
+}
+
+/* ---------- shared math helpers for the T2PREP programs ---------- */
+function gcdInt(a,b){ a=Math.round(Math.abs(a)); b=Math.round(Math.abs(b)); while(b){ const t=a%b; a=b; b=t; } return a||1; }
+function simplifyRadical(n){
+  n=Math.round(Math.abs(n)); if(n===0) return {out:0,rem:0};
+  let out=1, rem=n;
+  for(let f=2; f*f<=rem; f++) while(rem%(f*f)===0){ rem/=(f*f); out*=f; }
+  return {out,rem};
+}
+function fracStr(num,den){
+  num=Math.round(num); den=Math.round(den);
+  if(den<0){ num=-num; den=-den; }
+  const g=gcdInt(num,den); num/=g; den/=g;
+  return den===1? String(num) : (num+'/'+den);
+}
+function synDivide(coeffs,k){
+  const q=[coeffs[0]];
+  for(let i=1;i<coeffs.length;i++) q.push(coeffs[i]+q[i-1]*k);
+  const r=q.pop();
+  return {q,r};
+}
+function exactQuadratic(a,b,c){
+  const D=b*b-4*a*c;
+  if(Math.abs(D)<1e-9) return {kind:'real', text: fracStr(-b,2*a)};
+  if(D>0){
+    const sq=Math.sqrt(D), si=Math.round(sq);
+    if(Math.abs(sq-si)<1e-9){
+      const r1=fracStr(-b+si,2*a), r2=fracStr(-b-si,2*a);
+      return {kind:'real', text: r1+', '+r2};
+    }
+    const {out,rem}=simplifyRadical(D);
+    const g=gcdInt(gcdInt(b,out),2*a);
+    const bR=Math.round(b)/g, outR=out/g, denomR=Math.round(2*a)/g;
+    const radTerm=(outR===1?'':outR)+'√'+rem;
+    const text = denomR===1 ? ((-bR)+' ± '+radTerm) : ('('+(-bR)+' ± '+radTerm+') / '+denomR);
+    return {kind:'real', text};
+  }
+  const {out,rem}=simplifyRadical(-D);
+  const g=gcdInt(out,2*a);
+  const outR=out/g, denomR=Math.round(2*a)/g;
+  const reStr=fracStr(-b,2*a);
+  const imStr=(outR===1?'':outR)+'√'+rem+(denomR===1?'':'/'+denomR);
+  return {kind:'complex', text: reStr+' ± ('+imStr+')i'};
+}
+
+/* ---------- programs: register yours here ----------
+   Each entry: {src:[listing lines shown in PRGM > EDIT], async run(c){...}}.
+   c is the Calc instance: c.disp, c.prompt, c.input, c.menu, c.pause, c.clrHome, c.output,
+   c.vars, c.lists, c.Y1, c.evalY1(x), c.setAngle, c.call(name) for subprograms.
+   Errors: ERR('DOMAIN') etc. Quit: throw QUIT. Run from the home screen with PRGM > EXEC. */
+const L=s=>s.trim().split('\n');
+const PROGS={
+RADCPLX:{src:L(`
+Menu("RADCPLX",1,A,2,B
+Lbl A:Input "N=",N
+simplify i*sqrt(-N)
+Disp result
+Lbl B:Prompt A,B,C,D
+Menu op: +  -  x  /
+Disp (A+Bi) op (C+Di)`),
+async run(c){
+  const m=await c.menu('RADCPLX',['SIMPLIFY i√(-n)','COMPLEX a+bi OP c+di']);
+  if(m===0){
+    const n=await c.input('N=?');
+    if(n>=0){ await c.disp('N MUST BE NEGATIVE'); return; }
+    const {out,rem}=simplifyRadical(-n);
+    await c.disp('√('+fmtN(n)+')');
+    await c.pause();
+    const txt='i'+(out===1?'':out)+(rem===1?'':'√'+rem);
+    await c.disp('= i√'+fmtN(-n));
+    await c.disp('= '+txt);
+  } else {
+    await c.prompt('A','B'); const a1=c.vars.A,b1=c.vars.B;
+    await c.prompt('C','D'); const a2=c.vars.C,b2=c.vars.D;
+    const op=await c.menu('OPERATION',['ADD','SUBTRACT','MULTIPLY','DIVIDE']);
+    let re,im;
+    if(op===0){ re=a1+a2; im=b1+b2; }
+    else if(op===1){ re=a1-a2; im=b1-b2; }
+    else if(op===2){ re=a1*a2-b1*b2; im=a1*b2+b1*a2; }
+    else { const d=a2*a2+b2*b2; if(d===0) ERR('DIVIDE BY 0'); re=(a1*a2+b1*b2)/d; im=(b1*a2-a1*b2)/d; }
+    await c.disp('('+fmt({re:a1,im:b1})+')');
+    await c.disp(['+','-','x','/'][op]+' ('+fmt({re:a2,im:b2})+')');
+    await c.pause();
+    await c.disp('= '+fmt({re,im}));
+  }
+}},
+QUADAN:{src:L(`
+Prompt A,B,C
+H=-B/(2A):K=A H²+BH+C
+Disp "VERTEX",H,K
+If A>0:Disp "OPENS UP"
+Disp "AXIS X=",H
+Disp "Y-INT",C
+solve 0=AX²+BX+C for X
+Disp "X-INT",X`),
+async run(c){
+  await c.prompt('A','B','C');
+  const a=c.vars.A,b=c.vars.B,cc=c.vars.C;
+  const h=-b/(2*a), k=a*h*h+b*h+cc;
+  await c.disp('h=-B/(2A)='+fmtN(h,4));
+  await c.disp('k=f(h)='+fmtN(k,4));
+  await c.pause();
+  await c.disp('VERTEX:('+fmtN(h)+','+fmtN(k)+')');
+  await c.disp(a>0?'OPENS UP, MIN':'OPENS DOWN, MAX');
+  await c.disp('AXIS: X='+fmtN(h));
+  await c.disp('Y-INT: (0,'+fmtN(cc)+')');
+  const D=b*b-4*a*cc;
+  if(D>=0){
+    const sq=Math.sqrt(D);
+    await c.disp('X-INT: '+fmtN((-b+sq)/(2*a),4)+','+fmtN((-b-sq)/(2*a),4));
+  } else await c.disp('X-INT: none (D<0)');
+  await c.disp((a>0?'MIN ':'MAX ')+'VALUE: '+fmtN(k));
+}},
+QUADSV:{src:L(`
+Prompt A,B,C
+D=B²-4AC
+Disp "D=",D
+If D>=0:Then
+Disp "real roots"
+Else
+Disp "complex pair"
+End
+simplify (-B±√D)/(2A)`),
+async run(c){
+  await c.prompt('A','B','C');
+  const a=c.vars.A,b=c.vars.B,cc=c.vars.C;
+  const D=b*b-4*a*cc;
+  await c.disp('D=B²-4AC='+fmtN(D));
+  await c.pause();
+  const r=exactQuadratic(a,b,cc);
+  await c.disp(r.kind==='complex'?'D<0: complex pair':'D≥0: real root(s)');
+  await c.disp('x = '+r.text);
+}},
+REBUILD:{src:L(`
+Prompt H,K
+Prompt X,Y
+A=(Y-K)/(X-H)²
+Disp "a=",A
+Disp "f(x)=a(x-h)²+k"`),
+async run(c){
+  await c.prompt('H','K'); const h=c.vars.H,k=c.vars.K;
+  await c.prompt('X','Y'); const x1=c.vars.X,y1=c.vars.Y;
+  const denom=(x1-h)*(x1-h);
+  if(denom===0){ await c.disp('2ND PT = VERTEX'); return; }
+  await c.disp('a=(y-k)/(x-h)²');
+  await c.disp('a='+fmtN(y1-k)+'/'+fmtN(denom));
+  await c.pause();
+  const aFrac=fracStr(y1-k,denom);
+  const hS=h>=0?'-'+fmtN(h):'+'+fmtN(Math.abs(h));
+  const kS=k>=0?'+'+fmtN(k):fmtN(k);
+  await c.disp('a='+aFrac);
+  await c.disp('f(x)='+aFrac+'(x'+hS+')²'+kS);
+}},
+SYNDIV:{src:L(`
+Input "COEF=",L₁
+Prompt K
+bring down, x K, add...
+Disp "QUOTIENT",Q
+Disp "REMAINDER",R`),
+async run(c){
+  const coeffs=await c.input('COEF {a,..,c}=?','list');
+  await c.prompt('K'); const k=c.vars.K;
+  await c.disp('DIVIDE BY (x-'+fmtN(k)+')');
+  await c.pause();
+  const {q,r}=synDivide(coeffs,k);
+  await c.disp('QUOTIENT COEF:');
+  await c.disp('{'+q.map(v=>fmtN(v)).join(',')+'}');
+  await c.disp('REMAINDER: '+fmtN(r));
+}},
+POLYAN:{src:L(`
+Input "ZEROS=",L₁
+Input "MULT=",L₂
+Prompt A
+DEG=sum(L₂)
+Disp "DEGREE",DEG
+For each zero, mult
+check deg even/odd
+check A sign -> end beh`),
+async run(c){
+  const zeros=await c.input('ZEROS {r1,..}=?','list');
+  const mults=await c.input('MULT {m1,..}=?','list');
+  await c.prompt('A'); const a=c.vars.A;
+  const deg=mults.reduce((s,m)=>s+m,0);
+  await c.disp('DEGREE: '+fmtN(deg));
+  await c.disp('LEAD COEF: '+fmtN(a));
+  await c.pause();
+  for(let i=0;i<zeros.length;i++) await c.disp(fmtN(zeros[i])+'  mult '+fmtN(mults[i]));
+  const even=deg%2===0, pos=a>0;
+  const beh = even ? (pos?'RISES L, RISES R':'FALLS L, FALLS R') : (pos?'FALLS L, RISES R':'RISES L, FALLS R');
+  await c.disp('END: '+beh);
+}},
+RATAN:{src:L(`
+Input "NUM COEF=",L₁
+Input "DEN COEF=",L₂
+solve den=0 -> V.A. or hole
+solve num=0 -> x-int
+compare deg -> H.A.`),
+async run(c){
+  const num=await c.input('NUM COEF {hi..lo}=?','list');
+  const den=await c.input('DEN COEF {hi..lo}=?','list');
+  const rootsOf=arr=>{
+    if(arr.length===2) return [-arr[1]/arr[0]];
+    if(arr.length===3){ const [A,B,C]=arr, D=B*B-4*A*C; if(D<0) return [];
+      const s=Math.sqrt(D); return [(-B+s)/(2*A),(-B-s)/(2*A)]; }
+    return [];
+  };
+  const dz=rootsOf(den), nz=rootsOf(num);
+  const holes=dz.filter(v=>nz.some(w=>Math.abs(w-v)<1e-9));
+  const vas=dz.filter(v=>!holes.includes(v));
+  await c.disp('DEN=0: '+dz.map(v=>fmtN(v)).join(',')||'none');
+  await c.disp('V.A.: '+(vas.length?vas.map(v=>fmtN(v)).join(','):'none'));
+  await c.disp('HOLES: '+(holes.length?holes.map(v=>fmtN(v)).join(','):'none'));
+  await c.pause();
+  const xi=nz.filter(v=>!holes.includes(v));
+  await c.disp('X-INT: '+(xi.length?xi.map(v=>fmtN(v)).join(','):'none'));
+  const dn=num.length-1, dd=den.length-1;
+  if(dn<dd) await c.disp('H.A.: y=0');
+  else if(dn===dd) await c.disp('H.A.: y='+fracStr(num[0],den[0]));
+  else await c.disp('NO H.A. (deg N>D)');
+}},
+RATSLV:{src:L(`
+Input "LHS(X)=",L1
+Input "RHS(X)=",R1
+Input "CANDIDATES=",L₁
+For each x in L₁
+eval L1,R1 at X=x
+flag undefined=extraneous`),
+async run(c){
+  await c.disp('ENTER LHS, USE X');
+  const lhsT=await c.readEntry('LHS=');
+  await c.disp('ENTER RHS, USE X');
+  const rhsT=await c.readEntry('RHS=');
+  const cand=await c.input('CANDIDATES {..}=?','list');
+  await c.pause();
+  const keep=[];
+  for(const x of cand){
+    const env={...c.env(),vars:{...c.vars,X:x}};
+    let lv,rv,ok=true,note='';
+    try{ lv=evaluate(lhsT,env); }catch(e){ ok=false; note='LHS UNDEF'; }
+    if(ok){ try{ rv=evaluate(rhsT,env); }catch(e){ ok=false; note='RHS UNDEF'; } }
+    if(!ok){ await c.disp('x='+fmtN(x)+': '+note); continue; }
+    const match=Math.abs(lv-rv)<1e-6;
+    await c.disp('x='+fmtN(x)+': '+(match?'SOLUTION ✓':'no match'));
+    if(match) keep.push(fmtN(x));
+  }
+  await c.disp('SOLUTION SET:');
+  await c.disp('{'+keep.join(',')+'}');
+}},
+SIGNCH:{src:L(`
+Input "f(X)=",F1
+Input "CRIT VALS=",L₁
+Menu inequality type
+For each region
+test midpoint, record sign
+Disp solution intervals`),
+async run(c){
+  await c.disp('ENTER f(X)');
+  const fx=await c.readEntry('f(X)=');
+  const crit=await c.input('CRIT VALUES {..}=?','list');
+  const dirIdx=await c.menu('INEQUALITY',['f(x)>0','f(x)≥0','f(x)<0','f(x)≤0']);
+  const sorted=crit.slice().sort((a,b)=>a-b);
+  const pts=[sorted[0]-1]; for(let i=0;i<sorted.length;i++) pts.push(i<sorted.length-1?(sorted[i]+sorted[i+1])/2:sorted[i]+1);
+  await c.pause();
+  const keep=[];
+  for(let i=0;i<pts.length;i++){
+    let v; try{ v=evaluate(fx,{...c.env(),vars:{...c.vars,X:pts[i]}}); }catch(e){ v=NaN; }
+    const sign=v>0?'+':v<0?'-':'0';
+    const lo=i===0?'(-∞':'('+fmtN(sorted[i-1]);
+    const hi=i===sorted.length?'∞)':fmtN(sorted[i])+')';
+    const label=lo+','+hi;
+    const ok=dirIdx===0?v>0:dirIdx===1?v>=0:dirIdx===2?v<0:v<=0;
+    await c.disp(label+' '+sign+(ok?' ✓':''));
+    if(ok) keep.push(label);
+  }
+  await c.disp('SOLUTION:');
+  await c.disp(keep.join(' U ')||'EMPTY SET');
+}},
+APPMDL:{src:L(`
+Prompt A,B,C
+T=-B/(2A):H=A T²+BT+C
+Disp "VERTEX",T,H
+solve 0=AX²+BX+C
+Disp "GROUND AT",max root`),
+async run(c){
+  await c.prompt('A','B','C');
+  const a=c.vars.A,b=c.vars.B,cc=c.vars.C;
+  const tMax=-b/(2*a), hMax=a*tMax*tMax+b*tMax+cc;
+  await c.disp('VERTEX t='+fmtN(tMax,2));
+  await c.disp('MAX/MIN VAL='+fmtN(hMax,2));
+  await c.pause();
+  const D=b*b-4*a*cc;
+  if(D>=0){
+    const sq=Math.sqrt(D), r1=(-b+sq)/(2*a), r2=(-b-sq)/(2*a);
+    await c.disp('ROOTS: '+fmtN(r1,2)+','+fmtN(r2,2));
+    await c.disp('GROUND AT t='+fmtN(Math.max(r1,r2),2));
+  } else await c.disp('NEVER REACHES 0');
+}},
+CHECK:{src:L(`
+Input "f(X)=",F1
+Prompt X
+eval F1 at X
+If |value|<.000001
+Disp "VERIFIED"
+Else
+Disp "NOT A ROOT"`),
+async run(c){
+  await c.disp('ENTER f(X)');
+  const fx=await c.readEntry('f(X)=');
+  await c.prompt('X'); const x=c.vars.X;
+  let v; try{ v=evaluate(fx,{...c.env(),vars:{...c.vars,X:x}}); }
+  catch(e){ await c.disp('UNDEFINED AT X='+fmtN(x)); return; }
+  await c.disp('f('+fmtN(x)+')='+fmtN(v,6));
+  await c.disp(Math.abs(v)<1e-6?'VERIFIED ROOT ✓':'NOT A ROOT');
+}},
+XFORM:{src:L(`
+Menu TYPE: 6 families
+Prompt H,K
+Prompt X,Y
+A=(Y-K)/parent(X-H)
+Disp "a=",A
+Disp "f(x)=a*parent(x-h)+k"`),
+async run(c){
+  const types=['LINEAR y=x','ABS VAL y=|x|','QUADRATIC y=x²','SQRT y=√x','CUBIC y=x³','RECIP y=1/x'];
+  const ti=await c.menu('TYPE',types);
+  const parent=[t=>t, t=>Math.abs(t), t=>t*t, t=>t>=0?Math.sqrt(t):NaN, t=>t*t*t, t=>t!==0?1/t:NaN][ti];
+  await c.prompt('H','K'); const h=c.vars.H,k=c.vars.K;
+  await c.prompt('X','Y'); const x1=c.vars.X,y1=c.vars.Y;
+  const denom=parent(x1-h);
+  if(!isFinite(denom)||denom===0){ await c.disp('DOMAIN ERROR'); await c.disp('PICK ANOTHER 2ND PT'); return; }
+  const a=(y1-k)/denom;
+  await c.disp('a=(y-k)/parent(x-h)');
+  await c.disp('a='+fmtN(y1-k)+'/'+fmtN(denom,4));
+  await c.pause();
+  await c.disp('a='+fmtN(a,4));
+  const hS=h>=0?'-'+fmtN(h):'+'+fmtN(Math.abs(h));
+  const kS=k>=0?'+'+fmtN(k):fmtN(k);
+  const names=['(X'+hS+')','|X'+hS+'|','(X'+hS+')²','√(X'+hS+')','(X'+hS+')³','1/(X'+hS+')'];
+  await c.disp('f(X)='+fmtN(a,3)+names[ti]+kS);
+}},
+ZEROFX:{src:L(`
+Input "ZEROS=",L₁
+Input "MULT=",L₂
+Prompt X,Y
+P=prod (X-zero)^mult
+A=Y/P
+Disp "f(x)=",A,"...factors"`),
+async run(c){
+  const zeros=await c.input('ZEROS {r1,..}=?','list');
+  const mults=await c.input('MULT {m1,..}=?','list');
+  await c.prompt('X','Y'); const x1=c.vars.X,y1=c.vars.Y;
+  let prod=1; for(let i=0;i<zeros.length;i++) prod*=Math.pow(x1-zeros[i],mults[i]);
+  if(prod===0){ await c.disp('PT IS A ZERO'); await c.disp('PICK ANOTHER PT'); return; }
+  const a=y1/prod;
+  await c.disp('PRODUCT AT PT='+fmtN(prod,4));
+  await c.disp('a=y/product='+fmtN(a,4));
+  await c.pause();
+  let s='f(X)='+(Math.abs(a-1)<1e-9?'':fmtN(a,3));
+  for(let i=0;i<zeros.length;i++){
+    const z=zeros[i], sgn=z>=0?'-':'+';
+    s+='(X'+sgn+fmtN(Math.abs(z))+')'+(mults[i]>1?'^'+fmtN(mults[i]):'');
+  }
+  await c.disp(s);
+}},
+ZCHAIN:{src:L(`
+Input "COEF=",L₁
+Prompt K
+synthetic divide by K
+If R≠0:Disp "not a zero"
+quotient deg=1: read root
+quotient deg=2: QUADSV
+Disp "ALL ZEROS",...`),
+async run(c){
+  const coeffs=await c.input('COEF {a,..,c}=?','list');
+  await c.prompt('K'); const k=c.vars.K;
+  const {q,r}=synDivide(coeffs,k);
+  await c.disp('SYN÷ BY (x-'+fmtN(k)+')');
+  await c.disp('R='+fmtN(r)+(Math.abs(r)<1e-9?' ✓':' ✗ NOT A ZERO'));
+  if(Math.abs(r)>=1e-9) return;
+  await c.pause();
+  await c.disp('QUOTIENT {'+q.map(v=>fmtN(v)).join(',')+'}');
+  let rest='';
+  if(q.length===2){ rest=fmtN(-q[1]/q[0],4); await c.disp('x='+rest); }
+  else if(q.length===3){
+    const res=exactQuadratic(q[0],q[1],q[2]);
+    await c.disp(res.kind==='complex'?'COMPLEX PAIR:':'REAL ROOT(S):');
+    await c.disp('x='+res.text); rest=res.text;
+  } else { await c.disp('DEG>2: run again'); return; }
+  await c.disp('ALL ZEROS: '+fmtN(k)+', '+rest);
+}}
+};
+const PRGM_LIST=Object.keys(PROGS);
+
+/* ---------- keys ---------- */
+const KEYDEF=[
+ ['yeq','y=','stat plot','f1','fn'],['window','window','tblset','f2','fn'],['zoom','zoom','format','f3','fn'],['trace','trace','calc','f4','fn'],['graph','graph','table','f5','fn'],
+ ['2nd','2nd','','','sec'],['mode','mode','quit','',''],['del','del','ins','',''],
+ ['alpha','alpha','a-lock','','alp'],['X','x,t,θ,n','link','',''],['stat','stat','list','',''],
+ ['math','math','test','A',''],['apps','apps','angle','B',''],['prgm','prgm','draw','C',''],['vars','vars','distr','',''],['clear','clear','','',''],
+ ['inv','x⁻¹','matrix','D',''],['sin','sin','sin⁻¹','E',''],['cos','cos','cos⁻¹','F',''],['tan','tan','tan⁻¹','G',''],['^','^','π','H',''],
+ ['sq','x²','√','I',''],[',',',','EE','J',''],['(','(','{','K',''],[')',')','}','L',''],['/','÷','e','M',''],
+ ['log','log','10ˣ','N',''],['7','7','u','O','num'],['8','8','v','P','num'],['9','9','w','Q','num'],['*','×','[','R',''],
+ ['ln','ln','eˣ','S',''],['4','4','L4','T','num'],['5','5','L5','U','num'],['6','6','L6','V','num'],['-','−',']','W',''],
+ ['sto','sto→','rcl','X',''],['1','1','L1','Y','num'],['2','2','L2','Z','num'],['3','3','L3','θ','num'],['+','+','mem','"',''],
+ ['on','on','off','',''],['0','0','catalog','␣','num'],['.','.','i',':','num'],['neg','(−)','ans','?','num'],['enter','enter','entry','solve','ent']
+];
+const SECOND={mode:'quit',del:'ins',sq:'sqrt','^':'pi',ln:'ex',log:'tenx','.':'i',',':'EE','(':'{',')':'}','/':'e','1':'L1','2':'L2',sin:'asin',cos:'acos',tan:'atan',neg:'ans',enter:'entry',on:'off'};
+const ALPHA={math:'A',apps:'B',prgm:'C',inv:'D',sin:'E',cos:'F',tan:'G','^':'H',sq:'I',',':'J','(':'K',')':'L','/':'M',log:'N','7':'O','8':'P','9':'Q','*':'R',ln:'S','4':'T','5':'U','6':'V','-':'W',sto:'X','1':'Y','2':'Z','3':'θ','+':'"','0':' ','.':':',neg:'?'};
+const TOK={neg:'⁻','+':'+','-':'−','*':'*','/':'/','^':'^',sq:'²','(':'(',')':')',',':',',X:'X',sin:'sin(',cos:'cos(',tan:'tan(',asin:'sin⁻¹(',acos:'cos⁻¹(',atan:'tan⁻¹(',log:'log(',ln:'ln(',tenx:'10^(',ex:'e^(',sqrt:'√(',pi:'π',i:'i',EE:'ᴇ','{':'{','}':'}',L1:'L₁',L2:'L₂',inv:'⁻¹',ans:'Ans',sto:'→',e:'e','.':'.'};
+for(let d=0;d<10;d++){ TOK[d]=String(d); }
+const blankRow=()=>Array.from({length:COLS},()=>[' ',false]);
+function keysHTML(){
+  let s='';
+  for(const [k,face,sec,alp,cls] of KEYDEF) s+=`<button type="button" class="key ${cls}" data-k="${k}" aria-label="${face}"><span class="lab"><i class="s">${sec}</i><i class="a">${alp}</i></span><span class="face">${face}</span></button>`;
+  s+=`<div class="pad"><button type="button" data-k="up" aria-label="up" style="grid-area:1/2">▲</button><button type="button" data-k="left" aria-label="left" style="grid-area:2/1">◀</button><button type="button" data-k="right" aria-label="right" style="grid-area:2/3">▶</button><button type="button" data-k="down" aria-label="down" style="grid-area:3/2">▼</button></div>`;
+  return s;
+}
+
+class Calc{
+  constructor(host){
+    this.host=host; this.prog=host.dataset.prog||null; this.R=ROWS;
+    this.vars={}; for(const v of 'ABCDEFGHIJKLMNOPQRSTUVWXYZθ') this.vars[v]=0;
+    this.lists={'L₁':[],'L₂':[]}; this.Y1=null; this.ans=0; this.angle='RADIAN';
+    this.second=false; this.alpha=false; this.cursor=null; this.entry=[]; this.last=null; this.hstart=0; this.curToks=null;
+    this.running=false; this.paused=false; this.waiting=false; this.waiter=null; this.script=[]; this.fastRun=false; this.abort=null;
+    this.state='home'; this.saved=null;
+    this.build(); this.blank();
+  }
+  build(){
+    const h=this.host; h.classList.add('calc'); h.tabIndex=0; h.setAttribute('role','group');
+    h.setAttribute('aria-label',`TI-84 Plus CE prototype running T2PREP. Focus it to type with the keyboard.`);
+    h.innerHTML=`<div class="brand"><span>TI-84 Plus CE</span><span>TEXAS INSTRUMENTS</span></div>
+      <div class="bezel"><div class="lcd" aria-live="off"><div class="sb"><span class="sbt"></span><i class="busy"></i><b class="bat"></b></div><div class="rows"></div></div></div>
+      <div class="keys">${keysHTML()}</div>`;
+    this.$sbt=h.querySelector('.sbt'); this.$busy=h.querySelector('.busy');
+    const rows=h.querySelector('.rows'); this.cells=[];
+    for(let r=0;r<ROWS;r++){ const rd=document.createElement('div'); rd.className='row'; const a=[]; for(let c=0;c<COLS;c++){ const s=document.createElement('span'); s.textContent=' '; rd.appendChild(s); a.push(s); } rows.appendChild(rd); this.cells.push(a); }
+    h.addEventListener('click',e=>{ const b=e.target.closest('button[data-k]'); if(b){ this.press(b.dataset.k); } });
+    h.addEventListener('pointerdown',e=>{ if(!e.target.closest('button')) h.focus({preventScroll:true}); });
+    h.addEventListener('keydown',e=>this.onKey(e));
+  }
+  /* screen buffer */
+  blank(){ this.buf=Array.from({length:this.R},blankRow); this.row=0; }
+  snap(){ return {buf:this.buf.map(r=>r.map(c=>c.slice())),row:this.row,hstart:this.hstart}; }
+  put(r,c,s,inv=false){ const a=[...s]; for(let j=0;j<a.length;j++){ const cc=c+j; if(r<0||r>=this.R||cc<0||cc>=COLS) continue; this.buf[r][cc]=[a[j],inv]; } }
+  newLine(){ while(this.row>=this.R){ this.buf.shift(); this.buf.push(blankRow()); this.row--; } }
+  writeLine(s,right){ this.newLine(); let a=[...s]; if(a.length>COLS) a=a.slice(0,COLS-1).concat('…'); this.put(this.row,right?COLS-a.length:0,a.join('')); this.row++; }
+  chars(t){ return t.flatMap(x=>[...x]); }
+  used(ch){ return Math.max(1,Math.ceil(ch.length/COLS)); }
+  layout(start,ch){
+    const lines=Math.max(1,Math.ceil((ch.length+1)/COLS));
+    while(start+lines>this.R&&start>0){ this.buf.shift(); this.buf.push(blankRow()); start--; }
+    for(let r=start;r<this.R;r++) this.buf[r]=blankRow();
+    ch.forEach((c,j)=>{ const r=start+Math.floor(j/COLS); if(r<this.R) this.buf[r][j%COLS]=[c,false]; });
+    const p=ch.length, cr=start+Math.floor(p/COLS); this.cursor=cr<this.R?[cr,p%COLS]:null;
+    return start;
+  }
+  render(){
+    for(let r=0;r<ROWS;r++){ const row=this.buf[r]; for(let c=0;c<COLS;c++){
+      const cell=row?row[c]:[' ',false]; let ch=cell[0], cls=cell[1]?'inv':'';
+      if(this.cursor&&this.cursor[0]===r&&this.cursor[1]===c){ cls='cur'; if(this.second) ch='↑'; else if(this.alpha) ch='A'; }
+      const sp=this.cells[r][c]; if(sp.textContent!==ch) sp.textContent=ch; if(sp.className!==cls) sp.className=cls; } }
+    this.$sbt.textContent=`NORMAL FLOAT AUTO REAL ${this.angle} MP`;
+    this.$busy.className='busy'+(this.paused?' pz':(this.running&&!this.waiting)?' on':'');
+  }
+  /* key input */
+  waitKey(){
+    if(this.script.length) return Promise.resolve(this.script.shift());
+    if(this.pending){ const k=this.pending; this.pending=null; return Promise.resolve(k); }
+    this.fastRun=false; this.waiting=true; this.render();
+    return new Promise((res,rej)=>{ this.waiter={res,rej}; });
+  }
+  async tick(ms=24){
+    if(this.abort){ const a=this.abort; this.abort=null; throw new TIErr(a); }
+    this.render(); if(this.fastRun) return; await sleep(ms);
+    if(this.abort){ const a=this.abort; this.abort=null; throw new TIErr(a); }
+  }
+  press(k,raw){
+    if(!raw){
+      if(k==='2nd'){ this.second=!this.second; this.alpha=false; this.render(); return; }
+      if(k==='alpha'){ this.alpha=!this.alpha; this.second=false; this.render(); return; }
+      if(this.second){ this.second=false; k=SECOND[k]||k; }
+      else if(this.alpha){ this.alpha=false; if(ALPHA[k]) k='α'+ALPHA[k]; }
+    }
+    if(k==='on'&&this.running){
+      if(this.waiter){ const w=this.waiter; this.waiter=null; this.waiting=false; this.paused=false; w.rej(new TIErr('BREAK')); }
+      else this.abort='BREAK';
+      this.render(); return;
+    }
+    if(this.waiter){ const w=this.waiter; this.waiter=null; this.waiting=false; w.res(k); return; }
+    if(this.running){ this.pending=k; this.render(); return; }
+    this.idle(k);
+  }
+  onKey(e){
+    if(e.ctrlKey||e.metaKey||e.altKey) return;
+    const K=e.key; let k=null;
+    const map={Enter:'enter',Backspace:'del',Delete:'del',Escape:'clear',ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right','+':'+','*':'*','/':'/','^':'^','(':'(',')':')',',':',','.':'.','{':'{','}':'}'};
+    if(/^[0-9]$/.test(K)) k=K;
+    else if(map[K]) k=map[K];
+    else if(K==='-') k=this.wantsNeg()?'neg':'-';
+    else if(K==='x'||K==='X') k='X';
+    else if(/^[a-zA-Z]$/.test(K)) k='α'+K.toUpperCase();
+    else if(K==='"'||K===' '||K===':'||K==='?') k='α'+K;
+    if(!k) return;
+    e.preventDefault();
+    const b=this.host.querySelector(`button[data-k="${CSS.escape(k)}"]`); if(b){ b.classList.add('hit'); setTimeout(()=>b.classList.remove('hit'),110); }
+    this.press(k,true);
+  }
+  wantsNeg(){ const t=this.curToks; const last=t&&t[t.length-1]; return !last||/^[+−*/^,{→⁻]$/.test(last)||last.endsWith('('); }
+  tokenFor(k){
+    if(k.startsWith('α')) return k.slice(1);
+    return TOK[k]??null;
+  }
+  env(){ return {vars:this.vars,lists:this.lists,angle:this.angle,ans:this.ans}; }
+  evalY1(x){ if(!this.Y1) ERR('UNDEFINED'); const v=evaluate(this.Y1,{...this.env(),vars:{...this.vars,X:x}}); if(typeof v!=='number') ERR('DATA TYPE'); return v; }
+  /* TI-BASIC commands used by the programs */
+  clrHome(){ this.blank(); this.render(); }
+  setAngle(m){ this.angle=m; this.render(); }
+  async call(name){ await PROGS[name].run(this); }
+  async disp(...items){ for(const it of items){ if(typeof it==='string') this.writeLine(it); else this.writeLine(fmt(it),true); await this.tick(); } }
+  output(r,c,v){ this.put(r-1,c-1,typeof v==='string'?v:fmt(v)); }
+  async pause(){ this.paused=true; this.render(); try{ for(;;){ const k=await this.waitKey(); if(k==='enter') break; if(k==='quit') throw QUIT; } } finally { this.paused=false; } this.render(); }
+  async readEntry(prefix){
+    const toks=[]; this.newLine(); let start=this.row; this.curToks=toks;
+    for(;;){
+      const ch=[...prefix,...this.chars(toks)];
+      start=this.layout(start,ch); this.render();
+      const k=await this.waitKey();
+      if(k==='enter'){ if(!toks.length) continue; this.cursor=null; this.row=start+this.used(ch); this.render(); return toks; }
+      if(k==='clear'){ toks.length=0; continue; }
+      if(k==='del'){ toks.pop(); continue; }
+      if(k==='quit'){ this.cursor=null; throw QUIT; }
+      const t=this.tokenFor(k); if(t) toks.push(t);
+    }
+  }
+  async prompt(...names){ for(const n of names){ const t=await this.readEntry(n+'=?'); const v=evaluate(t,this.env()); if(typeof v!=='number') ERR('DATA TYPE'); this.vars[n]=v; } }
+  async input(prefix,kind='num'){
+    const t=await this.readEntry(prefix);
+    if(kind==='str') return t.slice();
+    const v=evaluate(t,this.env());
+    if(kind==='list'){ if(!Array.isArray(v)) ERR('DATA TYPE'); return v; }
+    if(typeof v!=='number') ERR('DATA TYPE'); return v;
+  }
+  async menu(title,items){
+    const saved=this.snap(); let sel=0; this.cursor=null;
+    for(;;){
+      this.blank(); this.put(0,0,title.padEnd(COLS),true);
+      items.forEach((it,j)=>{ this.put(j+1,0,(j+1)+':',j===sel); this.put(j+1,2,it.slice(0,24)); });
+      this.render();
+      const k=await this.waitKey();
+      if(k==='up') sel=(sel-1+items.length)%items.length;
+      else if(k==='down') sel=(sel+1)%items.length;
+      else if(k==='enter') break;
+      else if(/^[1-9]$/.test(k)&&+k<=items.length){ sel=+k-1; break; }
+      else if(k==='quit') throw QUIT;
+    }
+    this.buf=saved.buf; this.row=saved.row; this.render();
+    return sel;
+  }
+  async errScreen(err){
+    let sel=0; this.cursor=null;
+    for(;;){
+      this.blank(); this.put(0,0,('ERR:'+err).padEnd(COLS),true);
+      ['Quit','Goto'].forEach((o,j)=>{ this.put(j+1,0,(j+1)+':',j===sel); this.put(j+1,2,o); });
+      this.render();
+      let k; try{ k=await this.waitKey(); }catch(e){ continue; }
+      if(k==='up'||k==='down') sel=1-sel;
+      else if(k==='1'||k==='quit'||(k==='enter'&&sel===0)){ this.blank(); return 'quit'; }
+      else if(k==='2'||(k==='enter'&&sel===1)){ this.blank(); return 'goto'; }
+    }
+  }
+  /* home screen */
+  async exec(name){
+    this.running=true; this.abort=null; this.state='home'; let ok=true, go=false;
+    try{ await PROGS[name].run(this); }
+    catch(e){ ok=false; this.paused=false; this.waiting=false; this.cursor=null;
+      if(e instanceof TIErr){ const r=await this.errScreen(e.err); go=r==='goto'; }
+      else if(e!==QUIT) console.error(e); }
+    this.running=false; this.paused=false; this.waiting=false; this.cursor=null;
+    if(go){ this.saved=null; this.openEditor(name); return; }
+    if(ok) this.writeLine('Done',true);
+    this.homeCursor();
+  }
+  homeCursor(){ this.state='home'; this.entry=[]; this.newLine(); this.hstart=this.row; this.drawHome(); }
+  drawHome(){ this.hstart=this.layout(this.hstart,this.chars(this.entry)); this.curToks=this.entry; this.render(); }
+  commitEntry(t){ const ch=this.chars(t); this.hstart=this.layout(this.hstart,ch); this.cursor=null; this.row=this.hstart+this.used(ch); this.render(); }
+  idle(k){ if(this.state==='home') return this.homeKey(k); if(this.state==='prgm') return this.prgmKey(k); if(this.state==='edit') return this.editKey(k); }
+  async homeKey(k){
+    if(k==='enter'){
+      const t=this.entry.length?this.entry.slice():(this.last?this.last.slice():null); if(!t) return;
+      this.last=t.slice(); this.commitEntry(t); this.entry=[];
+      if(t.length===1&&t[0].startsWith('prgm')){ this.exec(t[0].slice(4)); return; }
+      await this.evalHome(t); this.homeCursor(); return;
+    }
+    if(k==='clear'){ if(this.entry.length) this.entry=[]; else { this.blank(); this.hstart=0; } return this.drawHome(); }
+    if(k==='del'){ this.entry.pop(); return this.drawHome(); }
+    if(k==='entry'){ if(this.last) this.entry=this.last.slice(); return this.drawHome(); }
+    if(k==='quit'){ this.entry=[]; return this.drawHome(); }
+    if(k==='prgm') return this.openPrgm();
+    const t=this.tokenFor(k); if(t){ this.entry.push(t); this.drawHome(); }
+  }
+  async evalHome(t){
+    try{
+      const at=t.indexOf('→'); const v=evaluate(at>=0?t.slice(0,at):t,this.env());
+      if(at>=0){ const tg=t.slice(at+1).join('');
+        if(/^[A-Zθ]$/.test(tg)){ if(typeof v!=='number') ERR('DATA TYPE'); this.vars[tg]=v; }
+        else if(tg==='L₁'||tg==='L₂'){ if(!Array.isArray(v)) ERR('DATA TYPE'); this.lists[tg]=v; }
+        else ERR('SYNTAX'); }
+      this.ans=v; this.writeLine(fmt(v),true);
+    }catch(e){ if(!(e instanceof TIErr)) throw e; await this.errScreen(e.err); }
+  }
+  openPrgm(){ this.saved=this.snap(); this.savedEntry=this.entry.slice(); this.state='prgm'; this.ptab=0; this.psel=0; this.drawPrgm(); }
+  restoreHome(){ if(this.saved){ this.buf=this.saved.buf; this.row=this.saved.row; this.hstart=this.saved.hstart; this.entry=this.savedEntry||[]; this.saved=null; } this.state='home'; }
+  drawPrgm(){
+    this.blank(); this.cursor=null; let c=0;
+    ['EXEC','EDIT','NEW'].forEach((t,j)=>{ this.put(0,c,t,j===this.ptab); c+=t.length+2; });
+    if(this.ptab<2) PRGM_LIST.forEach((p,j)=>{ this.put(j+1,0,(j+1)+':',j===this.psel); this.put(j+1,3,p); });
+    else { this.put(1,0,'1:',true); this.put(1,2,'Create New'); }
+    this.render();
+  }
+  prgmKey(k){
+    const n=PRGM_LIST.length;
+    if(k==='left') this.ptab=(this.ptab+2)%3;
+    else if(k==='right') this.ptab=(this.ptab+1)%3;
+    else if(k==='up') this.psel=(this.psel-1+n)%n;
+    else if(k==='down') this.psel=(this.psel+1)%n;
+    else if(k==='enter'||/^[1-9]$/.test(k)){
+      if(this.ptab===2) return;
+      if(k!=='enter'){ const idx=+k-1; if(idx<n) this.psel=idx; }
+      const name=PRGM_LIST[this.psel];
+      if(this.ptab===0){ this.restoreHome(); this.entry.push('prgm'+name); this.drawHome(); }
+      else this.openEditor(name);
+      return;
+    }
+    else if(k==='quit'||k==='clear'){ this.restoreHome(); return this.drawHome(); }
+    this.drawPrgm();
+  }
+  wrapSrc(name){ const P=PROGS[name]; const lines=P.src.map(l=>':'+l); const out=[]; lines.forEach(l=>{ const a=[...l]; if(!a.length) out.push(''); for(let j=0;j<a.length;j+=COLS) out.push(a.slice(j,j+COLS).join('')); }); return out; }
+  openEditor(name){ this.state='edit'; this.ename=name; this.etop=0; this.erows=this.wrapSrc(name); this.drawEdit(); }
+  drawEdit(){ this.blank(); this.put(0,0,'PROGRAM:'+this.ename); for(let r=1;r<this.R;r++) this.put(r,0,this.erows[this.etop+r-1]||''); this.cursor=[1,1]; this.render(); }
+  editKey(k){
+    const max=Math.max(0,this.erows.length-(this.R-1));
+    if(k==='down'){ this.etop=Math.min(max,this.etop+1); return this.drawEdit(); }
+    if(k==='up'){ this.etop=Math.max(0,this.etop-1); return this.drawEdit(); }
+    if(k==='quit'){ this.cursor=null; if(this.saved){ this.restoreHome(); this.drawHome(); } else { this.blank(); this.homeCursor(); } }
+  }
+  boot(){
+    if(!this.prog) return this.homeCursor();
+    this.fastRun=true;
+    this.last=['prgm'+this.prog]; this.blank(); this.hstart=0; this.commitEntry(this.last); this.exec(this.prog);
+  }
+}
+
+const host=document.getElementById('calc');
+new Calc(host).boot();
+})();
+</script>
