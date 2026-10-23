@@ -2,6 +2,8 @@ Lbl N
 prgmZLNEW
 Disp "CHECK BY SUBSTITUTION","TYPE AN EXPRESSION OR","EQUATION IN X"
 Input Str2
+If not(length(Str2))
+Goto N
 {0}→⌊MKX
 0→E
 Menu("CAN IT BE UNDEFINED?","NO",X0,"YES, LIST BAD X",X1,"BACK",Q)
@@ -11,6 +13,8 @@ Lbl X1
 ClrHome
 Disp "X VALUES THAT MAKE A","DENOMINATOR 0, AS {..}"
 Input "EXCLUDED=",Str1
+If not(length(Str1))
+Goto X0
 If sub(Str1,1,1)="{"
 expr(Str1)→⌊MKX
 If sub(Str1,1,1)≠"{"
@@ -19,6 +23,8 @@ If sub(Str1,1,1)≠"{"
 Lbl X0
 prgmZLNEW
 Input "X VALUE=",Str1
+If not(length(Str1))
+Goto X0
 expr(Str1)→K
 If inString(Str1,".")
 1→⌊MKS(2)

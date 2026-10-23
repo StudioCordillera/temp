@@ -45,15 +45,15 @@ Goto J
 Lbl TY
 Disp "TYPE EACH SIDE AS","PRINTED, X FOR THE","VARIABLE"
 Input "LEFT=",Str1
-Str1→Str2
 2→P
 prgmZEXPR
+Str1→Str2
 If not(O)
 Goto M
 ⌊MKE→⌊MKA
 Input "RIGHT=",Str1
-Str1→Str3
 prgmZEXPR
+Str1→Str3
 If not(O)
 Goto M
 ⌊MKE→⌊MKB

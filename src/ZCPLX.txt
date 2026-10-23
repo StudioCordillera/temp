@@ -133,7 +133,7 @@ prgmZEXPR
 Input "N=?",Str1
 prgmZEXPR
 ⌊MKE(1)→N
-fPart(√(N)) or N<1→E
+fPart(√(abs(N))) or N<1→E
 If E
 Goto ER
 If N>1
@@ -152,7 +152,7 @@ prgmZEXPR
 Input "N=?",Str1
 prgmZEXPR
 ⌊MKE(1)→N
-fPart(√(N)) or N<1→E
+fPart(√(abs(N))) or N<1→E
 If E
 Goto ER
 If N>1

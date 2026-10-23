@@ -236,6 +236,14 @@ Input "MULT=?",Str1
 prgmZEXPR
 ⌊MKE(1)→⌊MKFM(K)
 End
+min(⌊MKFM≥1 and fPart(⌊MKFM)=0) and sum(⌊MKFM)≤10→E
+If not(E)
+Then
+Disp "NEED M A WHOLE","NUMBER ≥ 1, DEGREE ≤10"
+Pause 
+End
+If not(E)
+Goto M
 ClrHome
 Input "A (0=FIND)=?",Str1
 prgmZEXPR

@@ -49,9 +49,9 @@ Lbl T
 prgmZLNEW
 Disp "TYPE F(X) AS PRINTED","USE X FOR THE VARIABLE"
 Input "F(X)=",Str1
-Str1→Str2
 2→P
 prgmZEXPR
+Str1→Str2
 If not(O)
 Goto M
 ⌊MKE→⌊MKA
@@ -328,9 +328,14 @@ prgmZLSHOW
 Goto M
 Lbl AA
 sub("TX",G,1)→Str4
-While G=1 and inString(Str1,"X")
+If G=1
+Then
+" "+Str1+" "→Str1
+While inString(Str1,"X")
 inString(Str1,"X")→N
 sub(Str1,1,N-1)+Str4+sub(Str1,N+1,length(Str1)-N)→Str1
+End
+sub(Str1,2,length(Str1)-2)→Str1
 End
 {A,B,C}→⌊MKQ
 prgmZLQSV

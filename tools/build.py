@@ -44,6 +44,12 @@ STRING_TOKENS_OK = {"√(", "ln(", "log(", "⁻¹", "abs("}
 
 
 def static_checks(name, text):
+    # checked on the raw text first: tivars cannot tokenize these at all
+    bad = [sym for sym in "∞∪∅±≈" if sym in text]
+    for sym in bad:
+        fail(f"{name}: character {sym} has no calculator token (RU-2)")
+    if bad:
+        return
     mode = "max" if name in tibasic.MAX_MUNCH else "smart"
     toks = tibasic.tokenize(text, mode)
     # strings: no → (RU-1), no colon, no " inside (a " always ends the literal)
@@ -72,12 +78,13 @@ def static_checks(name, text):
         if len(t) == 1 and "a" <= t <= "z":
             fail(f"{name}: lowercase-letter token {t!r} (a command missing its trailing space?)")
             break
-    for sym in "∞∪∅±≈":
-        if sym in text:
-            fail(f"{name}: character {sym} has no calculator token (RU-2)")
     if len(name) > 8 or not re.fullmatch(r"[A-Zθ][A-Z0-9θ]*", name):
         fail(f"{name}: bad program name")
-    prog = tibasic.Program(name, toks)
+    try:
+        prog = tibasic.Program(name, toks)
+    except tibasic.TIError as e:
+        fail(f"{name}: {e} (label too long, or a bad label)")
+        return
     for j, st in enumerate(prog.stmts):
         if st and st[0] == "Lbl " and not (1 <= len(st) - 1 <= 2):
             fail(f"{name}: label too long")

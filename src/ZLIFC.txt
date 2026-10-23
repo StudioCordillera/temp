@@ -27,15 +27,13 @@ Q
 prgmZLFRC
 If V>1
 "("+Str0+")"→Str0
-If Q=1 and length(Str8)>1
-" "→Str0
-If Q=⁻1 and length(Str8)>1
+If length(Str8)>1
+Then
+sub(Str8,2,length(Str8)-1)→Str8
+If Q=⁻1
 "⁻"→Str0
+If Q=1
+Str8→Str0
+If Q≠1
 Str0+Str8→Str0
-While inString(Str0," ")
-inString(Str0," ")→R
-If R=1
-sub(Str0,2,length(Str0)-1)→Str0
-If R>1
-sub(Str0,1,R-1)+sub(Str0,R+1,length(Str0)-R)→Str0
 End

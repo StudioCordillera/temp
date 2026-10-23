@@ -4,13 +4,13 @@ which is what 2nd MEM > Mem Management > Prgm shows (within a few bytes).
 
 program     tokens  memory  .8xp file  min OS
 MATHKIT       1311    1329       1387  1.10.0
-ZCHECK        1099    1116       1175  1.15.0
-ZCPLX         3023    3039       3099  5.2.0
+ZCHECK        1137    1154       1213  1.15.0
+ZCPLX         3027    3043       3103  5.2.0
 ZDIV          2195    2210       2271  5.2.0
-ZEXPR          780     796        856  5.2.0
-ZGRAPH        8449    8466       8525  5.2.0
-ZINEQ         4364    4380       4440  5.2.0
-ZLA            425     439        501  1.15.0
+ZEXPR          796     812        872  5.2.0
+ZGRAPH        8544    8561       8620  5.2.0
+ZINEQ         4485    4501       4561  5.2.0
+ZLA            494     508        570  1.15.0
 ZLADD            7      23         83  0.1013.0
 ZLCHK          193     209        269  0.1013.0
 ZLCST          351     367        427  5.2.0
@@ -19,7 +19,7 @@ ZLEVL           65      81        141  0.1013.0
 ZLFLD           66      82        142  0.1013.0
 ZLFMT          319     335        395  5.2.0
 ZLFRC          419     435        495  5.2.0
-ZLIFC          408     424        484  5.2.0
+ZLIFC          341     357        417  5.2.0
 ZLMUL          111     127        187  0.1013.0
 ZLNEW          220     236        296  0.1013.0
 ZLQSV         1280    1296       1356  5.2.0
@@ -30,14 +30,14 @@ ZLTOK           27      43        103  0.1013.0
 ZLZER         1514    1530       1590  5.2.0
 ZLZNM         1016    1032       1092  1.15.0
 ZLZRL         1775    1791       1851  5.2.0
-ZPOLY         3447    3463       3523  5.2.0
+ZPOLY         3542    3558       3618  5.2.0
 ZQSOLV        4019    4036       4095  5.2.0
-ZQUAD         4679    4695       4755  1.15.0
+ZQUAD         4717    4733       4793  1.15.0
 ZRATEQ        4588    4605       4664  5.2.0
-ZRATFN        5749    5766       5825  5.2.0
-ZZEROS        2966    2983       3042  5.2.0
+ZRATFN        5824    5841       5900  5.2.0
+ZZEROS        3005    3022       3081  5.2.0
 
-TOTAL        57346   57880      59854
-MATHKIT.8xg group file: 57890 bytes
+TOTAL        57869   58403      60377
+MATHKIT.8xg group file: 58413 bytes
 Highest OS any token needs: 5.2.0 (limit 5.2.0)
-Budget: 57880 of 61440 bytes (94%)
+Budget: 58403 of 61440 bytes (95%)

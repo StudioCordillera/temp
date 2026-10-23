@@ -254,8 +254,10 @@ Str4+","→Str4
 End
 0→⌊MKS(2)
 End
-sub(Str4,2,length(Str4)-2)
-prgmZLA
+sub(Str4,2,length(Str4)-2)→Str8
+If sub(Str8,1,1)=" "
+sub(Str8,2,length(Str8)-1)→Str8
+prgmZLADD
 If Z=3
 Then
 "(DECIMALS ARE APPROX)"

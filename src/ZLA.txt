@@ -33,6 +33,12 @@ End
 If θ+W>26
 θ-1→θ
 End
+θ→W
+While W>12 and not(inString("+-",sub(Str8,W+1,1)) or inString(" ,)",sub(Str8,W,1)))
+W-1→W
+End
+If W>12
+W→θ
 Str9+sub(Str8,1,θ)→Str9
 length(Str9)+1→⌊MKL(dim(⌊MKL)+1)
 " "+sub(Str8,θ+1,length(Str8)-θ)→Str8

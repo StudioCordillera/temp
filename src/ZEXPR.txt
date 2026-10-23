@@ -1,3 +1,5 @@
+If not(length(Str1))
+"0"→Str1
 If inString(Str1,".")
 1→⌊MKS(2)
 1→V

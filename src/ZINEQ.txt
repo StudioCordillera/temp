@@ -160,6 +160,16 @@ Input "MULT=?",Str1
 prgmZEXPR
 ⌊MKE(1)(1-2(L>N))→⌊MKFM(L)
 End
+1→E
+If N+K
+min(abs(⌊MKFM)≥1 and fPart(⌊MKFM)=0) and sum(abs(⌊MKFM))≤10→E
+If not(E)
+Then
+Disp "NEED M A WHOLE","NUMBER ≥ 1, DEGREE ≤10"
+Pause 
+End
+If not(E)
+Goto M
 N+K→N
 Menu("SIGN AT FAR RIGHT","+ (RISES OR ABOVE)",G1,"- (FALLS OR BELOW)",G2)
 Lbl G1
@@ -299,7 +309,10 @@ prgmZLADD
 If G=1
 dim(⌊MKDE)>1→D
 If G=2
+Then
+If dim(⌊MKFM)
 min(⌊MKFM)<0→D
+End
 If D
 Then
 "UNDEFINED NONE"→Str8

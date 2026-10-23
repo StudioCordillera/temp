@@ -559,6 +559,14 @@ If G>0
 Str8+Str4+"-"+">INF"→Str8
 If W/C<0
 sub(Str8,1,length(Str8)-3)+"⁻INF"→Str8
+If length(Str8)>26
+Then
+inString(Str8,", ")→L
+sub(Str8,L+2,length(Str8)-L-1)→Str1
+sub(Str8,1,L)
+prgmZLA
+" "+Str1→Str8
+End
 prgmZLADD
 End
 End
