@@ -1,0 +1,52 @@
+Ans→θ
+abs(θ)→W
+1→V
+If ⌊MKS(2)
+Then
+W→U
+Else
+round(W,0)→U
+If abs(W-U)>1ᴇ⁻9max(1,W)
+Then
+0→U
+Repeat abs(abs(θ)-round(abs(θ)V,0)/V)≤1ᴇ⁻9max(1,abs(θ)) or V>9999
+1/(fPart(W)+not(fPart(W)))→W
+iPart(W)V+U→U
+U+V→V
+V-U→U
+V-U→V
+End
+round(abs(θ)V,0)→U
+If V>9999
+Then
+abs(θ)→U
+1→V
+End
+End
+End
+If V>1
+Then
+toString(U)+"/"+toString(V)→Str0
+Else
+If abs(U-round(U,0))≤1ᴇ⁻9max(1,U)
+Then
+round(U,0)→U
+toString(U)→Str0
+Else
+round(U,4)→U
+toString(iPart(U))→Str0
+round(10000fPart(U),0)→W
+If W
+Then
+Str0+"."+sub(toString(W+10000),2,4)→Str0
+While sub(Str0,length(Str0),1)="0"
+sub(Str0,1,length(Str0)-1)→Str0
+End
+End
+End
+End
+If θ<0 and U≠0
+Then
+"⁻"+Str0→Str0
+⁻U→U
+End

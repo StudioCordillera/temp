@@ -1,0 +1,16 @@
+MATHKIT program sizes (bytes)
+tokens = tokenized program body; memory = tokens + size field + VAT entry,
+which is what 2nd MEM > Mem Management > Prgm shows (within a few bytes).
+
+program     tokens  memory  .8xp file  min OS
+ZEXPR          709     725        785  5.2.0
+ZLADD          241     257        317  0.1013.0
+ZLFMT          292     308        368  5.2.0
+ZLFRC          387     403        463  5.2.0
+ZLRAD           39      55        115  0.1013.0
+ZLSHOW        1073    1090       1149  5.2.0
+
+TOTAL         2741    2838       3197
+MATHKIT.8xg group file: 2902 bytes
+Highest OS any token needs: 5.2.0 (limit 5.2.0)
+Budget: 2838 of 61440 bytes (5%)

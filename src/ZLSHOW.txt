@@ -1,0 +1,101 @@
+dim(⌊MKL)-1→θ
+{0}→⌊MKP
+0→U
+0→V
+0→P
+0→W
+For(O,1,θ)
+If sub(Str9,⌊MKL(O),1)="#"
+Then
+O→U
+0→V
+⌊MKS(1) or sub(Str9,⌊MKL(O),min(7,length(Str9)-⌊MKL(O)+1))="#ANSWER"→P
+If P
+1001O+1→⌊MKP(dim(⌊MKP)+1)
+If P and W=0 and sub(Str9,⌊MKL(O),min(7,length(Str9)-⌊MKL(O)+1))="#ANSWER"
+dim(⌊MKP)→W
+Else
+If V=8 and P
+Then
+1000U+O→⌊MKP(dim(⌊MKP)+1)
+0→V
+End
+V+1→V
+End
+End
+2→P
+Repeat P>dim(⌊MKP)
+ClrHome
+iPart(⌊MKP(P)/1000)→U
+⌊MKP(P)-1000U→O
+toString(P-1)+"/"+toString(dim(⌊MKP)-1)+" "+sub(Str9,⌊MKL(U)+1,⌊MKL(U+1)-⌊MKL(U)-1)→Str0
+If O>U+1
+Str0+" (CONT)"→Str0
+If sub(Str9,⌊MKL(U),min(6,length(Str9)-⌊MKL(U)+1))="#GRAPH"
+Then
+{Xmin,Xmax,Ymin,Ymax,Xscl,Yscl}→⌊MKZ
+⌊MKW(1)→Xmin
+⌊MKW(2)→Xmax
+⌊MKW(3)→Ymin
+⌊MKW(4)→Ymax
+10^(int(log(Xmax-Xmin))-1)→Xscl
+10^(int(log(Ymax-Ymin))-1)→Yscl
+ClrDraw
+DrawF expr(Str6)
+⌊MKW(5)→V
+For(O,1,V)
+Vertical ⌊MKW(5+O)
+End
+For(O,1,⌊MKW(6+V))
+Pt-On(⌊MKW(5+V+2O),⌊MKW(6+V+2O),2)
+End
+Text(1,1,sub(Str0,1,min(26,length(Str0))))
+Text(150,1,"ANY KEY=NEXT")
+Repeat V
+getKey→V
+End
+⌊MKZ(1)→Xmin
+⌊MKZ(2)→Xmax
+⌊MKZ(3)→Ymin
+⌊MKZ(4)→Ymax
+⌊MKZ(5)→Xscl
+⌊MKZ(6)→Yscl
+ClrHome
+Else
+Output(1,1,sub(Str0,1,min(26,length(Str0))))
+2→V
+While O≤θ and V≤9
+If sub(Str9,⌊MKL(O),1)="#"
+Then
+θ+1→O
+Else
+Output(V,1,sub(Str9,⌊MKL(O),⌊MKL(O+1)-⌊MKL(O)))
+V+1→V
+O+1→O
+End
+End
+If P<dim(⌊MKP)
+Then
+Output(10,1,"ENTER=NEXT  ↑=BACK")
+Else
+Output(10,1,"ENTER=DONE  ↑=BACK")
+End
+Repeat V
+getKey→V
+End
+End
+If V=105 or V=34 or V=26
+P+1→P
+If (V=25 or V=24) and P>2
+P-1→P
+If V=45
+Then
+If W and P<W
+Then
+W→P
+Else
+dim(⌊MKP)+1→P
+End
+End
+End
+ClrHome

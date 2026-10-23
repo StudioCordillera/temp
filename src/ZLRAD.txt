@@ -1,0 +1,3 @@
+Ans→W
+max(seq(θnot(fPart(W/θ²)),θ,1,int(√(W)+.5)))→U
+W/U²→V

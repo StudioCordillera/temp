@@ -1,0 +1,68 @@
+If inString(Str1,".")
+1→⌊MKS(2)
+1→V
+If sub(Str1,1,1)="{"
+Then
+expr(Str1)→⌊MKE
+Else
+If not(inString(Str1,"X"))
+Then
+{expr(Str1)}→⌊MKE
+Else
+If inString(Str1,"√(X") or inString(Str1,"⁻¹") or inString(Str1,"/(") or inString(Str1,"/X") or inString(Str1,"ln(") or inString(Str1,"log(") or inString(Str1,"^⁻")
+0→V
+If V
+Then
+X→⌊MKS(3)
+int(P/2)→W
+seq(expr(Str1),X,⁻W,P-W)→⌊MKT
+{⌊MKT(1)}→⌊MKD
+For(O,1,P)
+ΔList(⌊MKT)→⌊MKT
+⌊MKT(1)/O!→⌊MKD(O+1)
+End
+{⌊MKD(P+1)}→⌊MKE
+For(O,P,1,⁻1)
+augment(⌊MKE,{0})-(O-1-W)augment({0},⌊MKE)→⌊MKE
+⌊MKE(dim(⌊MKE))+⌊MKD(O)→⌊MKE(dim(⌊MKE))
+End
+If ⌊MKS(2)
+Then
+round(⌊MKE,8)→⌊MKE
+Else
+For(O,1,dim(⌊MKE))
+⌊MKE(O)
+prgmZLFRC
+U/V→⌊MKE(O)
+End
+End
+1→V
+For(O,1,2)
+(P+1)(O=1)+.5(O=2)→X
+expr(Str1)→W
+sum(⌊MKE*X^(seq(dim(⌊MKE)-θ,θ,1,dim(⌊MKE))))→θ
+If abs(W-θ)>1ᴇ⁻6max(1,abs(W))
+0→V
+End
+⌊MKS(3)→X
+End
+End
+End
+If V
+Then
+While dim(⌊MKE)>1 and abs(⌊MKE(1))<1ᴇ⁻9
+seq(⌊MKE(O),O,2,dim(⌊MKE))→⌊MKE
+End
+End
+If V
+Then
+If dim(⌊MKE)-1>P
+0→V
+End
+V→O
+If not(O)
+Then
+ClrHome
+Disp "NOT A POLYNOMIAL OF","DEGREE ≤"+toString(P),"ENTER=CONTINUE"
+Pause 
+End
