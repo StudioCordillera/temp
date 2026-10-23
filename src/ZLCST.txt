@@ -1,0 +1,29 @@
+⌊MKT(1)→Q
+⌊MKT(2)→R
+⌊MKT(3)→S
+abs(R)
+prgmZLFRC
+If S=1 and V=1
+Str0+"𝑖"→Str7
+If S=1 and V=1 and U=1
+"𝑖"→Str7
+If S=1 and V>1
+"("+Str0+")𝑖"→Str7
+If S>1 and V=1
+Str0+"𝑖√("+toString(S)+")"→Str7
+If S>1 and V=1 and U=1
+"𝑖√("+toString(S)+")"→Str7
+If S>1 and V>1
+"("+toString(U)+"√("+toString(S)+")/"+toString(V)+")𝑖"→Str7
+If S>1 and V>1 and U=1
+"(√("+toString(S)+")/"+toString(V)+")𝑖"→Str7
+Q
+prgmZLFRC
+If R and Q
+Str0+sub("+-",1+(R<0),1)+Str7→Str0
+If R and not(Q)
+sub("⁻ ",1+(R>0),1)+Str7→Str0
+If R>0 and not(Q)
+Str7→Str0
+If not(R) and not(Q)
+"0"→Str0

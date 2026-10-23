@@ -3,14 +3,20 @@ tokens = tokenized program body; memory = tokens + size field + VAT entry,
 which is what 2nd MEM > Mem Management > Prgm shows (within a few bytes).
 
 program     tokens  memory  .8xp file  min OS
+ZCHECK        1237    1254       1313  1.15.0
+ZCPLX         3312    3328       3388  5.2.0
 ZEXPR          709     725        785  5.2.0
-ZLADD          241     257        317  0.1013.0
+ZLADD          301     317        377  0.1013.0
+ZLCST          351     367        427  5.2.0
 ZLFMT          292     308        368  5.2.0
-ZLFRC          387     403        463  5.2.0
-ZLRAD           39      55        115  0.1013.0
+ZLFRC          416     432        492  5.2.0
+ZLQSV         1280    1296       1356  5.2.0
+ZLRAD           59      75        135  0.1013.0
 ZLSHOW        1073    1090       1149  5.2.0
+ZQSOLV        4363    4380       4439  5.2.0
+ZQUAD         5069    5085       5145  1.15.0
 
-TOTAL         2741    2838       3197
-MATHKIT.8xg group file: 2902 bytes
+TOTAL        18462   18657      19374
+MATHKIT.8xg group file: 18709 bytes
 Highest OS any token needs: 5.2.0 (limit 5.2.0)
-Budget: 2838 of 61440 bytes (5%)
+Budget: 18657 of 61440 bytes (30%)

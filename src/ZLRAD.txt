@@ -1,3 +1,8 @@
 Ans→W
-max(seq(θnot(fPart(W/θ²)),θ,1,int(√(W)+.5)))→U
+√(W)→U
+1→V
+If fPart(U)
+Then
+max(seq(θnot(fPart(W/θ²)),θ,1,min(999,int(U))))→U
 W/U²→V
+End

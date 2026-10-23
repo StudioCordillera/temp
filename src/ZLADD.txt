@@ -1,3 +1,8 @@
+If length(Str8)≤26 and not(inString(Str8,"√("))
+Then
+Str9+Str8→Str9
+length(Str9)+1→⌊MKL(dim(⌊MKL)+1)
+Else
 Repeat θ≤26
 length(Str8)→θ
 inString(Str8,"√(")→W
@@ -26,3 +31,4 @@ End
 End
 Str9+Str8→Str9
 length(Str9)+1→⌊MKL(dim(⌊MKL)+1)
+End

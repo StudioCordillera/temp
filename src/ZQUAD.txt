@@ -1,0 +1,495 @@
+Float
+Real
+SetUpEditor MKS
+SetUpEditor 
+If dim(⌊MKS)<3
+{1,0,0}→⌊MKS
+Lbl M
+6→P
+0→Y
+0→G
+0→Z
+Menu("FUNCTION (3.1)","STANDARD FORM",S,"VERTEX FORM",V,"FROM GRAPH",GR,"APPLICATION",AP,"TYPE IT F(X)",T,"BACK",Q)
+Lbl Q
+Return
+Lbl AP
+1→G
+Lbl S
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+Disp "F(X)=AX²+BX+C"
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "B=?",Str1
+prgmZEXPR
+⌊MKE(1)→B
+Input "C=?",Str1
+prgmZEXPR
+⌊MKE(1)→C
+If G
+Menu("THE VARIABLE IS","TIME T",G1,"A COUNT X",G2)
+Goto AQ
+Lbl G1
+1→G
+Goto AQ
+Lbl G2
+2→G
+Goto AQ
+Lbl V
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+Disp "F(X)=A(X-H)²+K"
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "H=?",Str1
+prgmZEXPR
+⌊MKE(1)→H
+Input "K=?",Str1
+prgmZEXPR
+⌊MKE(1)→K
+1→Y
+⁻2AH→B
+AH²+K→C
+Goto AQ
+Lbl T
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+Disp "TYPE F(X) AS PRINTED","USE X FOR THE VARIABLE"
+Input "F(X)=",Str1
+Str1→Str2
+2→P
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKA
+If dim(⌊MKA)<3
+augment(seq(0,O,1,3-dim(⌊MKA)),⌊MKA)→⌊MKA
+⌊MKA(1)→A
+⌊MKA(2)→B
+⌊MKA(3)→C
+1→Z
+Lbl AQ
+If A=0
+Then
+Disp "A CANNOT BE 0"
+Pause 
+End
+If A=0
+Goto M
+⁻B/(2A)→H
+AH²+BH+C→K
+{A,B,C}→⌊MKF
+prgmZLFMT
+Str0→Str6
+If Z
+Then
+"#TYPED"→Str8
+prgmZLADD
+"F(X)="+Str2→Str8
+prgmZLADD
+"="+Str6→Str8
+prgmZLADD
+End
+If Y
+Then
+"#EXPAND"→Str8
+prgmZLADD
+B
+prgmZLFRC
+"B=⁻2AH="+Str0→Str8
+prgmZLADD
+C
+prgmZLFRC
+"C=AH²+K="+Str0→Str8
+prgmZLADD
+"F(X)="+Str6→Str8
+prgmZLADD
+End
+"#DIRECTION"→Str8
+prgmZLADD
+A
+prgmZLFRC
+"A="+Str0+sub("<>",1+(A>0),1)+"0"→Str8
+prgmZLADD
+"OPENS DOWN"→Str8
+If A>0
+"OPENS UP"→Str8
+prgmZLADD
+"#VERTEX"→Str8
+prgmZLADD
+⁻B
+prgmZLFRC
+Str0→Str2
+2A
+prgmZLFRC
+If U<0 or V>1
+"("+Str0+")"→Str0
+"H=⁻B/(2A)="+Str2+"/"+Str0→Str8
+prgmZLADD
+H
+prgmZLFRC
+Str0→Str2
+" ="+Str2→Str8
+prgmZLADD
+"K=F("+Str2+")"→Str8
+prgmZLADD
+A
+prgmZLFRC
+"("+Str2+")²"→Str3
+If A=⁻1
+"⁻"+Str3→Str3
+If abs(A)≠1
+Str0+Str3→Str3
+If B
+Then
+abs(B)
+prgmZLFRC
+If abs(B)=1
+"("+Str2+")"→Str0
+If abs(B)≠1
+Str0+"("+Str2+")"→Str0
+Str3+sub("+-",1+(B<0),1)+Str0→Str3
+End
+If C
+Then
+abs(C)
+prgmZLFRC
+Str3+sub("+-",1+(C<0),1)+Str0→Str3
+End
+" ="+Str3→Str8
+prgmZLADD
+K
+prgmZLFRC
+Str0→Str3
+" ="+Str3→Str8
+prgmZLADD
+"VERTEX ("+Str2+","+Str3+")"→Str8
+prgmZLADD
+"#AXIS OF SYMMETRY"→Str8
+prgmZLADD
+"X="+Str2→Str8
+prgmZLADD
+"#Y-INTERCEPT"→Str8
+prgmZLADD
+C
+prgmZLFRC
+Str0→Str4
+"F(0)=C="+Str4→Str8
+prgmZLADD
+"(0,"+Str4+")"→Str8
+prgmZLADD
+"#X-INTERCEPTS"→Str8
+prgmZLADD
+"SOLVE "+Str6+"=0"→Str8
+prgmZLADD
+{A,B,C}→⌊MKQ
+prgmZLQSV
+Str0→Str5
+⌊MKQ(4)
+prgmZLFRC
+"D="+Str0→Str8
+If ⌊MKQ(4)<0
+Str8+"<0"→Str8
+prgmZLADD
+inString(Str7,",")→N
+If ⌊MKQ(5)=3
+Then
+"NO REAL ZEROS"→Str8
+prgmZLADD
+"NONE"→Str5
+Else
+"X="+Str5→Str8
+prgmZLADD
+If N
+"("+sub(Str7,1,N-1)+",0),("+sub(Str7,N+1,length(Str7)-N)+",0)"→Str5
+If not(N)
+"("+Str7+",0)"→Str5
+Str5→Str8
+prgmZLADD
+End
+"#MAXIMUM"→Str8
+If A>0
+"#MINIMUM"→Str8
+prgmZLADD
+"MAXIMUM VALUE "+Str3→Str8
+If A>0
+"MINIMUM VALUE "+Str3→Str8
+prgmZLADD
+"AT X="+Str2→Str8
+prgmZLADD
+"#DOMAIN AND RANGE"→Str8
+prgmZLADD
+"DOMAIN (⁻INF,INF)"→Str8
+prgmZLADD
+"RANGE (⁻INF,"+Str3+"]"→Str4
+If A>0
+"RANGE ["+Str3+",INF)"→Str4
+Str4→Str8
+prgmZLADD
+"#VERTEX FORM"→Str8
+prgmZLADD
+"A(X-H)²+K"→Str8
+prgmZLADD
+{1,⁻H}→⌊MKF
+prgmZLFMT
+"("+Str0+")²"→Str1
+If H=0
+"X²"→Str1
+abs(A)
+prgmZLFRC
+If V>1
+"("+Str0+")"→Str0
+If abs(A)≠1
+Str0+Str1→Str1
+If A<0
+"⁻"+Str1→Str1
+If K
+Then
+abs(K)
+prgmZLFRC
+Str1+sub("+-",1+(K<0),1)+Str0→Str1
+End
+"F(X)="+Str1→Str8
+prgmZLADD
+"#POINTS TO PLOT"→Str8
+prgmZLADD
+"  X        F(X)"→Str8
+prgmZLADD
+For(J,⁻2,2)
+A(H+J)²+B(H+J)+C→N
+H+J
+prgmZLFRC
+" "+sub(Str0+"          ",1,9)→Str8
+N
+prgmZLFRC
+Str8+Str0→Str8
+If not(J)
+Str8+"  VERTEX"→Str8
+prgmZLADD
+End
+"#GRAPH"→Str8
+prgmZLADD
+min(H-3,0)→L
+max(H+3,0)→R
+If ⌊MKQ(5)≠3
+Then
+min(L,⌊MKQ(8)-1)→L
+max(R,⌊MKQ(9)+1)→R
+End
+A{L,R}²+B{L,R}+C→⌊MKW
+min(augment(⌊MKW,{K,C,0}))→D
+max(augment(⌊MKW,{K,C,0}))→E
+(E-D)/10+1→F
+{L,R,D-F,E+F,0,2,H,K,0,C}→⌊MKW
+If G
+Goto AA
+"#ANSWER"→Str8
+prgmZLADD
+"F(X)="+Str1→Str8
+prgmZLADD
+"VERTEX ("+Str2+","+Str3+") "+sub("MAXMIN",1+3(A>0),3)+" "+Str3→Str8
+If length(Str8)>26
+Then
+"VERTEX ("+Str2+","+Str3+")"→Str8
+prgmZLADD
+sub("MAXMIN",1+3(A>0),3)+" "+Str3→Str8
+End
+prgmZLADD
+"AXIS X="+Str2→Str8
+prgmZLADD
+C
+prgmZLFRC
+"Y-INT (0,"+Str0+")"→Str8
+prgmZLADD
+inString(Str5,"),(")→N
+"X-INT "+Str5→Str8
+If N and length(Str5)>18
+Then
+"X-INT "+sub(Str5,1,N)→Str8
+prgmZLADD
+"      "+sub(Str5,N+2,length(Str5)-N-1)→Str8
+End
+prgmZLADD
+"DOMAIN (⁻INF,INF)"→Str8
+prgmZLADD
+Str4→Str8
+prgmZLADD
+"POINTS"→Str8
+For(J,⁻2,2)
+If J
+Then
+A(H+J)²+B(H+J)+C→N
+H+J
+prgmZLFRC
+Str8+" ("+Str0+","→Str8
+N
+prgmZLFRC
+Str8+Str0+")"→Str8
+End
+End
+prgmZLADD
+prgmZLSHOW
+Goto M
+Lbl AA
+sub("TX",G,1)→Str4
+While G=1 and inString(Str1,"X")
+inString(Str1,"X")→N
+sub(Str1,1,N-1)+Str4+sub(Str1,N+1,length(Str1)-N)→Str1
+End
+{A,B,C}→⌊MKQ
+prgmZLQSV
+"#ANSWER"→Str8
+prgmZLADD
+sub("MAXMIN",1+3(A>0),3)+" "+Str3+" AT "+Str4+"="+Str2→Str8
+prgmZLADD
+inString(Str7,",")→N
+⌊MKQ(5)≠3 and ⌊MKQ(9)≥0→J
+If J and N
+sub(Str7,N+1,length(Str7)-N)→Str5
+If J and not(N)
+Str7→Str5
+"NEVER REACHES 0"→Str8
+If ⌊MKQ(5)≠3 and not(J)
+"NEVER 0 FOR "+Str4+"≥0"→Str8
+If J
+"REACHES 0 AT "+Str4+"="+Str5→Str8
+If J and G=1
+"HITS GROUND AT T="+Str5→Str8
+prgmZLADD
+If ⌊MKQ(5)=2 and ⌊MKQ(9)≥0
+Then
+1→⌊MKS(2)
+⌊MKQ(9)
+prgmZLFRC
+" (ABOUT "+Str4+"="+Str0+")"→Str8
+0→⌊MKS(2)
+prgmZLADD
+End
+If ⌊MKQ(5)≠3 and N>0 and ⌊MKQ(8)<0 and ⌊MKQ(9)≥0
+Then
+"(REJECT "+Str4+"="+sub(Str7,1,N-1)+", "+Str4+"<0)"→Str8
+prgmZLADD
+End
+If ⌊MKQ(5)≠3 and N>0 and ⌊MKQ(8)≥0
+Then
+"ALSO 0 AT "+Str4+"="+sub(Str7,1,N-1)→Str8
+prgmZLADD
+End
+C
+prgmZLFRC
+"AT "+Str4+"=0 THE VALUE IS "+Str0→Str8
+prgmZLADD
+"VERTEX ("+Str2+","+Str3+")"→Str8
+prgmZLADD
+"F("+Str4+")="+Str1→Str8
+prgmZLADD
+prgmZLSHOW
+Goto M
+Lbl GR
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+Disp "VERTEX (H,K)"
+Input "H=?",Str1
+prgmZEXPR
+⌊MKE(1)→H
+Input "K=?",Str1
+prgmZEXPR
+⌊MKE(1)→K
+Disp "OTHER POINT (X,Y)"
+Input "X=?",Str1
+prgmZEXPR
+⌊MKE(1)→J
+Input "Y=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+If J=H
+Then
+Disp "X MUST DIFFER FROM H"
+Pause 
+End
+If J=H
+Goto M
+(N-K)/(J-H)²→A
+{1,⁻H}→⌊MKF
+prgmZLFMT
+"("+Str0+")²"→Str2
+If H=0
+"X²"→Str2
+" "→Str3
+If K
+Then
+abs(K)
+prgmZLFRC
+sub("+-",1+(K<0),1)+Str0→Str3
+End
+"#START FROM VERTEX FORM"→Str8
+prgmZLADD
+"F(X)=A"+Str2+Str3→Str8
+If not(K)
+"F(X)=A"+Str2→Str8
+prgmZLADD
+J
+prgmZLFRC
+Str0→Str4
+N
+prgmZLFRC
+Str0→Str5
+"#PLUG IN ("+Str4+","+Str5+")"→Str8
+prgmZLADD
+J-H
+prgmZLFRC
+Str5+"=A("+Str0+")²"+Str3→Str8
+If not(K)
+Str5+"=A("+Str0+")²"→Str8
+prgmZLADD
+(J-H)²
+prgmZLFRC
+Str0→Str4
+N-K
+prgmZLFRC
+Str0+"="+Str4+"A"→Str8
+prgmZLADD
+A
+prgmZLFRC
+"A="+Str0→Str8
+prgmZLADD
+Str2→Str1
+abs(A)
+prgmZLFRC
+If V>1
+"("+Str0+")"→Str0
+If abs(A)≠1
+Str0+Str1→Str1
+If A<0
+"⁻"+Str1→Str1
+If K
+Str1+Str3→Str1
+"#ANSWER"→Str8
+prgmZLADD
+"F(X)="+Str1→Str8
+prgmZLADD
+A
+prgmZLFRC
+"A="+Str0+sub("<>",1+(A>0),1)+"0, OPENS "+sub("DOWNUP",1+4(A>0),4-2(A>0))→Str8
+prgmZLADD
+H
+prgmZLFRC
+Str0→Str2
+K
+prgmZLFRC
+"VERTEX ("+Str2+","+Str0+")"→Str8
+prgmZLADD
+"AXIS X="+Str2→Str8
+prgmZLADD
+prgmZLSHOW
+Goto M

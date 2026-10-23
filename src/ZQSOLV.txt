@@ -1,0 +1,447 @@
+Float
+Real
+SetUpEditor MKS
+SetUpEditor 
+If dim(⌊MKS)<3
+{1,0,0}→⌊MKS
+Lbl M
+6→P
+0→Z
+Menu("SOLVE (1.4)","DISCRIMINANT",D,"SQUARE ROOT PROP",S,"COMPLETE SQUARE",C,"QUAD FORMULA",F,"TYPE IT",T,"BACK",Q)
+Lbl Q
+Return
+Lbl D
+1→M
+Goto I
+Lbl C
+3→M
+Goto I
+Lbl F
+4→M
+Goto I
+Lbl T
+1→Z
+Lbl I
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+If Z
+Goto TY
+Disp "LEFT  AX²+BX+C"
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "B=?",Str1
+prgmZEXPR
+⌊MKE(1)→B
+Input "C=?",Str1
+prgmZEXPR
+⌊MKE(1)→C
+Disp "RIGHT  DX²+EX+F"
+Input "D=?",Str1
+prgmZEXPR
+⌊MKE(1)→D
+Input "E=?",Str1
+prgmZEXPR
+⌊MKE(1)→E
+Input "F=?",Str1
+prgmZEXPR
+⌊MKE(1)→F
+{A,B,C}→⌊MKA
+{D,E,F}→⌊MKB
+Goto J
+Lbl TY
+Disp "TYPE EACH SIDE AS","PRINTED, X FOR THE","VARIABLE"
+Input "LEFT=",Str1
+Str1→Str2
+2→P
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKA
+Input "RIGHT=",Str1
+Str1→Str3
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKB
+If dim(⌊MKA)<3
+augment(seq(0,O,1,3-dim(⌊MKA)),⌊MKA)→⌊MKA
+If dim(⌊MKB)<3
+augment(seq(0,O,1,3-dim(⌊MKB)),⌊MKB)→⌊MKB
+Menu("METHOD","DISCRIMINANT",MD,"COMPLETE SQUARE",MC,"QUAD FORMULA",MF)
+Lbl MD
+1→M
+Goto J
+Lbl MC
+3→M
+Goto J
+Lbl MF
+4→M
+Lbl J
+⌊MKA-⌊MKB→⌊MKC
+If ⌊MKC(1)=0
+Then
+Disp "NOT QUADRATIC","X² TERMS CANCEL"
+Pause 
+End
+If ⌊MKC(1)=0
+Goto M
+If Z
+Then
+"#TYPED"→Str8
+prgmZLADD
+Str2+"="+Str3→Str8
+prgmZLADD
+End
+"#STANDARD FORM"→Str8
+prgmZLADD
+If max(abs(⌊MKB))
+Then
+⌊MKA→⌊MKF
+prgmZLFMT
+Str0→Str4
+⌊MKB→⌊MKF
+prgmZLFMT
+Str4+"="+Str0→Str8
+prgmZLADD
+"SUBTRACT THE RIGHT SIDE"→Str8
+prgmZLADD
+End
+⌊MKC→⌊MKF
+prgmZLFMT
+Str0→Str5
+Str0+"=0"→Str8
+prgmZLADD
+⌊MKC(1)→A
+⌊MKC(2)→B
+⌊MKC(3)→C
+If M=3
+Goto CS
+⌊MKC→⌊MKQ
+prgmZLQSV
+Str0→Str4
+If M=4 and (⌊MKQ(1)≠A or ⌊MKQ(2)≠B or ⌊MKQ(3)≠C)
+Then
+"#MAKE INTEGERS, A>0"→Str8
+prgmZLADD
+⌊MKQ(1)/A
+prgmZLFRC
+"MULTIPLY BY "+Str0→Str8
+prgmZLADD
+seq(⌊MKQ(O),O,1,3)→⌊MKF
+prgmZLFMT
+Str0+"=0"→Str8
+prgmZLADD
+End
+"#DISCRIMINANT"→Str8
+prgmZLADD
+⌊MKQ(1)
+prgmZLFRC
+Str0→Str2
+⌊MKQ(2)
+prgmZLFRC
+Str0→Str3
+⌊MKQ(3)
+prgmZLFRC
+"A="+Str2+"  B="+Str3+"  C="+Str0→Str8
+prgmZLADD
+"D=B²-4AC"→Str8
+prgmZLADD
+"=("+Str3+")²-4("+Str2+")("+Str0+")"→Str8
+prgmZLADD
+⌊MKQ(2)²
+prgmZLFRC
+"="+Str0→Str3
+4⌊MKQ(1)⌊MKQ(3)→K
+abs(K)
+prgmZLFRC
+Str3+sub("-+",1+(K<0),1)+Str0→Str3
+⌊MKQ(4)
+prgmZLFRC
+Str3+"="+Str0→Str8
+prgmZLADD
+"D="+Str0→Str2
+If ⌊MKQ(4)<0
+Str2+"<0"→Str2
+If ⌊MKQ(4)>0
+Str2+">0"→Str2
+If ⌊MKQ(4)<0
+"TWO NONREAL SOLUTIONS"→Str3
+If ⌊MKQ(4)=0
+"ONE REAL SOLUTION"→Str3
+If ⌊MKQ(4)>0
+"TWO REAL SOLUTIONS"→Str3
+If ⌊MKQ(4)>0 and not(⌊MKS(2))
+Then
+"TWO REAL RATIONAL"→Str3
+"SOLUTIONS (D IS A SQUARE)"→Str5
+If ⌊MKQ(5)=2
+Then
+"TWO REAL IRRATIONAL"→Str3
+"SOLUTIONS (D NOT A SQUARE)"→Str5
+End
+Else
+"(COMPLEX CONJUGATES)"→Str5
+If ⌊MKQ(4)=0
+"(A DOUBLE ROOT)"→Str5
+End
+If ⌊MKQ(4)>0 and ⌊MKS(2)
+" "→Str5
+Str3→Str8
+prgmZLADD
+If M=1
+Goto DA
+"#QUADRATIC FORMULA"→Str8
+prgmZLADD
+"X=(⁻B+/-√(D))/(2A)"→Str8
+prgmZLADD
+⁻⌊MKQ(2)
+prgmZLFRC
+Str0→Str2
+2⌊MKQ(1)
+prgmZLFRC
+Str0→Str3
+⌊MKQ(4)
+prgmZLFRC
+"X=("+Str2+"+/-√("+Str0+"))/"+Str3→Str8
+prgmZLADD
+If ⌊MKS(2)=0
+Then
+"#SIMPLIFY THE RADICAL"→Str8
+prgmZLADD
+toString(abs(⌊MKQ(4)))→Str5
+"√("+Str0+")"→Str8
+If ⌊MKQ(4)<0
+Then
+Str8+"=𝑖√("+Str5+")"→Str8
+prgmZLADD
+"√("+Str5+")"→Str8
+End
+If ⌊MKQ(7)=1
+Str8+"="+toString(⌊MKQ(6))→Str8
+If ⌊MKQ(7)>1 and ⌊MKQ(6)>1
+Str8+"="+toString(⌊MKQ(6))+"√("+toString(⌊MKQ(7))+")"→Str8
+If ⌊MKQ(7)>1 and ⌊MKQ(6)=1
+Str8+" HAS NO SQUARE FACTOR"→Str8
+prgmZLADD
+End
+If ⌊MKQ(5)=1
+Then
+"#TWO CASES"→Str8
+If ⌊MKQ(4)=0
+"#ONE CASE"→Str8
+prgmZLADD
+⌊MKQ(6)
+If ⌊MKS(2)
+√(⌊MKQ(4))
+prgmZLFRC
+Str0→Str5
+"X=("+Str2+"+"+Str5+")/"+Str3+"="→Str8
+prgmZLADD
+⌊MKQ(9)
+prgmZLFRC
+" ="+Str0→Str8
+prgmZLADD
+If ⌊MKQ(4)
+Then
+"X=("+Str2+"-"+Str5+")/"+Str3+"="→Str8
+prgmZLADD
+⌊MKQ(8)
+prgmZLFRC
+" ="+Str0→Str8
+prgmZLADD
+End
+Else
+"#REDUCE"→Str8
+prgmZLADD
+"X="+Str4→Str8
+prgmZLADD
+End
+Goto AN
+Lbl S
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+Disp "A(X+H)²+K=C"
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "H=?",Str1
+prgmZEXPR
+⌊MKE(1)→H
+Input "K=?",Str1
+prgmZEXPR
+⌊MKE(1)→K
+Input "C=?",Str1
+prgmZEXPR
+⌊MKE(1)→C
+If A=0
+Then
+Disp "A CANNOT BE 0"
+Pause 
+End
+If A=0
+Goto M
+2→M
+{A,2AH,AH²+K-C}→⌊MKC
+{1,H}→⌊MKF
+prgmZLFMT
+"("+Str0+")²"→Str2
+"#ISOLATE THE SQUARE"→Str8
+prgmZLADD
+A
+prgmZLFRC
+Str2→Str4
+If A=⁻1
+"⁻"+Str2→Str4
+If abs(A)≠1
+Str0+Str2→Str4
+Str0→Str3
+If A<0
+"("+Str0+")"→Str3
+abs(K)
+prgmZLFRC
+Str4→Str8
+If K
+Str8+sub("+-",1+(K<0),1)+Str0→Str8
+C
+prgmZLFRC
+Str8+"="+Str0→Str8
+prgmZLADD
+C-K
+prgmZLFRC
+If K≠0
+Then
+Str4+"="+Str0→Str8
+prgmZLADD
+End
+(C-K)/A→R
+If A≠1
+Then
+Str0→Str5
+R
+prgmZLFRC
+Str2+"="+Str5+"/"+Str3+"="+Str0→Str8
+prgmZLADD
+End
+Goto SR
+Lbl CS
+B/A→G
+C/A→N
+G/2→H
+⁻N+H²→R
+If A≠1
+Then
+A
+prgmZLFRC
+"#DIVIDE BY A="+Str0→Str8
+prgmZLADD
+{1,G,N}→⌊MKF
+prgmZLFMT
+Str0+"=0"→Str8
+prgmZLADD
+End
+"#MOVE THE CONSTANT"→Str8
+prgmZLADD
+{1,G,0}→⌊MKF
+prgmZLFMT
+Str0→Str2
+⁻N
+prgmZLFRC
+Str2+"="+Str0→Str8
+prgmZLADD
+Str0→Str3
+"#ADD (B/2)² TO BOTH"→Str8
+prgmZLADD
+H
+prgmZLFRC
+Str0→Str2
+H²
+prgmZLFRC
+"(B/2)²=("+Str2+")²="+Str0→Str8
+prgmZLADD
+Str0→Str5
+{1,G,H²}→⌊MKF
+prgmZLFMT
+Str0+"="→Str8
+prgmZLADD
+R
+prgmZLFRC
+" "+Str3+"+"+Str5+"="+Str0→Str8
+prgmZLADD
+"#FACTOR THE LEFT"→Str8
+prgmZLADD
+{1,H}→⌊MKF
+prgmZLFMT
+"("+Str0+")²"→Str2
+R
+prgmZLFRC
+Str2+"="+Str0→Str8
+prgmZLADD
+Lbl SR
+{1,H}→⌊MKF
+prgmZLFMT
+Str0→Str3
+"#SQUARE ROOT PROPERTY"→Str8
+prgmZLADD
+R
+prgmZLFRC
+Str0→Str5
+"("+Str3+")²="+Str5→Str8
+prgmZLADD
+Str3+"=+/-√("+Str5+")"→Str8
+prgmZLADD
+{1,0,⁻R}→⌊MKQ
+prgmZLQSV
+If ⌊MKQ(5)=1
+Then
+⌊MKQ(9)
+prgmZLFRC
+Else
+sub(Str0,4,length(Str0)-3)→Str0
+End
+Str0→Str2
+"#SIMPLIFY"→Str8
+prgmZLADD
+If R<0
+Then
+⁻R
+prgmZLFRC
+"√("+Str5+")=𝑖√("+Str0+")"→Str8
+prgmZLADD
+End
+Str3+"=+/-"+Str2→Str8
+prgmZLADD
+"#SOLVE FOR X"→Str8
+prgmZLADD
+⁻H
+prgmZLFRC
+"X="+Str0+"+/-"+Str2→Str8
+If H=0
+"X=+/-"+Str2→Str8
+prgmZLADD
+⌊MKC→⌊MKQ
+prgmZLQSV
+Str0→Str4
+Goto AN
+Lbl DA
+"#ANSWER"→Str8
+prgmZLADD
+Str2→Str8
+prgmZLADD
+Str3→Str8
+prgmZLADD
+Str5→Str8
+prgmZLADD
+prgmZLSHOW
+Goto M
+Lbl AN
+"#ANSWER"→Str8
+prgmZLADD
+"X="+Str4→Str8
+prgmZLADD
+prgmZLSHOW
+Goto M

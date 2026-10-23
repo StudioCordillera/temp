@@ -1,0 +1,139 @@
+If ⌊MKS(2)
+Then
+⌊MKQ(2)²-4⌊MKQ(1)⌊MKQ(3)→S
+⁻⌊MKQ(2)/(2⌊MKQ(1))→R
+√(abs(S))/abs(2⌊MKQ(1))→Q
+augment(⌊MKQ,{S,1+2(S<0),0,0,min(R-Q,R+Q),max(R-Q,R+Q)})→⌊MKQ
+If S≥0
+Then
+⌊MKQ(8)
+prgmZLFRC
+Str0→Str7
+Str0→Str8
+If Q
+Then
+⌊MKQ(9)
+prgmZLFRC
+Str7+", "+Str0→Str8
+Str7+","+Str0→Str7
+End
+Else
+R→⌊MKQ(8)
+Q→⌊MKQ(9)
+R
+prgmZLFRC
+Str0→Str7
+Q
+prgmZLFRC
+"+/-"+Str0+"𝑖"→Str8
+If R
+Str7+Str8→Str8
+Str7+"+"+Str0+"𝑖,"+Str7+"-"+Str0+"𝑖"→Str7
+End
+Str8→Str0
+Else
+1→Q
+For(T,1,3)
+⌊MKQ(T)
+prgmZLFRC
+lcm(Q,V)→Q
+End
+round(Q⌊MKQ,0)→⌊MKQ
+If ⌊MKQ(1)<0
+⁻⌊MKQ→⌊MKQ
+⌊MKQ(2)²-4⌊MKQ(1)⌊MKQ(3)→S
+⁻⌊MKQ(2)→R
+2⌊MKQ(1)→Q
+gcd(gcd(abs(⌊MKQ(1)),abs(⌊MKQ(2))),abs(⌊MKQ(3)))→T
+abs(S)/T²
+If Ans
+Then
+prgmZLRAD
+TU→U
+Else
+0→U
+1→V
+End
+augment(⌊MKQ,{S,1+(S>0 and V>1)+2(S<0),U,V,0,0})→⌊MKQ
+If ⌊MKQ(5)=1
+Then
+(R-U)/Q→⌊MKQ(8)
+(R+U)/Q→⌊MKQ(9)
+⌊MKQ(8)
+prgmZLFRC
+Str0→Str7
+Str0→Str8
+If ⌊MKQ(6)
+Then
+⌊MKQ(9)
+prgmZLFRC
+Str7+", "+Str0→Str8
+Str7+","+Str0→Str7
+End
+Str8→Str0
+Else
+R/Q→⌊MKQ(8)
+⌊MKQ(6)√(⌊MKQ(7))/Q→⌊MKQ(9)
+If ⌊MKQ(5)=2
+{⌊MKQ(8)-⌊MKQ(9),⌊MKQ(8)+⌊MKQ(9)}→⌊MKT
+R/Q
+prgmZLFRC
+Str0→Str7
+U→S
+V→T
+⌊MKQ(6)/Q
+prgmZLFRC
+If ⌊MKQ(7)=1
+Then
+toString(U)→Str8
+Else
+"√("+toString(⌊MKQ(7))+")"→Str8
+If U≠1
+toString(U)+Str8→Str8
+End
+If ⌊MKQ(5)=2
+Then
+If V≠1
+Str8+"/"+toString(V)→Str8
+Else
+If V≠1
+Then
+"("+Str8+"/"+toString(V)+")𝑖"→Str8
+Else
+If ⌊MKQ(7)=1
+Then
+Str8+"𝑖"→Str8
+If U=1
+"𝑖"→Str8
+Else
+"𝑖√("+toString(⌊MKQ(7))+")"→Str8
+If U≠1
+toString(U)+Str8→Str8
+End
+End
+End
+If S
+Then
+Str7+"-"+Str8+","+Str7+"+"+Str8→Str0
+If ⌊MKQ(5)=2 and T=V and T>1
+Then
+"√("+toString(⌊MKQ(7))+"))/"+toString(T)→Str8
+If U≠1
+toString(U)+Str8→Str8
+"("+toString(S)+"+/-"+Str8→Str8
+Else
+Str7+"+/-"+Str8→Str8
+End
+Else
+"⁻"+Str8+","+Str8→Str0
+"+/-"+Str8→Str8
+End
+Str0→Str7
+Str8→Str0
+If ⌊MKQ(5)=2
+Then
+⌊MKT(1)→⌊MKQ(8)
+⌊MKT(2)→⌊MKQ(9)
+End
+End
+End

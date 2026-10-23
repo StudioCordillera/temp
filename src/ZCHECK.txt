@@ -1,0 +1,111 @@
+Float
+Real
+SetUpEditor MKS
+SetUpEditor 
+If dim(⌊MKS)<3
+{1,0,0}→⌊MKS
+Lbl N
+ClrHome
+Disp "CHECK BY SUBSTITUTION","TYPE AN EXPRESSION OR","EQUATION IN X"
+Input Str2
+{0}→⌊MKX
+0→E
+Menu("CAN IT BE UNDEFINED?","NO",X0,"YES, LIST BAD X",X1,"BACK",Q)
+Lbl Q
+Return
+Lbl X1
+ClrHome
+Disp "X VALUES THAT MAKE A","DENOMINATOR 0, AS {..}"
+Input "EXCLUDED=",Str1
+If sub(Str1,1,1)="{"
+expr(Str1)→⌊MKX
+If sub(Str1,1,1)≠"{"
+{expr(Str1)}→⌊MKX
+1→E
+Lbl X0
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+Input "X VALUE=",Str1
+expr(Str1)→K
+If inString(Str1,".")
+1→⌊MKS(2)
+K
+prgmZLFRC
+Str0→Str3
+"#SUBSTITUTE X="+Str3→Str8
+prgmZLADD
+Str2→Str8
+prgmZLADD
+If E and min(abs(⌊MKX-K))<1ᴇ⁻9
+Goto XB
+X→⌊MKS(3)
+K→X
+inString(Str2,"=")→N
+If N
+Then
+expr(sub(Str2,1,N-1))→L
+expr(sub(Str2,N+1,length(Str2)-N))→R
+Else
+expr(Str2)→L
+0→R
+End
+⌊MKS(3)→X
+L
+prgmZLFRC
+Str0→Str4
+R
+prgmZLFRC
+Str0→Str5
+abs(L-R)≤1ᴇ⁻9max(1,abs(L))→G
+If N
+Then
+"LEFT SIDE  ="+Str4→Str8
+prgmZLADD
+"RIGHT SIDE ="+Str5→Str8
+prgmZLADD
+"#ANSWER"→Str8
+prgmZLADD
+"AT X="+Str3→Str8
+prgmZLADD
+"LEFT ="+Str4→Str8
+prgmZLADD
+"RIGHT="+Str5→Str8
+prgmZLADD
+"SIDES MATCH"→Str8
+If not(G)
+"SIDES DIFFER"→Str8
+prgmZLADD
+"X="+Str3+" IS A SOLUTION"→Str8
+If not(G)
+"X="+Str3+" IS NOT A SOLUTION"→Str8
+prgmZLADD
+Else
+"VALUE ="+Str4→Str8
+prgmZLADD
+"#ANSWER"→Str8
+prgmZLADD
+"F("+Str3+")="+Str4→Str8
+prgmZLADD
+If G
+Then
+"F(X)=0 THERE, SO X="+Str3→Str8
+prgmZLADD
+"IS A ZERO (ROOT)"→Str8
+prgmZLADD
+End
+End
+Goto XS
+Lbl XB
+"#ANSWER"→Str8
+prgmZLADD
+"X="+Str3+" IS EXCLUDED"→Str8
+prgmZLADD
+"(A DENOMINATOR IS 0)"→Str8
+prgmZLADD
+"NO SUBSTITUTION DONE"→Str8
+prgmZLADD
+Lbl XS
+prgmZLSHOW
+Menu("CHECK AGAIN","SAME, NEW X",X0,"NEW EXPRESSION",N,"BACK",Q)

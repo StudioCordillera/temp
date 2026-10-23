@@ -1,0 +1,353 @@
+Float
+Real
+SetUpEditor MKS
+SetUpEditor 
+If dim(⌊MKS)<3
+{1,0,0}→⌊MKS
+Lbl M
+6→P
+Menu("COMPLEX (1.3)","SIMPLIFY (A+B√(⁻N))/D",S,"ADD",A,"SUBTRACT",B,"MULTIPLY",C,"BACK",Q)
+Lbl Q
+Return
+Lbl A
+1→M
+Goto I
+Lbl B
+2→M
+Goto I
+Lbl C
+3→M
+Goto I
+Lbl S
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+Disp "(A+B√(⁻N))/D"
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "B=?",Str1
+prgmZEXPR
+⌊MKE(1)→B
+Input "N=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+Input "D=?",Str1
+prgmZEXPR
+⌊MKE(1)→D
+fPart(A) or fPart(B) or fPart(N) or fPart(D) or N≤0 or D=0→E
+If E
+Then
+Disp "USE WHOLE NUMBERS,","N>0 AND D≠0"
+Pause 
+End
+If E
+Goto M
+N
+prgmZLRAD
+U→K
+V→G
+toString(N)→Str2
+"√(⁻"+Str2+")"→Str3
+If B=⁻1
+"⁻"+Str3→Str3
+If abs(B)≠1
+toString(B)+Str3→Str3
+If A and B>0
+"+"+Str3→Str3
+If A and B=⁻1
+"-"+sub(Str3,2,length(Str3)-1)→Str3
+If A
+toString(A)+Str3→Str3
+If D≠1
+"("+Str3+")/"+toString(D)→Str3
+If D<0
+sub(Str3,1,length(Str3)-length(toString(D)))+"("+toString(D)+")"→Str3
+"#SPLIT OFF ⁻1"→Str8
+prgmZLADD
+Str3→Str8
+prgmZLADD
+"√(⁻"+Str2+")=√(⁻1)*√("+Str2+")"→Str8
+prgmZLADD
+" =𝑖√("+Str2+")"→Str8
+prgmZLADD
+"#SQUARE FACTOR"→Str8
+prgmZLADD
+If G=1
+Then
+Str2+"="+toString(K)+"²"→Str8
+prgmZLADD
+"√("+Str2+")="+toString(K)→Str8
+prgmZLADD
+End
+If G>1 and K>1
+Then
+Str2+"="+toString(K²)+"*"+toString(G)+"   "+toString(K²)+"="+toString(K)+"²"→Str8
+prgmZLADD
+"√("+Str2+")=√("+toString(K²)+")*√("+toString(G)+")"→Str8
+prgmZLADD
+" ="+toString(K)+"√("+toString(G)+")"→Str8
+prgmZLADD
+End
+If G>1 and K=1
+Then
+Str2+" HAS NO SQUARE FACTOR"→Str8
+prgmZLADD
+"√("+Str2+") STAYS"→Str8
+prgmZLADD
+End
+{A,BK,G}→⌊MKT
+prgmZLCST
+"#REWRITE"→Str8
+prgmZLADD
+Str0→Str8
+If D≠1
+"NUMERATOR "+Str0→Str8
+prgmZLADD
+If D≠1
+Then
+"#DIVIDE EACH TERM BY "+toString(D)→Str8
+prgmZLADD
+A/D
+prgmZLFRC
+toString(A)+"/"+toString(D)+"="+Str0→Str8
+prgmZLADD
+BK/D
+prgmZLFRC
+toString(BK)+"/"+toString(D)+"="+Str0→Str8
+prgmZLADD
+End
+{A/D,BK/D,G}→⌊MKT
+prgmZLCST
+Str0→Str2
+"#ANSWER"→Str8
+prgmZLADD
+Str3+"="→Str8
+prgmZLADD
+Str2→Str8
+prgmZLADD
+prgmZLSHOW
+Goto M
+Lbl I
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+" "→Str4
+Disp "1ST  A+B√(⁻N)","(N=1 FOR A+B𝑖)"
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "B=?",Str1
+prgmZEXPR
+⌊MKE(1)→B
+Input "N=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+fPart(√(N)) or N<1→E
+If E
+Goto ER
+If N>1
+Then
+"√(⁻"+toString(N)+")="+toString(√(N))+"𝑖"→Str4
+B√(N)→B
+End
+ClrHome
+Disp "2ND  C+D√(⁻N)","(N=1 FOR C+D𝑖)"
+Input "C=?",Str1
+prgmZEXPR
+⌊MKE(1)→C
+Input "D=?",Str1
+prgmZEXPR
+⌊MKE(1)→D
+Input "N=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+fPart(√(N)) or N<1→E
+If E
+Goto ER
+If N>1
+Then
+"√(⁻"+toString(N)+")="+toString(√(N))+"𝑖"→Str5
+D√(N)→D
+If length(Str4)>1
+Str4+"  "+Str5→Str5
+Str5→Str4
+End
+{A,B,1}→⌊MKT
+prgmZLCST
+"("+Str0+")"→Str2
+{C,D,1}→⌊MKT
+prgmZLCST
+"("+Str0+")"→Str3
+If length(Str4)>1
+Then
+"#CONVERT √(NEGATIVE)"→Str8
+prgmZLADD
+Str4→Str8
+prgmZLADD
+"BEFORE ANY ARITHMETIC"→Str8
+prgmZLADD
+End
+If M=3
+Goto MU
+If M=1
+Then
+"#GROUP LIKE PARTS"→Str8
+prgmZLADD
+Str2+"+"+Str3→Str8
+prgmZLADD
+A
+prgmZLFRC
+"=("+Str0→Str8
+C
+prgmZLFRC
+Str8+"+"+Str0+")+("→Str8
+B
+prgmZLFRC
+Str8+Str0→Str8
+D
+prgmZLFRC
+Str8+"+"+Str0+")𝑖"→Str8
+prgmZLADD
+A+C→E
+B+D→F
+Else
+"#DISTRIBUTE THE MINUS"→Str8
+prgmZLADD
+Str2+"-"+Str3→Str8
+prgmZLADD
+{A,B,1}→⌊MKT
+prgmZLCST
+"="+Str0→Str8
+abs(C)
+prgmZLFRC
+Str8+sub("+-",1+(C>0),1)+Str0→Str8
+{0,abs(D),1}→⌊MKT
+prgmZLCST
+Str8+sub("+-",1+(D>0),1)+Str0→Str8
+prgmZLADD
+"#GROUP LIKE PARTS"→Str8
+prgmZLADD
+A
+prgmZLFRC
+"=("+Str0→Str8
+C
+prgmZLFRC
+Str8+"-"+Str0+")+("→Str8
+B
+prgmZLFRC
+Str8+Str0→Str8
+D
+prgmZLFRC
+Str8+"-"+Str0+")𝑖"→Str8
+prgmZLADD
+A-C→E
+B-D→F
+End
+Goto AN
+Lbl MU
+AC→E
+AD→F
+BC→G
+BD→H
+"#FOIL"→Str8
+prgmZLADD
+Str2+Str3→Str8
+prgmZLADD
+A
+prgmZLFRC
+"F  "+Str0+"*"→Str8
+C
+prgmZLFRC
+Str8+Str0+"="→Str8
+E
+prgmZLFRC
+Str8+Str0→Str8
+prgmZLADD
+A
+prgmZLFRC
+"O  "+Str0+"*"→Str8
+{0,D,1}→⌊MKT
+prgmZLCST
+Str8+Str0+"="→Str8
+{0,F,1}→⌊MKT
+prgmZLCST
+Str8+Str0→Str8
+prgmZLADD
+{0,B,1}→⌊MKT
+prgmZLCST
+"I  "+Str0+"*"→Str8
+C
+prgmZLFRC
+Str8+Str0+"="→Str8
+{0,G,1}→⌊MKT
+prgmZLCST
+Str8+Str0→Str8
+prgmZLADD
+{0,B,1}→⌊MKT
+prgmZLCST
+"L  "+Str0+"*"→Str8
+{0,D,1}→⌊MKT
+prgmZLCST
+Str8+Str0+"="→Str8
+H
+prgmZLFRC
+Str8+Str0+"𝑖²"→Str8
+prgmZLADD
+"#USE 𝑖²=⁻1"→Str8
+prgmZLADD
+H
+prgmZLFRC
+Str0+"𝑖²="→Str8
+⁻H
+prgmZLFRC
+Str8+Str0→Str8
+prgmZLADD
+E
+prgmZLFRC
+"REAL "+Str0+"+"→Str8
+⁻H
+prgmZLFRC
+If H>0
+sub(Str8,1,length(Str8)-1)→Str8
+Str8+Str0+"="→Str8
+E-H
+prgmZLFRC
+Str8+Str0→Str8
+prgmZLADD
+F
+prgmZLFRC
+"IMAG "+Str0+"+"→Str8
+G
+prgmZLFRC
+If G<0
+sub(Str8,1,length(Str8)-1)→Str8
+Str8+Str0+"="→Str8
+F+G
+prgmZLFRC
+Str8+Str0→Str8
+prgmZLADD
+E-H→E
+F+G→F
+Lbl AN
+{E,F,1}→⌊MKT
+prgmZLCST
+Str0→Str5
+"#ANSWER"→Str8
+prgmZLADD
+Str2+"+"+Str3+"="→Str8
+If M=2
+Str2+"-"+Str3+"="→Str8
+If M=3
+Str2+Str3+"="→Str8
+prgmZLADD
+Str5→Str8
+prgmZLADD
+prgmZLSHOW
+Goto M
+Lbl ER
+Disp "N MUST BE A PERFECT","SQUARE (1, 4, 9 ETC)"
+Pause 
+Goto M

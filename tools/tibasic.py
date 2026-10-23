@@ -226,7 +226,7 @@ _TOKEN_CACHE = {}
 # Programs tokenized with maximal munch: their string literals must hold
 # the calculator's function tokens (√(, ln(, ⁻¹ ...) to match what a user
 # types. Every other program uses tivars' default "smart" mode.
-MAX_MUNCH = {"ZEXPR", "ZLADD", "ZCHECK"}
+MAX_MUNCH = {"ZEXPR", "ZLADD"}
 
 
 def tokenize(text, mode="smart"):
@@ -611,6 +611,8 @@ class Interp:
         self.cost = {"stmt": 0, "tok": 0, "call": 0, "listel": 0, "strch": 0, "draw": 0}
         self.cost_marks = []
         self.inputs_done = 0
+        self.last_input_cost = None
+        self.answer_costs = []
         self.waiting_reason = None
         self.on_wait = None
 
@@ -1082,7 +1084,13 @@ class Interp:
         self.vars["X"] = saved
         return res
 
+    def mark_input(self):
+        self.last_input_cost = dict(self.cost)
+
     def getkey(self):
+        if self.last_input_cost is not None:
+            self.answer_costs.append({k: self.cost[k] - self.last_input_cost[k] for k in self.cost})
+            self.last_input_cost = None
         if not self.script:
             self.waiting_reason = "getKey"
             if self.on_wait:
@@ -1449,6 +1457,7 @@ class Interp:
         need = show()
         self.row = r0 + max(1, (len(prompt) + disp_width(typed) + COLS - 1) // COLS)
         self.inputs_done += 1
+        self.mark_input()
         self.cost_marks.append(("input", dict(self.cost)))
         self.events.append(("input", "".join(prompt), "".join(typed)))
         if len(target) == 1 and target[0] in STRVARS:
@@ -1488,6 +1497,7 @@ class Interp:
                 sel = int(k) - 1
                 break
         self.screen = saved
+        self.mark_input()
         self.events.append(("menu", "".join(self.chars(title)), sel + 1))
         self.goto(fr, items[sel][1])
 
