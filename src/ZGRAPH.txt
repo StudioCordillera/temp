@@ -83,41 +83,41 @@ End
 If E=0
 Goto M
 (N-K)/E→A
-"#PARENT FUNCTION"→Str8
-prgmZLADD
-Str2→Str8
-prgmZLADD
+"#PARENT FUNCTION"
+prgmZLA
+Str2
+prgmZLA
 "Y=X²,Y=|X|,Y=√(X),Y=X³,Y=1/X,Y=1/X²"→Str6
 T-1
 prgmZLFLD
-Str0→Str8
-prgmZLADD
+Str0
+prgmZLA
 "A(X-H)²+K,A|X-H|+K,A√(X-H)+K,A(X-H)³+K,A/(X-H)+K,A/(X-H)²+K"→Str6
 T-1
 prgmZLFLD
-"GENERAL Y="+Str0→Str8
-prgmZLADD
-"#USE THE "+sub(Str3,1,inString(Str3+" "," ")-1)→Str8
-prgmZLADD
+"GENERAL Y="+Str0
+prgmZLA
+"#USE THE "+sub(Str3,1,inString(Str3+" "," ")-1)
+prgmZLA
 H
 prgmZLFRC
 Str0→Str4
 K
 prgmZLFRC
 Str0→Str5
-Str3+" ("+Str4+","+Str5+")"→Str8
-prgmZLADD
-"SO H="+Str4+", K="+Str5→Str8
-prgmZLADD
-"#SOLVE FOR A"→Str8
-prgmZLADD
+Str3+" ("+Str4+","+Str5+")"
+prgmZLA
+"SO H="+Str4+", K="+Str5
+prgmZLA
+"#SOLVE FOR A"
+prgmZLA
 G
 prgmZLFRC
 "PLUG IN ("+Str0+","→Str8
 N
 prgmZLFRC
-Str8+Str0+")"→Str8
-prgmZLADD
+Str8+Str0+")"
+prgmZLA
 D
 prgmZLFRC
 "(,|,√(,(,1/(,1/("→Str6
@@ -144,12 +144,12 @@ prgmZLFRC
 Str0+"=A*"→Str8
 E
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 A
 prgmZLFRC
-"A="+Str0→Str8
-prgmZLADD
+"A="+Str0
+prgmZLA
 Goto FS
 Lbl GV
 "Y=A(X-H)²+K,Y=A|X-H|+K,Y=A√(X-H)+K,Y=A(X-H)³+K,Y=A/(X-H)+K,Y=A/(X-H)²+K"→Str6
@@ -221,50 +221,50 @@ If K
 Str2+sub("+-",1+(K<0),1)+Str0→Str2
 If M
 Then
-"#THE FUNCTION"→Str8
-prgmZLADD
-"F(X)="+Str2→Str8
-prgmZLADD
+"#THE FUNCTION"
+prgmZLA
+"F(X)="+Str2
+prgmZLA
 End
-"#TRANSLATIONS"→Str8
-prgmZLADD
-"INSIDE (ACTS ON X)"→Str8
-prgmZLADD
+"#TRANSLATIONS"
+prgmZLA
+"INSIDE (ACTS ON X)"
+prgmZLA
 " NO HORIZONTAL SHIFT"→Str8
 abs(H)
 prgmZLFRC
 If H
-" SHIFT "+sub("LEFT RIGHT",1+5(H>0),5)+Str0+" (X-"+">"+Str1+")"→Str8
+" SHIFT "+sub("LEFT RIGHT",1+5(H>0),5)+" "+Str0+" (X-"+">"+Str1+")"→Str8
 prgmZLADD
-"OUTSIDE (ACTS ON Y)"→Str8
-prgmZLADD
+"OUTSIDE (ACTS ON Y)"
+prgmZLA
 abs(A)
 prgmZLFRC
 If abs(A)>1
 Then
-" STRETCH VERTICALLY *"+Str0→Str8
-prgmZLADD
+" STRETCH VERTICALLY *"+Str0
+prgmZLA
 End
 If abs(A)<1
 Then
-" SHRINK VERTICALLY *"+Str0→Str8
-prgmZLADD
+" SHRINK VERTICALLY *"+Str0
+prgmZLA
 End
 If A<0
 Then
-" REFLECT OVER THE X-AXIS"→Str8
-prgmZLADD
+" REFLECT OVER THE X-AXIS"
+prgmZLA
 End
 " NO VERTICAL SHIFT"→Str8
 abs(K)
 prgmZLFRC
 If K
-" SHIFT "+sub("DOWNUP  ",1+4(K>0),4)+Str0→Str8
+" SHIFT "+sub("DOWNUP  ",1+4(K>0),4)+" "+Str0→Str8
 prgmZLADD
-"#KEY POINTS"→Str8
-prgmZLADD
-"(X,Y)-"+">(X+H,A*Y+K)"→Str8
-prgmZLADD
+"#KEY POINTS"
+prgmZLA
+"(X,Y)-"+">(X+H,A*Y+K)"
+prgmZLA
 {⁻2,⁻1,0,1,2}→⌊MKPX
 If T=4
 {0,1,4,9}→⌊MKPX
@@ -293,24 +293,24 @@ prgmZLFRC
 Str8+Str0+","→Str8
 A⌊MKPY(L)+K
 prgmZLFRC
-Str8+Str0+")"→Str8
-prgmZLADD
+Str8+Str0+")"
+prgmZLA
 End
 If T≥6
 Then
-"#ASYMPTOTES"→Str8
-prgmZLADD
-"VERTICAL X="+Str4→Str8
-prgmZLADD
-"HORIZONTAL Y="+Str5→Str8
-prgmZLADD
+"#ASYMPTOTES"
+prgmZLA
+"VERTICAL X="+Str4
+prgmZLA
+"HORIZONTAL Y="+Str5
+prgmZLA
 End
-"#GRAPH"→Str8
-prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
-"F(X)="+Str2→Str8
-prgmZLADD
+"#GRAPH"
+prgmZLA
+"#ANSWER"
+prgmZLA
+"F(X)="+Str2
+prgmZLA
 If T<6
 Then
 "VERTEX,VERTEX,START POINT,CENTER"→Str6
@@ -393,24 +393,24 @@ prgmZEXPR
 ⌊MKE(1)→D
 If A=C
 Then
-"#ANSWER"→Str8
-prgmZLADD
-"SAME X, VERTICAL LINE"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+"SAME X, VERTICAL LINE"
+prgmZLA
 A
 prgmZLFRC
-"X="+Str0→Str8
-prgmZLADD
+"X="+Str0
+prgmZLA
 prgmZLSHOW
 End
 If A=C
 Goto M
 (D-B)/(C-A)→H
 B-HA→K
-"#SLOPE"→Str8
-prgmZLADD
-"M=(Y2-Y1)/(X2-X1)"→Str8
-prgmZLADD
+"#SLOPE"
+prgmZLA
+"M=(Y2-Y1)/(X2-X1)"
+prgmZLA
 D
 prgmZLFRC
 " =("+Str0+"-"→Str8
@@ -426,8 +426,8 @@ A
 prgmZLFRC
 If A<0
 "("+Str0+")"→Str0
-Str8+Str0+")"→Str8
-prgmZLADD
+Str8+Str0+")"
+prgmZLA
 D-B
 prgmZLFRC
 " ="+Str0+"/"→Str8
@@ -436,12 +436,12 @@ prgmZLFRC
 Str8+Str0+"="→Str8
 H
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
-"#Y-INTERCEPT"→Str8
-prgmZLADD
-"B=Y1-M*X1"→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
+"#Y-INTERCEPT"
+prgmZLA
+"B=Y1-M*X1"
+prgmZLA
 B
 prgmZLFRC
 " ="+Str0+"-("→Str8
@@ -450,12 +450,12 @@ prgmZLFRC
 Str8+Str0+")("→Str8
 A
 prgmZLFRC
-Str8+Str0+")"→Str8
-prgmZLADD
+Str8+Str0+")"
+prgmZLA
 K
 prgmZLFRC
-" ="+Str0→Str8
-prgmZLADD
+" ="+Str0
+prgmZLA
 Goto LS
 Lbl LG
 Disp "Y=MX+B"
@@ -465,62 +465,62 @@ prgmZEXPR
 Input "B=?",Str1
 prgmZEXPR
 ⌊MKE(1)→K
-"#THE LINE"→Str8
-prgmZLADD
+"#THE LINE"
+prgmZLA
 {H,K}→⌊MKF
 prgmZLFMT
-"Y="+Str0→Str8
-prgmZLADD
+"Y="+Str0
+prgmZLA
 H
 prgmZLFRC
-"SLOPE "+Str0+" = RISE "+toString(U)+" PER RUN "+toString(V)→Str8
-prgmZLADD
+"SLOPE "+Str0+" = RISE "+toString(U)+" PER RUN "+toString(V)
+prgmZLA
 Lbl LS
-"#TRANSLATIONS"→Str8
-prgmZLADD
-"FROM Y=X"→Str8
-prgmZLADD
-"OUTSIDE (ACTS ON Y)"→Str8
-prgmZLADD
+"#TRANSLATIONS"
+prgmZLA
+"FROM Y=X"
+prgmZLA
+"OUTSIDE (ACTS ON Y)"
+prgmZLA
 abs(H)
 prgmZLFRC
 If abs(H)>1
 Then
-" STRETCH VERTICALLY *"+Str0→Str8
-prgmZLADD
+" STRETCH VERTICALLY *"+Str0
+prgmZLA
 End
 If abs(H)<1 and H
 Then
-" SHRINK VERTICALLY *"+Str0→Str8
-prgmZLADD
+" SHRINK VERTICALLY *"+Str0
+prgmZLA
 End
 If H<0
 Then
-" REFLECT OVER THE X-AXIS"→Str8
-prgmZLADD
+" REFLECT OVER THE X-AXIS"
+prgmZLA
 End
 " NO VERTICAL SHIFT"→Str8
 abs(K)
 prgmZLFRC
 If K
-" SHIFT "+sub("DOWNUP  ",1+4(K>0),4)+Str0→Str8
+" SHIFT "+sub("DOWNUP  ",1+4(K>0),4)+" "+Str0→Str8
 prgmZLADD
-"#GRAPH"→Str8
-prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
+"#GRAPH"
+prgmZLA
+"#ANSWER"
+prgmZLA
 {H,K}→⌊MKF
 prgmZLFMT
 Str0→Str6
-"Y="+Str0→Str8
-prgmZLADD
+"Y="+Str0
+prgmZLA
 H
 prgmZLFRC
 "SLOPE "+Str0→Str8
 K
 prgmZLFRC
-Str8+"  Y-INT (0,"+Str0+")"→Str8
-prgmZLADD
+Str8+"  Y-INT (0,"+Str0+")"
+prgmZLA
 "NO X-INT (HORIZONTAL)"→Str8
 If H
 Then
@@ -568,8 +568,8 @@ If E=0
 Goto M
 H/E→A
 sum(⌊MKFM)→D
-"#ZEROS GIVE FACTORS"→Str8
-prgmZLADD
+"#ZEROS GIVE FACTORS"
+prgmZLA
 " "→Str2
 For(K,1,N)
 {1,⁻⌊MKFQ(K)}→⌊MKF
@@ -586,24 +586,24 @@ Str3+"^"+toString(⌊MKFM(K))→Str3
 Str2+Str3→Str2
 ⌊MKFQ(K)
 prgmZLFRC
-"X="+Str0+" MULT "+toString(⌊MKFM(K))+" -"+"> "+Str3→Str8
-prgmZLADD
-"  "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)→Str8
-prgmZLADD
+"X="+Str0+" MULT "+toString(⌊MKFM(K))+" -"+"> "+Str3
+prgmZLA
+"  "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)
+prgmZLA
 End
 sub(Str2,2,length(Str2)-1)→Str2
-"F(X)=A"+Str2→Str8
-prgmZLADD
-"#SOLVE FOR A"→Str8
-prgmZLADD
+"F(X)=A"+Str2
+prgmZLA
+"#SOLVE FOR A"
+prgmZLA
 G
 prgmZLFRC
 "PLUG IN ("+Str0+","→Str8
 H
 prgmZLFRC
 Str0→Str4
-Str8+Str4+")"→Str8
-prgmZLADD
+Str8+Str4+")"
+prgmZLA
 Str4+"=A"→Str8
 For(K,1,N)
 G-⌊MKFQ(K)
@@ -619,17 +619,17 @@ End
 prgmZLADD
 E
 prgmZLFRC
-Str4+"="+Str0+"A"→Str8
-prgmZLADD
+Str4+"="+Str0+"A"
+prgmZLA
 A
 prgmZLFRC
 Str0→Str5
-"A="+Str5→Str8
-prgmZLADD
-"#CHECK THE ENDS"→Str8
-prgmZLADD
-"DEGREE "+toString(D)+sub(" (EVEN) (ODD)",1+7fPart(D/2)2,7-(fPart(D/2)>0))+", A"+sub("<>",1+(A>0),1)+"0"→Str8
-prgmZLADD
+"A="+Str5
+prgmZLA
+"#CHECK THE ENDS"
+prgmZLA
+"DEGREE "+toString(D)+sub(" (EVEN) (ODD)",1+7fPart(D/2)2,7-(fPart(D/2)>0))+", A"+sub("<>",1+(A>0),1)+"0"
+prgmZLA
 fPart(D/2)=0→F
 "RISES BOTH ENDS"→Str8
 If F and A<0
@@ -639,8 +639,8 @@ If not(F) and A>0
 If not(F) and A<0
 "RISES LEFT, FALLS RIGHT"→Str8
 prgmZLADD
-"COMPARE WITH THE GRAPH"→Str8
-prgmZLADD
+"COMPARE WITH THE GRAPH"
+prgmZLA
 "("+Str5+")"→Str3
 If V=1
 Str5→Str3
@@ -652,14 +652,14 @@ Str3+Str2→Str3
 If sub(Str3,1,1)="*"
 sub(Str3,2,length(Str3)-1)→Str3
 "("+Str5+")"+Str2→Str6
-"#GRAPH"→Str8
-prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
-"F(X)="+Str3→Str8
-prgmZLADD
-"DEGREE "+toString(D)→Str8
-prgmZLADD
+"#GRAPH"
+prgmZLA
+"#ANSWER"
+prgmZLA
+"F(X)="+Str3
+prgmZLA
+"DEGREE "+toString(D)
+prgmZLA
 min(augment(⌊MKFQ,{G}))-2→D
 max(augment(⌊MKFQ,{G}))+2→E
 seq(expr(Str6),X,D,E,(E-D)/12)→⌊MKPY
@@ -706,8 +706,8 @@ Pause
 End
 If E
 Goto M
-"#THE POINTS"→Str8
-prgmZLADD
+"#THE POINTS"
+prgmZLA
 " "→Str8
 For(K,1,N)
 ⌊MKPX(K)
@@ -718,15 +718,15 @@ prgmZLFRC
 Str8+Str0+") "→Str8
 End
 prgmZLADD
-"A DEGREE ≤"+toString(N-1)+" POLYNOMIAL"→Str8
-prgmZLADD
-"FITS EXACTLY ONE WAY"→Str8
-prgmZLADD
+"A DEGREE ≤"+toString(N-1)+" POLYNOMIAL"
+prgmZLA
+"FITS EXACTLY ONE WAY"
+prgmZLA
 ⌊MKPY→⌊MKPC
 {⌊MKPY(1)}→⌊MKPN
 For(K,1,N-1)
-"#DIFFERENCES, ORDER "+toString(K)→Str8
-prgmZLADD
+"#DIFFERENCES, ORDER "+toString(K)
+prgmZLA
 For(L,1,N-K)
 (⌊MKPC(L+1)-⌊MKPC(L))/(⌊MKPX(L+K)-⌊MKPX(L))→G
 ⌊MKPC(L+1)
@@ -747,19 +747,19 @@ If U<0
 Str8+Str0+")="→Str8
 G
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 G→⌊MKPC(L)
 End
 N-K→dim(⌊MKPC)
 ⌊MKPC(1)→⌊MKPN(K+1)
 End
-"#NEWTON FORM"→Str8
-prgmZLADD
+"#NEWTON FORM"
+prgmZLA
 ⌊MKPN(1)
 prgmZLFRC
-"F(X)="+Str0→Str8
-prgmZLADD
+"F(X)="+Str0
+prgmZLA
 For(K,2,N)
 If ⌊MKPN(K)
 Then
@@ -779,24 +779,26 @@ For(K,N-1,1,⁻1)
 augment(⌊MKF,{0})-⌊MKPX(K)augment({0},⌊MKF)→⌊MKF
 ⌊MKF(dim(⌊MKF))+⌊MKPN(K)→⌊MKF(dim(⌊MKF))
 End
-While dim(⌊MKF)>1 and abs(⌊MKF(1))<1ᴇ⁻9
-seq(⌊MKF(L),L,2,dim(⌊MKF))→⌊MKF
-End
+sum(not(cumSum(abs(⌊MKF)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKF)
+{0}→⌊MKF
+If θ and θ<dim(⌊MKF)
+seq(⌊MKF(L),L,θ+1,dim(⌊MKF))→⌊MKF
 dim(⌊MKF)-1→D
 prgmZLFMT
 Str0→Str6
-"#MULTIPLY OUT"→Str8
-prgmZLADD
-"F(X)="+Str6→Str8
-prgmZLADD
-"#GRAPH"→Str8
-prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
-"F(X)="+Str6→Str8
-prgmZLADD
-"DEGREE "+toString(D)→Str8
-prgmZLADD
+"#MULTIPLY OUT"
+prgmZLA
+"F(X)="+Str6
+prgmZLA
+"#GRAPH"
+prgmZLA
+"#ANSWER"
+prgmZLA
+"F(X)="+Str6
+prgmZLA
+"DEGREE "+toString(D)
+prgmZLA
 min(⌊MKPX)-2→D
 max(⌊MKPX)+2→E
 {D,E,min(⌊MKPY)-3,max(⌊MKPY)+3,0,N}→⌊MKW

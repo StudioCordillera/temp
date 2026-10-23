@@ -55,69 +55,69 @@ If D≠1
 "("+Str3+")/"+toString(D)→Str3
 If D<0
 sub(Str3,1,length(Str3)-length(toString(D)))+"("+toString(D)+")"→Str3
-"#SPLIT OFF ⁻1"→Str8
-prgmZLADD
-Str3→Str8
-prgmZLADD
-"√(⁻"+Str2+")=√(⁻1)*√("+Str2+")"→Str8
-prgmZLADD
-" =𝑖√("+Str2+")"→Str8
-prgmZLADD
-"#SQUARE FACTOR"→Str8
-prgmZLADD
+"#SPLIT OFF ⁻1"
+prgmZLA
+Str3
+prgmZLA
+"√(⁻"+Str2+")=√(⁻1)*√("+Str2+")"
+prgmZLA
+" =𝑖√("+Str2+")"
+prgmZLA
+"#SQUARE FACTOR"
+prgmZLA
 If G=1
 Then
-Str2+"="+toString(K)+"²"→Str8
-prgmZLADD
-"√("+Str2+")="+toString(K)→Str8
-prgmZLADD
+Str2+"="+toString(K)+"²"
+prgmZLA
+"√("+Str2+")="+toString(K)
+prgmZLA
 End
 If G>1 and K>1
 Then
-Str2+"="+toString(K²)+"*"+toString(G)+"   "+toString(K²)+"="+toString(K)+"²"→Str8
-prgmZLADD
-"√("+Str2+")=√("+toString(K²)+")*√("+toString(G)+")"→Str8
-prgmZLADD
-" ="+toString(K)+"√("+toString(G)+")"→Str8
-prgmZLADD
+Str2+"="+toString(K²)+"*"+toString(G)+"   "+toString(K²)+"="+toString(K)+"²"
+prgmZLA
+"√("+Str2+")=√("+toString(K²)+")*√("+toString(G)+")"
+prgmZLA
+" ="+toString(K)+"√("+toString(G)+")"
+prgmZLA
 End
 If G>1 and K=1
 Then
-Str2+" HAS NO SQUARE FACTOR"→Str8
-prgmZLADD
-"√("+Str2+") STAYS"→Str8
-prgmZLADD
+Str2+" HAS NO SQUARE FACTOR"
+prgmZLA
+"√("+Str2+") STAYS"
+prgmZLA
 End
 {A,BK,G}→⌊MKT
 prgmZLCST
-"#REWRITE"→Str8
-prgmZLADD
+"#REWRITE"
+prgmZLA
 Str0→Str8
 If D≠1
 "NUMERATOR "+Str0→Str8
 prgmZLADD
 If D≠1
 Then
-"#DIVIDE EACH TERM BY "+toString(D)→Str8
-prgmZLADD
+"#DIVIDE EACH TERM BY "+toString(D)
+prgmZLA
 A/D
 prgmZLFRC
-toString(A)+"/"+toString(D)+"="+Str0→Str8
-prgmZLADD
+toString(A)+"/"+toString(D)+"="+Str0
+prgmZLA
 BK/D
 prgmZLFRC
-toString(BK)+"/"+toString(D)+"="+Str0→Str8
-prgmZLADD
+toString(BK)+"/"+toString(D)+"="+Str0
+prgmZLA
 End
 {A/D,BK/D,G}→⌊MKT
 prgmZLCST
 Str0→Str2
-"#ANSWER"→Str8
-prgmZLADD
-Str3+"="→Str8
-prgmZLADD
-Str2→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+Str3+"="
+prgmZLA
+Str2
+prgmZLA
 prgmZLSHOW
 Goto M
 Lbl I
@@ -171,21 +171,21 @@ prgmZLCST
 "("+Str0+")"→Str3
 If length(Str4)>1
 Then
-"#CONVERT √(NEGATIVE)"→Str8
-prgmZLADD
-Str4→Str8
-prgmZLADD
-"BEFORE ANY ARITHMETIC"→Str8
-prgmZLADD
+"#CONVERT √(NEGATIVE)"
+prgmZLA
+Str4
+prgmZLA
+"BEFORE ANY ARITHMETIC"
+prgmZLA
 End
 If M=3
 Goto MU
 If M=1
 Then
-"#GROUP LIKE PARTS"→Str8
-prgmZLADD
-Str2+"+"+Str3→Str8
-prgmZLADD
+"#GROUP LIKE PARTS"
+prgmZLA
+Str2+"+"+Str3
+prgmZLA
 A
 prgmZLFRC
 "=("+Str0→Str8
@@ -197,15 +197,15 @@ prgmZLFRC
 Str8+Str0→Str8
 D
 prgmZLFRC
-Str8+"+"+Str0+")𝑖"→Str8
-prgmZLADD
+Str8+"+"+Str0+")𝑖"
+prgmZLA
 A+C→E
 B+D→F
 Else
-"#DISTRIBUTE THE MINUS"→Str8
-prgmZLADD
-Str2+"-"+Str3→Str8
-prgmZLADD
+"#DISTRIBUTE THE MINUS"
+prgmZLA
+Str2+"-"+Str3
+prgmZLA
 {A,B,1}→⌊MKT
 prgmZLCST
 "="+Str0→Str8
@@ -214,10 +214,10 @@ prgmZLFRC
 Str8+sub("+-",1+(C>0),1)+Str0→Str8
 {0,abs(D),1}→⌊MKT
 prgmZLCST
-Str8+sub("+-",1+(D>0),1)+Str0→Str8
-prgmZLADD
-"#GROUP LIKE PARTS"→Str8
-prgmZLADD
+Str8+sub("+-",1+(D>0),1)+Str0
+prgmZLA
+"#GROUP LIKE PARTS"
+prgmZLA
 A
 prgmZLFRC
 "=("+Str0→Str8
@@ -229,8 +229,8 @@ prgmZLFRC
 Str8+Str0→Str8
 D
 prgmZLFRC
-Str8+"-"+Str0+")𝑖"→Str8
-prgmZLADD
+Str8+"-"+Str0+")𝑖"
+prgmZLA
 A-C→E
 B-D→F
 End
@@ -240,10 +240,10 @@ AC→E
 AD→F
 BC→G
 BD→H
-"#FOIL"→Str8
-prgmZLADD
-Str2+Str3→Str8
-prgmZLADD
+"#FOIL"
+prgmZLA
+Str2+Str3
+prgmZLA
 A
 prgmZLFRC
 "F  "+Str0+"*"→Str8
@@ -252,8 +252,8 @@ prgmZLFRC
 Str8+Str0+"="→Str8
 E
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 A
 prgmZLFRC
 "O  "+Str0+"*"→Str8
@@ -262,8 +262,8 @@ prgmZLCST
 Str8+Str0+"="→Str8
 {0,F,1}→⌊MKT
 prgmZLCST
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 {0,B,1}→⌊MKT
 prgmZLCST
 "I  "+Str0+"*"→Str8
@@ -272,8 +272,8 @@ prgmZLFRC
 Str8+Str0+"="→Str8
 {0,G,1}→⌊MKT
 prgmZLCST
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 {0,B,1}→⌊MKT
 prgmZLCST
 "L  "+Str0+"*"→Str8
@@ -282,17 +282,17 @@ prgmZLCST
 Str8+Str0+"="→Str8
 H
 prgmZLFRC
-Str8+Str0+"𝑖²"→Str8
-prgmZLADD
-"#USE 𝑖²=⁻1"→Str8
-prgmZLADD
+Str8+Str0+"𝑖²"
+prgmZLA
+"#USE 𝑖²=⁻1"
+prgmZLA
 H
 prgmZLFRC
 Str0+"𝑖²="→Str8
 ⁻H
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 E
 prgmZLFRC
 "REAL "+Str0+"+"→Str8
@@ -303,8 +303,8 @@ sub(Str8,1,length(Str8)-1)→Str8
 Str8+Str0+"="→Str8
 E-H
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 F
 prgmZLFRC
 "IMAG "+Str0+"+"→Str8
@@ -315,24 +315,24 @@ sub(Str8,1,length(Str8)-1)→Str8
 Str8+Str0+"="→Str8
 F+G
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 E-H→E
 F+G→F
 Lbl AN
 {E,F,1}→⌊MKT
 prgmZLCST
 Str0→Str5
-"#ANSWER"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
 Str2+"+"+Str3+"="→Str8
 If M=2
 Str2+"-"+Str3+"="→Str8
 If M=3
 Str2+Str3+"="→Str8
 prgmZLADD
-Str5→Str8
-prgmZLADD
+Str5
+prgmZLA
 prgmZLSHOW
 Goto M
 Lbl ER

@@ -1,10 +1,10 @@
 Ans→θ
-If not(fPart(θ))
-Then
 θ→U
 1→V
+If not(fPart(θ))
 toString(θ)→Str0
-Else
+If not(fPart(θ))
+Return
 abs(θ)→W
 1→V
 If ⌊MKS(2)
@@ -55,5 +55,4 @@ If θ<0 and U≠0
 Then
 "⁻"+Str0→Str0
 ⁻U→U
-End
 End

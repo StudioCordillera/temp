@@ -1,26 +1,20 @@
 dim(⌊MKL)-1→θ
 {0}→⌊MKP
-0→U
-0→V
-0→P
 0→W
-For(O,1,θ)
-If sub(Str9,⌊MKL(O),1)="#"
+For(O,1,dim(⌊MKTL))
+⌊MKTL(O)→U
+θ+1→V
+If O<dim(⌊MKTL)
+⌊MKTL(O+1)→V
+sub(Str9,⌊MKL(U),min(7,length(Str9)-⌊MKL(U)+1))="#ANSWER"→P
+If ⌊MKS(1) or P
 Then
-O→U
-0→V
-⌊MKS(1) or sub(Str9,⌊MKL(O),min(7,length(Str9)-⌊MKL(O)+1))="#ANSWER"→P
-If P
-1001O+1→⌊MKP(dim(⌊MKP)+1)
-If P and W=0 and sub(Str9,⌊MKL(O),min(7,length(Str9)-⌊MKL(O)+1))="#ANSWER"
-dim(⌊MKP)→W
-Else
-If V=8 and P
-Then
-1000U+O→⌊MKP(dim(⌊MKP)+1)
-0→V
+If P and not(W)
+dim(⌊MKP)+1→W
+1001U+1→⌊MKP(dim(⌊MKP)+1)
+For(P,U+9,V-1,8)
+1000U+P→⌊MKP(dim(⌊MKP)+1)
 End
-V+1→V
 End
 End
 2→P
@@ -50,7 +44,7 @@ For(O,1,⌊MKW(6+V))
 Pt-On(⌊MKW(5+V+2O),⌊MKW(6+V+2O),2)
 End
 Text(1,1,sub(Str0,1,min(26,length(Str0))))
-Text(150,1,"ANY KEY=NEXT")
+Text(150,1,"ENTER=NEXT  CLEAR=ANSWER")
 Repeat V
 getKey→V
 End

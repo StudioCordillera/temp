@@ -1,0 +1,129 @@
+prgmZLNEW
+Lbl M
+Menu("MATHKIT 1.0","COMPLEX (1.3)",C,"QUADRATICS",Q,"POLYNOMIALS",P,"RATIONAL",R,"INEQUALITIES (3.6)",I,"GRAPHS AND CHECK",G,"SETTINGS / QUIT",S)
+Lbl C
+prgmZCPLX
+Goto M
+Lbl Q
+Menu("QUADRATICS","SOLVE EQ (1.4)",Q1,"FUNCTION (3.1)",Q2,"BACK",M)
+Lbl Q1
+prgmZQSOLV
+Goto M
+Lbl Q2
+prgmZQUAD
+Goto M
+Lbl P
+Menu("POLYNOMIALS","DIVIDE (3.2)",P1,"BEHAVIOR (3.3)",P2,"ZEROS (3.4)",P3,"BACK",M)
+Lbl P1
+prgmZDIV
+Goto M
+Lbl P2
+prgmZPOLY
+Goto M
+Lbl P3
+prgmZZEROS
+Goto M
+Lbl R
+Menu("RATIONAL","EQUATION (1.6)",R1,"FUNCTION (3.5)",R2,"BACK",M)
+Lbl R1
+prgmZRATEQ
+Goto M
+Lbl R2
+prgmZRATFN
+Goto M
+Lbl I
+prgmZINEQ
+Goto M
+Lbl G
+Menu("GRAPHS AND CHECK","GRAPHS (ALL UNITS)",G1,"CHECK AN ANSWER",G2,"BACK",M)
+Lbl G1
+prgmZGRAPH
+Goto M
+Lbl G2
+prgmZCHECK
+Goto M
+Lbl S
+Menu("SETTINGS","SHOW ALL WORK",S1,"ANSWER ONLY",S2,"CLEAN UP AND QUIT",S3,"QUIT",S4,"BACK",M)
+Lbl S1
+1→⌊MKS(1)
+ClrHome
+Disp "WORK WILL BE SHOWN"
+Pause 
+Goto M
+Lbl S2
+0→⌊MKS(1)
+ClrHome
+Disp "ANSWERS ONLY"
+Pause 
+Goto M
+Lbl S3
+DelVar ⌊MKA
+DelVar ⌊MKB
+DelVar ⌊MKC
+DelVar ⌊MKCD
+DelVar ⌊MKCK
+DelVar ⌊MKCN
+DelVar ⌊MKCX
+DelVar ⌊MKCY
+DelVar ⌊MKCZ
+DelVar ⌊MKD
+DelVar ⌊MKDE
+DelVar ⌊MKDN
+DelVar ⌊MKDQ
+DelVar ⌊MKDR
+DelVar ⌊MKE
+DelVar ⌊MKEQ
+DelVar ⌊MKF
+DelVar ⌊MKFM
+DelVar ⌊MKFP
+DelVar ⌊MKFQ
+DelVar ⌊MKG
+DelVar ⌊MKH
+DelVar ⌊MKHO
+DelVar ⌊MKI
+DelVar ⌊MKII
+DelVar ⌊MKIK
+DelVar ⌊MKIV
+DelVar ⌊MKJ
+DelVar ⌊MKL
+DelVar ⌊MKLC
+DelVar ⌊MKLM
+DelVar ⌊MKLQ
+DelVar ⌊MKLR
+DelVar ⌊MKM
+DelVar ⌊MKN
+DelVar ⌊MKND
+DelVar ⌊MKNI
+DelVar ⌊MKNP
+DelVar ⌊MKNU
+DelVar ⌊MKP
+DelVar ⌊MKPC
+DelVar ⌊MKPD
+DelVar ⌊MKPN
+DelVar ⌊MKPW
+DelVar ⌊MKPX
+DelVar ⌊MKPY
+DelVar ⌊MKQ
+DelVar ⌊MKR
+DelVar ⌊MKRM
+DelVar ⌊MKRR
+DelVar ⌊MKRT
+DelVar ⌊MKS
+DelVar ⌊MKSG
+DelVar ⌊MKT
+DelVar ⌊MKTD
+DelVar ⌊MKTN
+DelVar ⌊MKTS
+DelVar ⌊MKVA
+DelVar ⌊MKW
+DelVar ⌊MKX
+DelVar ⌊MKXI
+DelVar ⌊MKXP
+DelVar ⌊MKXR
+DelVar ⌊MKXV
+DelVar ⌊MKY
+DelVar ⌊MKZ
+Lbl S4
+ClrHome
+Disp "MATHKIT CLOSED"
+Stop

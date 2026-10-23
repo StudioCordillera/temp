@@ -3,37 +3,41 @@ tokens = tokenized program body; memory = tokens + size field + VAT entry,
 which is what 2nd MEM > Mem Management > Prgm shows (within a few bytes).
 
 program     tokens  memory  .8xp file  min OS
-ZCHECK        1184    1201       1260  1.15.0
-ZCPLX         3233    3249       3309  5.2.0
-ZDIV          2303    2318       2379  5.2.0
-ZEXPR          709     725        785  5.2.0
-ZGRAPH        8810    8827       8886  5.2.0
-ZINEQ         4191    4207       4267  5.2.0
-ZLADD          301     317        377  0.1013.0
+MATHKIT       1311    1329       1387  1.10.0
+ZCHECK        1099    1116       1175  1.15.0
+ZCPLX         3023    3039       3099  5.2.0
+ZDIV          2195    2210       2271  5.2.0
+ZEXPR          780     796        856  5.2.0
+ZGRAPH        8449    8466       8525  5.2.0
+ZINEQ         4364    4380       4440  5.2.0
+ZLA            425     439        501  1.15.0
+ZLADD            7      23         83  0.1013.0
 ZLCHK          193     209        269  0.1013.0
 ZLCST          351     367        427  5.2.0
 ZLDVQ          214     230        290  0.1013.0
-ZLEVL           41      57        117  0.1013.0
+ZLEVL           65      81        141  0.1013.0
 ZLFLD           66      82        142  0.1013.0
-ZLFMT          292     308        368  5.2.0
-ZLFRC          416     432        492  5.2.0
+ZLFMT          319     335        395  5.2.0
+ZLFRC          419     435        495  5.2.0
 ZLIFC          408     424        484  5.2.0
 ZLMUL          111     127        187  0.1013.0
-ZLNEW           64      80        140  0.1013.0
+ZLNEW          220     236        296  0.1013.0
 ZLQSV         1280    1296       1356  5.2.0
 ZLRAD           59      75        135  0.1013.0
-ZLSHOW        1073    1090       1149  5.2.0
-ZLSYN          856     872        932  1.15.0
+ZLSHOW        1040    1057       1116  5.2.0
+ZLSYN         1168    1184       1244  5.2.0
 ZLTOK           27      43        103  0.1013.0
-ZLZER         4292    4308       4368  5.2.0
-ZPOLY         3642    3658       3718  5.2.0
-ZQSOLV        4284    4301       4360  5.2.0
-ZQUAD         4948    4964       5024  1.15.0
-ZRATEQ        4403    4420       4479  5.2.0
-ZRATFN        6068    6085       6144  5.2.0
-ZZEROS        3101    3118       3177  5.2.0
+ZLZER         1514    1530       1590  5.2.0
+ZLZNM         1016    1032       1092  1.15.0
+ZLZRL         1775    1791       1851  5.2.0
+ZPOLY         3447    3463       3523  5.2.0
+ZQSOLV        4019    4036       4095  5.2.0
+ZQUAD         4679    4695       4755  1.15.0
+ZRATEQ        4588    4605       4664  5.2.0
+ZRATFN        5749    5766       5825  5.2.0
+ZZEROS        2966    2983       3042  5.2.0
 
-TOTAL        56920   57390      59124
-MATHKIT.8xg group file: 57408 bytes
+TOTAL        57346   57880      59854
+MATHKIT.8xg group file: 57890 bytes
 Highest OS any token needs: 5.2.0 (limit 5.2.0)
-Budget: 57390 of 61440 bytes (93%)
+Budget: 57880 of 61440 bytes (94%)

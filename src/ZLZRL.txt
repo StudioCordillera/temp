@@ -1,0 +1,138 @@
+While ⌊MKJ(3) and dim(⌊MKH)≥4
+1→J
+For(I,1,dim(⌊MKH))
+If fPart(⌊MKH(I))
+Then
+⌊MKH(I)
+prgmZLFRC
+lcm(J,V)→J
+End
+End
+round(J⌊MKH,0)→⌊MKI
+dim(⌊MKI)-1→⌊MKJ(2)
+abs(⌊MKI(dim(⌊MKI)))→J
+seq(θ(fPart(J/θ)=0),θ,1,int(√(J)+1ᴇ⁻9))→⌊MKCN
+augment(⌊MKCN,(⌊MKCN≠0)(J≠⌊MKCN²)J/(⌊MKCN+(⌊MKCN=0)))→⌊MKCN
+SortA(⌊MKCN)
+sum(⌊MKCN=0)→θ
+seq(⌊MKCN(I),I,θ+1,dim(⌊MKCN))→⌊MKCN
+abs(⌊MKI(1))→J
+seq(θ(fPart(J/θ)=0),θ,1,int(√(J)+1ᴇ⁻9))→⌊MKCD
+augment(⌊MKCD,(⌊MKCD≠0)(J≠⌊MKCD²)J/(⌊MKCD+(⌊MKCD=0)))→⌊MKCD
+SortA(⌊MKCD)
+sum(⌊MKCD=0)→θ
+seq(⌊MKCD(I),I,θ+1,dim(⌊MKCD))→⌊MKCD
+augment(⌊MKCN,⁻⌊MKCN)→⌊MKCX
+⌊MKCD(1)+0⌊MKCX→⌊MKCY
+For(I,2,dim(⌊MKCD))
+augment(⌊MKCX,augment(⌊MKCN,⁻⌊MKCN))→⌊MKCX
+augment(⌊MKCY,⌊MKCD(I)+0augment(⌊MKCN,⌊MKCN))→⌊MKCY
+End
+1ᴇ9(gcd(abs(⌊MKCX),⌊MKCY)≠1)+abs(⌊MKCX/⌊MKCY)+1ᴇ⁻7(⌊MKCX<0)→⌊MKCK
+SortA(⌊MKCK,⌊MKCX,⌊MKCY)
+sum(⌊MKCK<1ᴇ8)→J
+J→dim(⌊MKCX)
+J→dim(⌊MKCY)
+⌊MKI(1)+0⌊MKCX→⌊MKCK
+1+0⌊MKCX→⌊MKCZ
+For(I,2,dim(⌊MKI))
+⌊MKCZ⌊MKCY→⌊MKCZ
+⌊MKCK⌊MKCX+⌊MKI(I)⌊MKCZ→⌊MKCK
+End
+1+sum(not(cumSum(abs(⌊MKCK)<.5)))→J
+If Y
+Then
+"#RATIONAL ZERO TEST"
+prgmZLA
+"P DIVIDES "+toString(abs(⌊MKI(dim(⌊MKI))))
+prgmZLA
+" "→Str8
+For(I,1,dim(⌊MKCN))
+Str8+toString(⌊MKCN(I))+","→Str8
+End
+sub(Str8,1,length(Str8)-1)
+prgmZLA
+"Q DIVIDES "+toString(abs(⌊MKI(1)))
+prgmZLA
+" "→Str8
+For(I,1,dim(⌊MKCD))
+Str8+toString(⌊MKCD(I))+","→Str8
+End
+sub(Str8,1,length(Str8)-1)
+prgmZLA
+min(J,dim(⌊MKCX))→I
+"TRY +/-P/Q"→Str8
+If I>3
+toString(I-3)+" TRIED, THEN"→Str8
+If J>dim(⌊MKCX)
+"ALL "+toString(I)+" FAIL, LAST ONES"→Str8
+prgmZLADD
+For(I,max(1,min(J,dim(⌊MKCX))-2),min(J,dim(⌊MKCX)))
+⌊MKCX(I)/⌊MKCY(I)
+If fPart(Ans)
+prgmZLFRC
+If ⌊MKCY(I)=1
+toString(⌊MKCX(I))→Str0
+"F("+Str0+")="→Str8
+⌊MKCK(I)/⌊MKCY(I)^⌊MKJ(2)
+If fPart(Ans)
+prgmZLFRC
+If not(fPart(⌊MKCK(I)/⌊MKCY(I)^⌊MKJ(2)))
+toString(⌊MKCK(I)/⌊MKCY(I)^⌊MKJ(2))→Str0
+Str8+Str0→Str8
+If I=J
+Str8+"  ZERO"→Str8
+prgmZLADD
+End
+If J>dim(⌊MKCX)
+Then
+"NO RATIONAL ZERO"
+prgmZLA
+End
+1→⌊MKJ(4)
+End
+If J>dim(⌊MKCX)
+Then
+0→⌊MKJ(3)
+Else
+⌊MKCX(J)/⌊MKCY(J)→⌊MKJ(1)
+augment(⌊MKH,{⌊MKJ(1)})→⌊MKY
+prgmZLSYN
+If Y
+Then
+{1,⁻⌊MKJ(1)}→⌊MKF
+prgmZLFMT
+"#DIVIDE BY ("+Str0+")"
+prgmZLA
+Str2
+prgmZLA
+Str3
+prgmZLA
+Str4
+prgmZLA
+Str5
+prgmZLA
+End
+seq(⌊MKY(I),I,1,dim(⌊MKY)-1)→⌊MKH
+If Y
+Then
+⌊MKH→⌊MKF
+prgmZLFMT
+"LEAVES "+Str0
+prgmZLA
+End
+0→J
+For(I,1,dim(⌊MKR))
+If abs(⌊MKR(I)-⌊MKJ(1))<1ᴇ⁻9
+Then
+⌊MKM(I)+1→⌊MKM(I)
+1→J
+End
+End
+If not(J)
+Then
+⌊MKJ(1)→⌊MKR(dim(⌊MKR)+1)
+1→⌊MKM(dim(⌊MKM)+1)
+End
+End
+End

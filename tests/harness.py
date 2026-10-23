@@ -36,7 +36,7 @@ def new_interp(keys, work=1):
     it.yvars["Y₁"] = USER_Y
     it.vars["X"] = D(7)
     if not work:
-        it.lists["ʟMKS"] = [D(0), D(0), D(0)]
+        it.lists["ʟMKS"] = [D(0), D(0), D(0), D(0)]
     return it
 
 

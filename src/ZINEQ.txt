@@ -29,9 +29,11 @@ augment(seq(0,L,1,dim(⌊MKA)-dim(⌊MKNU)),⌊MKNU)→⌊MKNU
 If dim(⌊MKA)<dim(⌊MKNU)
 augment(seq(0,L,1,dim(⌊MKNU)-dim(⌊MKA)),⌊MKA)→⌊MKA
 ⌊MKNU-⌊MKA→⌊MKNU
-While dim(⌊MKNU)>1 and abs(⌊MKNU(1))<1ᴇ⁻9
-seq(⌊MKNU(L),L,2,dim(⌊MKNU))→⌊MKNU
-End
+sum(not(cumSum(abs(⌊MKNU)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKNU)
+{0}→⌊MKNU
+If θ and θ<dim(⌊MKNU)
+seq(⌊MKNU(L),L,θ+1,dim(⌊MKNU))→⌊MKNU
 {1}→⌊MKDE
 ⌊MKNU→⌊MKF
 prgmZLFMT
@@ -49,7 +51,13 @@ prgmZEXPR
 If not(O)
 Goto M
 ⌊MKE→⌊MKDE
-If dim(⌊MKDE)=1 and ⌊MKDE(1)=0
+dim(⌊MKDE)=1 and ⌊MKDE(1)=0→E
+If E
+Then
+Disp "DENOMINATOR CANNOT","BE 0"
+Pause 
+End
+If E
 Goto M
 ⌊MKNU→⌊MKF
 prgmZLFMT
@@ -68,7 +76,13 @@ prgmZEXPR
 Input "FACTORS=?",Str1
 prgmZEXPR
 ⌊MKE(1)→N
-If N<1 or N>6 or fPart(N) or A=0
+N<1 or N>6 or fPart(N) or A=0→E
+If E
+Then
+Disp "NEED A≠0 AND 1 TO 6","FACTORS"
+Pause 
+End
+If E
 Goto M
 ClrList ⌊MKFP,⌊MKFQ,⌊MKFM
 For(K,1,N)
@@ -84,7 +98,13 @@ Input "M=?",Str1
 prgmZEXPR
 ⌊MKE(1)→⌊MKFM(K)
 End
-If min(⌊MKFP≠0 and ⌊MKFM≥1 and fPart(⌊MKFM)=0)=0
+min(⌊MKFP≠0 and ⌊MKFM≥1 and fPart(⌊MKFM)=0)=0→E
+If E
+Then
+Disp "NEED P≠0 AND M A","WHOLE NUMBER ≥ 1"
+Pause 
+End
+If E
 Goto M
 A
 prgmZLFRC
@@ -121,7 +141,13 @@ prgmZEXPR
 Input "HOW MANY V.A.=?",Str1
 prgmZEXPR
 ⌊MKE(1)→K
-If N<0 or K<0 or N+K>8 or fPart(N) or fPart(K)
+N<0 or K<0 or N+K>8 or fPart(N) or fPart(K)→E
+If E
+Then
+Disp "USE 0 TO 8 IN ALL"
+Pause 
+End
+If E
 Goto M
 For(L,1,N+K)
 ClrHome
@@ -158,15 +184,15 @@ Lbl S4
 4→H
 Lbl S0
 sub("> ≥ < ≤ ",2H-1,1)→Str5
-"#ONE SIDE"→Str8
-prgmZLADD
+"#ONE SIDE"
+prgmZLA
 If M=1 and G=1
 Then
-"MOVE EVERYTHING LEFT"→Str8
-prgmZLADD
+"MOVE EVERYTHING LEFT"
+prgmZLA
 End
-Str4+Str5+"0"→Str8
-prgmZLADD
+Str4+Str5+"0"
+prgmZLA
 ClrList ⌊MKIV,⌊MKIK,⌊MKII
 " "→Str3
 If G=1
@@ -252,8 +278,8 @@ Str2+Str0+","→Str2
 End
 If N
 sub(Str2,2,length(Str2)-2)→Str2
-"#CRITICAL VALUES"→Str8
-prgmZLADD
+"#CRITICAL VALUES"
+prgmZLA
 " "→Str1
 " "→Str3
 For(K,1,N)
@@ -281,6 +307,8 @@ If length(Str3)>1
 "UNDEFINED "+sub(Str3,2,length(Str3)-3)→Str8
 prgmZLADD
 End
+"#SIGN CHART"
+prgmZLA
 ClrList ⌊MKSG
 For(K,1,N+1)
 0→T
@@ -341,15 +369,15 @@ prgmZLFRC
 "X="+Str0→Str0
 If length(Str0)<8
 sub(Str0+"        ",1,8)→Str0
-Str1+Str0+sub("-+",1+(D>0),1)→Str8
-prgmZLADD
+Str1+Str0+sub("-+",1+(D>0),1)
+prgmZLA
 End
 1-2(H>2)→F
 H=2 or H=4→E
-"#CHOOSE"→Str8
-prgmZLADD
-"NEED THE "+sub("-+",1+(F>0),1)+" INTERVALS"→Str8
-prgmZLADD
+"#CHOOSE"
+prgmZLA
+"NEED THE "+sub("-+",1+(F>0),1)+" INTERVALS"
+prgmZLA
 "ZEROS EXCLUDED ( )"→Str8
 If E
 "ZEROS INCLUDED [ ]"→Str8
@@ -359,8 +387,8 @@ If N
 max(⌊MKIK=2)→D
 If D
 Then
-"UNDEFINED ALWAYS ( )"→Str8
-prgmZLADD
+"UNDEFINED ALWAYS ( )"
+prgmZLA
 End
 " "→Str3
 0→C
@@ -422,16 +450,16 @@ Str3+"U"+Str1→Str3
 0→C
 End
 End
-"#ANSWER"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
 "NO SOLUTION"→Str8
 If length(Str3)>1
 sub(Str3,3,length(Str3)-2)→Str8
 prgmZLADD
 If Str8="(⁻INF,INF)"
 Then
-"ALL REAL NUMBERS"→Str8
-prgmZLADD
+"ALL REAL NUMBERS"
+prgmZLA
 End
 prgmZLSHOW
 Goto M

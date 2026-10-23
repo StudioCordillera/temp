@@ -81,13 +81,13 @@ If ⌊MKC(1)=0
 Goto M
 If Z
 Then
-"#TYPED"→Str8
-prgmZLADD
-Str2+"="+Str3→Str8
-prgmZLADD
+"#TYPED"
+prgmZLA
+Str2+"="+Str3
+prgmZLA
 End
-"#STANDARD FORM"→Str8
-prgmZLADD
+"#STANDARD FORM"
+prgmZLA
 If max(abs(⌊MKB))
 Then
 ⌊MKA→⌊MKF
@@ -95,16 +95,16 @@ prgmZLFMT
 Str0→Str4
 ⌊MKB→⌊MKF
 prgmZLFMT
-Str4+"="+Str0→Str8
-prgmZLADD
-"SUBTRACT THE RIGHT SIDE"→Str8
-prgmZLADD
+Str4+"="+Str0
+prgmZLA
+"SUBTRACT THE RIGHT SIDE"
+prgmZLA
 End
 ⌊MKC→⌊MKF
 prgmZLFMT
 Str0→Str5
-Str0+"=0"→Str8
-prgmZLADD
+Str0+"=0"
+prgmZLA
 ⌊MKC(1)→A
 ⌊MKC(2)→B
 ⌊MKC(3)→C
@@ -115,19 +115,19 @@ prgmZLQSV
 Str0→Str4
 If M=4 and (⌊MKQ(1)≠A or ⌊MKQ(2)≠B or ⌊MKQ(3)≠C)
 Then
-"#MAKE INTEGERS, A>0"→Str8
-prgmZLADD
+"#MAKE INTEGERS, A>0"
+prgmZLA
 ⌊MKQ(1)/A
 prgmZLFRC
-"MULTIPLY BY "+Str0→Str8
-prgmZLADD
+"MULTIPLY BY "+Str0
+prgmZLA
 seq(⌊MKQ(O),O,1,3)→⌊MKF
 prgmZLFMT
-Str0+"=0"→Str8
-prgmZLADD
+Str0+"=0"
+prgmZLA
 End
-"#DISCRIMINANT"→Str8
-prgmZLADD
+"#DISCRIMINANT"
+prgmZLA
 ⌊MKQ(1)
 prgmZLFRC
 Str0→Str2
@@ -136,12 +136,12 @@ prgmZLFRC
 Str0→Str3
 ⌊MKQ(3)
 prgmZLFRC
-"A="+Str2+"  B="+Str3+"  C="+Str0→Str8
-prgmZLADD
-"D=B²-4AC"→Str8
-prgmZLADD
-"=("+Str3+")²-4("+Str2+")("+Str0+")"→Str8
-prgmZLADD
+"A="+Str2+"  B="+Str3+"  C="+Str0
+prgmZLA
+"D=B²-4AC"
+prgmZLA
+"=("+Str3+")²-4("+Str2+")("+Str0+")"
+prgmZLA
 ⌊MKQ(2)²
 prgmZLFRC
 "="+Str0→Str3
@@ -151,8 +151,8 @@ prgmZLFRC
 Str3+sub("-+",1+(K<0),1)+Str0→Str3
 ⌊MKQ(4)
 prgmZLFRC
-Str3+"="+Str0→Str8
-prgmZLADD
+Str3+"="+Str0
+prgmZLA
 "D="+Str0→Str2
 If ⌊MKQ(4)<0
 Str2+"<0"→Str2
@@ -180,14 +180,14 @@ If ⌊MKQ(4)=0
 End
 If ⌊MKQ(4)>0 and ⌊MKS(2)
 " "→Str5
-Str3→Str8
-prgmZLADD
+Str3
+prgmZLA
 If M=1
 Goto DA
-"#QUADRATIC FORMULA"→Str8
-prgmZLADD
-"X=(⁻B+/-√(D))/(2A)"→Str8
-prgmZLADD
+"#QUADRATIC FORMULA"
+prgmZLA
+"X=(⁻B+/-√(D))/(2A)"
+prgmZLA
 ⁻⌊MKQ(2)
 prgmZLFRC
 Str0→Str2
@@ -196,18 +196,18 @@ prgmZLFRC
 Str0→Str3
 ⌊MKQ(4)
 prgmZLFRC
-"X=("+Str2+"+/-√("+Str0+"))/"+Str3→Str8
-prgmZLADD
+"X=("+Str2+"+/-√("+Str0+"))/"+Str3
+prgmZLA
 If ⌊MKS(2)=0
 Then
-"#SIMPLIFY THE RADICAL"→Str8
-prgmZLADD
+"#SIMPLIFY THE RADICAL"
+prgmZLA
 toString(abs(⌊MKQ(4)))→Str5
 "√("+Str0+")"→Str8
 If ⌊MKQ(4)<0
 Then
-Str8+"=𝑖√("+Str5+")"→Str8
-prgmZLADD
+Str8+"=𝑖√("+Str5+")"
+prgmZLA
 "√("+Str5+")"→Str8
 End
 If ⌊MKQ(7)=1
@@ -229,26 +229,26 @@ If ⌊MKS(2)
 √(⌊MKQ(4))
 prgmZLFRC
 Str0→Str5
-"X=("+Str2+"+"+Str5+")/"+Str3+"="→Str8
-prgmZLADD
+"X=("+Str2+"+"+Str5+")/"+Str3+"="
+prgmZLA
 ⌊MKQ(9)
 prgmZLFRC
-" ="+Str0→Str8
-prgmZLADD
+" ="+Str0
+prgmZLA
 If ⌊MKQ(4)
 Then
-"X=("+Str2+"-"+Str5+")/"+Str3+"="→Str8
-prgmZLADD
+"X=("+Str2+"-"+Str5+")/"+Str3+"="
+prgmZLA
 ⌊MKQ(8)
 prgmZLFRC
-" ="+Str0→Str8
-prgmZLADD
+" ="+Str0
+prgmZLA
 End
 Else
-"#REDUCE"→Str8
-prgmZLADD
-"X="+Str4→Str8
-prgmZLADD
+"#REDUCE"
+prgmZLA
+"X="+Str4
+prgmZLA
 End
 Goto AN
 Lbl S
@@ -278,8 +278,8 @@ Goto M
 {1,H}→⌊MKF
 prgmZLFMT
 "("+Str0+")²"→Str2
-"#ISOLATE THE SQUARE"→Str8
-prgmZLADD
+"#ISOLATE THE SQUARE"
+prgmZLA
 A
 prgmZLFRC
 Str2→Str4
@@ -297,14 +297,14 @@ If K
 Str8+sub("+-",1+(K<0),1)+Str0→Str8
 C
 prgmZLFRC
-Str8+"="+Str0→Str8
-prgmZLADD
+Str8+"="+Str0
+prgmZLA
 C-K
 prgmZLFRC
 If K≠0
 Then
-Str4+"="+Str0→Str8
-prgmZLADD
+Str4+"="+Str0
+prgmZLA
 End
 (C-K)/A→R
 If A≠1
@@ -312,8 +312,8 @@ Then
 Str0→Str5
 R
 prgmZLFRC
-Str2+"="+Str5+"/"+Str3+"="+Str0→Str8
-prgmZLADD
+Str2+"="+Str5+"/"+Str3+"="+Str0
+prgmZLA
 End
 Goto SR
 Lbl CS
@@ -325,63 +325,63 @@ If A≠1
 Then
 A
 prgmZLFRC
-"#DIVIDE BY A="+Str0→Str8
-prgmZLADD
+"#DIVIDE BY A="+Str0
+prgmZLA
 {1,G,N}→⌊MKF
 prgmZLFMT
-Str0+"=0"→Str8
-prgmZLADD
+Str0+"=0"
+prgmZLA
 End
-"#MOVE THE CONSTANT"→Str8
-prgmZLADD
+"#MOVE THE CONSTANT"
+prgmZLA
 {1,G,0}→⌊MKF
 prgmZLFMT
 Str0→Str2
 ⁻N
 prgmZLFRC
-Str2+"="+Str0→Str8
-prgmZLADD
+Str2+"="+Str0
+prgmZLA
 Str0→Str3
-"#ADD (B/2)² TO BOTH"→Str8
-prgmZLADD
+"#ADD (B/2)² TO BOTH"
+prgmZLA
 H
 prgmZLFRC
 Str0→Str2
 H²
 prgmZLFRC
-"(B/2)²=("+Str2+")²="+Str0→Str8
-prgmZLADD
+"(B/2)²=("+Str2+")²="+Str0
+prgmZLA
 Str0→Str5
 {1,G,H²}→⌊MKF
 prgmZLFMT
-Str0+"="→Str8
-prgmZLADD
+Str0+"="
+prgmZLA
 R
 prgmZLFRC
-" "+Str3+"+"+Str5+"="+Str0→Str8
-prgmZLADD
-"#FACTOR THE LEFT"→Str8
-prgmZLADD
+" "+Str3+"+"+Str5+"="+Str0
+prgmZLA
+"#FACTOR THE LEFT"
+prgmZLA
 {1,H}→⌊MKF
 prgmZLFMT
 "("+Str0+")²"→Str2
 R
 prgmZLFRC
-Str2+"="+Str0→Str8
-prgmZLADD
+Str2+"="+Str0
+prgmZLA
 Lbl SR
 {1,H}→⌊MKF
 prgmZLFMT
 Str0→Str3
-"#SQUARE ROOT PROPERTY"→Str8
-prgmZLADD
+"#SQUARE ROOT PROPERTY"
+prgmZLA
 R
 prgmZLFRC
 Str0→Str5
-"("+Str3+")²="+Str5→Str8
-prgmZLADD
-Str3+"=+/-√("+Str5+")"→Str8
-prgmZLADD
+"("+Str3+")²="+Str5
+prgmZLA
+Str3+"=+/-√("+Str5+")"
+prgmZLA
 {1,0,⁻R}→⌊MKQ
 prgmZLQSV
 If ⌊MKQ(5)=1
@@ -392,19 +392,19 @@ Else
 sub(Str0,4,length(Str0)-3)→Str0
 End
 Str0→Str2
-"#SIMPLIFY"→Str8
-prgmZLADD
+"#SIMPLIFY"
+prgmZLA
 If R<0
 Then
 ⁻R
 prgmZLFRC
-"√("+Str5+")=𝑖√("+Str0+")"→Str8
-prgmZLADD
+"√("+Str5+")=𝑖√("+Str0+")"
+prgmZLA
 End
-Str3+"=+/-"+Str2→Str8
-prgmZLADD
-"#SOLVE FOR X"→Str8
-prgmZLADD
+Str3+"=+/-"+Str2
+prgmZLA
+"#SOLVE FOR X"
+prgmZLA
 ⁻H
 prgmZLFRC
 "X="+Str0+"+/-"+Str2→Str8
@@ -416,20 +416,20 @@ prgmZLQSV
 Str0→Str4
 Goto AN
 Lbl DA
-"#ANSWER"→Str8
-prgmZLADD
-Str2→Str8
-prgmZLADD
-Str3→Str8
-prgmZLADD
-Str5→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+Str2
+prgmZLA
+Str3
+prgmZLA
+Str5
+prgmZLA
 prgmZLSHOW
 Goto M
 Lbl AN
-"#ANSWER"→Str8
-prgmZLADD
-"X="+Str4→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+"X="+Str4
+prgmZLA
 prgmZLSHOW
 Goto M

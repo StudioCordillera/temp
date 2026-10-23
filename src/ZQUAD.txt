@@ -76,40 +76,40 @@ prgmZLFMT
 Str0→Str6
 If Z
 Then
-"#TYPED"→Str8
-prgmZLADD
-"F(X)="+Str2→Str8
-prgmZLADD
-"="+Str6→Str8
-prgmZLADD
+"#TYPED"
+prgmZLA
+"F(X)="+Str2
+prgmZLA
+"="+Str6
+prgmZLA
 End
 If Y
 Then
-"#EXPAND"→Str8
-prgmZLADD
+"#EXPAND"
+prgmZLA
 B
 prgmZLFRC
-"B=⁻2AH="+Str0→Str8
-prgmZLADD
+"B=⁻2AH="+Str0
+prgmZLA
 C
 prgmZLFRC
-"C=AH²+K="+Str0→Str8
-prgmZLADD
-"F(X)="+Str6→Str8
-prgmZLADD
+"C=AH²+K="+Str0
+prgmZLA
+"F(X)="+Str6
+prgmZLA
 End
-"#DIRECTION"→Str8
-prgmZLADD
+"#DIRECTION"
+prgmZLA
 A
 prgmZLFRC
-"A="+Str0+sub("<>",1+(A>0),1)+"0"→Str8
-prgmZLADD
+"A="+Str0+sub("<>",1+(A>0),1)+"0"
+prgmZLA
 "OPENS DOWN"→Str8
 If A>0
 "OPENS UP"→Str8
 prgmZLADD
-"#VERTEX"→Str8
-prgmZLADD
+"#VERTEX"
+prgmZLA
 ⁻B
 prgmZLFRC
 Str0→Str2
@@ -117,15 +117,15 @@ Str0→Str2
 prgmZLFRC
 If U<0 or V>1
 "("+Str0+")"→Str0
-"H=⁻B/(2A)="+Str2+"/"+Str0→Str8
-prgmZLADD
+"H=⁻B/(2A)="+Str2+"/"+Str0
+prgmZLA
 H
 prgmZLFRC
 Str0→Str2
-" ="+Str2→Str8
-prgmZLADD
-"K=F("+Str2+")"→Str8
-prgmZLADD
+" ="+Str2
+prgmZLA
+"K=F("+Str2+")"
+prgmZLA
 A
 prgmZLFRC
 "("+Str2+")²"→Str3
@@ -149,32 +149,32 @@ abs(C)
 prgmZLFRC
 Str3+sub("+-",1+(C<0),1)+Str0→Str3
 End
-" ="+Str3→Str8
-prgmZLADD
+" ="+Str3
+prgmZLA
 K
 prgmZLFRC
 Str0→Str3
-" ="+Str3→Str8
-prgmZLADD
-"VERTEX ("+Str2+","+Str3+")"→Str8
-prgmZLADD
-"#AXIS OF SYMMETRY"→Str8
-prgmZLADD
-"X="+Str2→Str8
-prgmZLADD
-"#Y-INTERCEPT"→Str8
-prgmZLADD
+" ="+Str3
+prgmZLA
+"VERTEX ("+Str2+","+Str3+")"
+prgmZLA
+"#AXIS OF SYMMETRY"
+prgmZLA
+"X="+Str2
+prgmZLA
+"#Y-INTERCEPT"
+prgmZLA
 C
 prgmZLFRC
 Str0→Str4
-"F(0)=C="+Str4→Str8
-prgmZLADD
-"(0,"+Str4+")"→Str8
-prgmZLADD
-"#X-INTERCEPTS"→Str8
-prgmZLADD
-"SOLVE "+Str6+"=0"→Str8
-prgmZLADD
+"F(0)=C="+Str4
+prgmZLA
+"(0,"+Str4+")"
+prgmZLA
+"#X-INTERCEPTS"
+prgmZLA
+"SOLVE "+Str6+"=0"
+prgmZLA
 {A,B,C}→⌊MKQ
 prgmZLQSV
 Str0→Str5
@@ -187,18 +187,18 @@ prgmZLADD
 inString(Str7,",")→N
 If ⌊MKQ(5)=3
 Then
-"NO REAL ZEROS"→Str8
-prgmZLADD
+"NO REAL ZEROS"
+prgmZLA
 "NONE"→Str5
 Else
-"X="+Str5→Str8
-prgmZLADD
+"X="+Str5
+prgmZLA
 If N
 "("+sub(Str7,1,N-1)+",0),("+sub(Str7,N+1,length(Str7)-N)+",0)"→Str5
 If not(N)
 "("+Str7+",0)"→Str5
-Str5→Str8
-prgmZLADD
+Str5
+prgmZLA
 End
 "#MAXIMUM"→Str8
 If A>0
@@ -208,21 +208,21 @@ prgmZLADD
 If A>0
 "MINIMUM VALUE "+Str3→Str8
 prgmZLADD
-"AT X="+Str2→Str8
-prgmZLADD
-"#DOMAIN AND RANGE"→Str8
-prgmZLADD
-"DOMAIN (⁻INF,INF)"→Str8
-prgmZLADD
+"AT X="+Str2
+prgmZLA
+"#DOMAIN AND RANGE"
+prgmZLA
+"DOMAIN (⁻INF,INF)"
+prgmZLA
 "RANGE (⁻INF,"+Str3+"]"→Str4
 If A>0
 "RANGE ["+Str3+",INF)"→Str4
-Str4→Str8
-prgmZLADD
-"#VERTEX FORM"→Str8
-prgmZLADD
-"A(X-H)²+K"→Str8
-prgmZLADD
+Str4
+prgmZLA
+"#VERTEX FORM"
+prgmZLA
+"A(X-H)²+K"
+prgmZLA
 {1,⁻H}→⌊MKF
 prgmZLFMT
 "("+Str0+")²"→Str1
@@ -242,12 +242,12 @@ abs(K)
 prgmZLFRC
 Str1+sub("+-",1+(K<0),1)+Str0→Str1
 End
-"F(X)="+Str1→Str8
-prgmZLADD
-"#POINTS TO PLOT"→Str8
-prgmZLADD
-"  X        F(X)"→Str8
-prgmZLADD
+"F(X)="+Str1
+prgmZLA
+"#POINTS TO PLOT"
+prgmZLA
+"  X        F(X)"
+prgmZLA
 For(J,⁻2,2)
 A(H+J)²+B(H+J)+C→N
 H+J
@@ -260,8 +260,8 @@ If not(J)
 Str8+"  VERTEX"→Str8
 prgmZLADD
 End
-"#GRAPH"→Str8
-prgmZLADD
+"#GRAPH"
+prgmZLA
 min(H-3,0)→L
 max(H+3,0)→R
 If ⌊MKQ(5)≠3
@@ -276,51 +276,54 @@ max(augment(⌊MKW,{K,C,0}))→E
 {L,R,D-F,E+F,0,2,H,K,0,C}→⌊MKW
 If G
 Goto AA
-"#ANSWER"→Str8
-prgmZLADD
-"F(X)="+Str1→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+"F(X)="+Str1
+prgmZLA
 "VERTEX ("+Str2+","+Str3+") "+sub("MAXMIN",1+3(A>0),3)+" "+Str3→Str8
 If length(Str8)>26
 Then
-"VERTEX ("+Str2+","+Str3+")"→Str8
-prgmZLADD
+"VERTEX ("+Str2+","+Str3+")"
+prgmZLA
 sub("MAXMIN",1+3(A>0),3)+" "+Str3→Str8
 End
 prgmZLADD
-"AXIS X="+Str2→Str8
-prgmZLADD
+"AXIS X="+Str2
+prgmZLA
 C
 prgmZLFRC
-"Y-INT (0,"+Str0+")"→Str8
-prgmZLADD
+"Y-INT (0,"+Str0+")"
+prgmZLA
 inString(Str5,"),(")→N
 "X-INT "+Str5→Str8
 If N and length(Str5)>18
 Then
-"X-INT "+sub(Str5,1,N)→Str8
-prgmZLADD
+"X-INT "+sub(Str5,1,N)
+prgmZLA
 "      "+sub(Str5,N+2,length(Str5)-N-1)→Str8
 End
 prgmZLADD
-"DOMAIN (⁻INF,INF)"→Str8
-prgmZLADD
-Str4→Str8
-prgmZLADD
-"POINTS"→Str8
+"DOMAIN (⁻INF,INF)"
+prgmZLA
+Str4
+prgmZLA
+"#ANSWER (POINTS)"
+prgmZLA
+"PLOT 2 ON EACH SIDE"
+prgmZLA
 For(J,⁻2,2)
 If J
 Then
 A(H+J)²+B(H+J)+C→N
 H+J
 prgmZLFRC
-Str8+" ("+Str0+","→Str8
+"("+Str0+","→Str8
 N
 prgmZLFRC
-Str8+Str0+")"→Str8
+Str8+Str0+")"
+prgmZLA
 End
 End
-prgmZLADD
 prgmZLSHOW
 Goto M
 Lbl AA
@@ -331,10 +334,10 @@ sub(Str1,1,N-1)+Str4+sub(Str1,N+1,length(Str1)-N)→Str1
 End
 {A,B,C}→⌊MKQ
 prgmZLQSV
-"#ANSWER"→Str8
-prgmZLADD
-sub("MAXMIN",1+3(A>0),3)+" "+Str3+" AT "+Str4+"="+Str2→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+sub("MAXMIN",1+3(A>0),3)+" "+Str3+" AT "+Str4+"="+Str2
+prgmZLA
 inString(Str7,",")→N
 ⌊MKQ(5)≠3 and ⌊MKQ(9)≥0→J
 If J and N
@@ -360,22 +363,22 @@ prgmZLADD
 End
 If ⌊MKQ(5)≠3 and N>0 and ⌊MKQ(8)<0 and ⌊MKQ(9)≥0
 Then
-"(REJECT "+Str4+"="+sub(Str7,1,N-1)+", "+Str4+"<0)"→Str8
-prgmZLADD
+"(REJECT "+Str4+"="+sub(Str7,1,N-1)+", "+Str4+"<0)"
+prgmZLA
 End
 If ⌊MKQ(5)≠3 and N>0 and ⌊MKQ(8)≥0
 Then
-"ALSO 0 AT "+Str4+"="+sub(Str7,1,N-1)→Str8
-prgmZLADD
+"ALSO 0 AT "+Str4+"="+sub(Str7,1,N-1)
+prgmZLA
 End
 C
 prgmZLFRC
-"AT "+Str4+"=0 THE VALUE IS "+Str0→Str8
-prgmZLADD
-"VERTEX ("+Str2+","+Str3+")"→Str8
-prgmZLADD
-"F("+Str4+")="+Str1→Str8
-prgmZLADD
+"AT "+Str4+"=0 THE VALUE IS "+Str0
+prgmZLA
+"VERTEX ("+Str2+","+Str3+")"
+prgmZLA
+"F("+Str4+")="+Str1
+prgmZLA
 prgmZLSHOW
 Goto M
 Lbl GR
@@ -414,8 +417,8 @@ abs(K)
 prgmZLFRC
 sub("+-",1+(K<0),1)+Str0→Str3
 End
-"#START FROM VERTEX FORM"→Str8
-prgmZLADD
+"#START FROM VERTEX FORM"
+prgmZLA
 "F(X)=A"+Str2+Str3→Str8
 If not(K)
 "F(X)=A"+Str2→Str8
@@ -426,8 +429,8 @@ Str0→Str4
 N
 prgmZLFRC
 Str0→Str5
-"#PLUG IN ("+Str4+","+Str5+")"→Str8
-prgmZLADD
+"#PLUG IN ("+Str4+","+Str5+")"
+prgmZLA
 J-H
 prgmZLFRC
 Str5+"=A("+Str0+")²"+Str3→Str8
@@ -439,12 +442,12 @@ prgmZLFRC
 Str0→Str4
 N-K
 prgmZLFRC
-Str0+"="+Str4+"A"→Str8
-prgmZLADD
+Str0+"="+Str4+"A"
+prgmZLA
 A
 prgmZLFRC
-"A="+Str0→Str8
-prgmZLADD
+"A="+Str0
+prgmZLA
 Str2→Str1
 abs(A)
 prgmZLFRC
@@ -456,22 +459,22 @@ If A<0
 "⁻"+Str1→Str1
 If K
 Str1+Str3→Str1
-"#ANSWER"→Str8
-prgmZLADD
-"F(X)="+Str1→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+"F(X)="+Str1
+prgmZLA
 A
 prgmZLFRC
-"A="+Str0+sub("<>",1+(A>0),1)+"0, OPENS "+sub("DOWNUP",1+4(A>0),4-2(A>0))→Str8
-prgmZLADD
+"A="+Str0+sub("<>",1+(A>0),1)+"0, OPENS "+sub("DOWNUP",1+4(A>0),4-2(A>0))
+prgmZLA
 H
 prgmZLFRC
 Str0→Str2
 K
 prgmZLFRC
-"VERTEX ("+Str2+","+Str0+")"→Str8
-prgmZLADD
-"AXIS X="+Str2→Str8
-prgmZLADD
+"VERTEX ("+Str2+","+Str0+")"
+prgmZLA
+"AXIS X="+Str2
+prgmZLA
 prgmZLSHOW
 Goto M

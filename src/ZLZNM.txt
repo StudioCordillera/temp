@@ -1,0 +1,81 @@
+3→Z
+a+b𝑖
+⌊MKH/⌊MKH(1)→⌊MKNP
+ClrList ⌊MKN,⌊MKNI
+While dim(⌊MKNP)≥4
+dim(⌊MKNP)-1→I
+seq(I-θ,θ,0,I)→⌊MKPW
+seq(I-θ,θ,1,I)→⌊MKPD
+seq(⌊MKNP(θ)⌊MKPW(θ),θ,1,I)→⌊MKND
+.4+.9𝑖→J
+For(θ,1,60)
+J-sum(⌊MKNP*J^⌊MKPW)/sum(⌊MKND*J^⌊MKPD)→J
+End
+If abs(imag(J))<1ᴇ⁻6max(1,abs(J))
+Then
+real(J)→J
+J→⌊MKN(dim(⌊MKN)+1)
+0→⌊MKNI(dim(⌊MKNI)+1)
+For(θ,2,I)
+⌊MKNP(θ)+J⌊MKNP(θ-1)→⌊MKNP(θ)
+End
+I→dim(⌊MKNP)
+Else
+real(J)→⌊MKN(dim(⌊MKN)+1)
+abs(imag(J))→⌊MKNI(dim(⌊MKNI)+1)
+⁻2real(J)→⌊MKJ(1)
+abs(J)²→⌊MKJ(2)
+⌊MKNP(2)-⌊MKJ(1)⌊MKNP(1)→⌊MKNP(2)
+For(θ,3,I)
+⌊MKNP(θ)-⌊MKJ(1)⌊MKNP(θ-1)-⌊MKJ(2)⌊MKNP(θ-2)→⌊MKNP(θ)
+End
+I-1→dim(⌊MKNP)
+End
+End
+Real
+If dim(⌊MKNP)=2
+Then
+⁻⌊MKNP(2)/⌊MKNP(1)→⌊MKN(dim(⌊MKN)+1)
+0→⌊MKNI(dim(⌊MKNI)+1)
+End
+If dim(⌊MKNP)=3
+Then
+⌊MKNP(2)/⌊MKNP(1)→⌊MKJ(1)
+⌊MKNP(3)/⌊MKNP(1)→⌊MKJ(2)
+⌊MKJ(1)²-4⌊MKJ(2)→I
+If I≥0
+Then
+(⁻⌊MKJ(1)-√(I))/2→⌊MKN(dim(⌊MKN)+1)
+0→⌊MKNI(dim(⌊MKNI)+1)
+(⁻⌊MKJ(1)+√(I))/2→⌊MKN(dim(⌊MKN)+1)
+0→⌊MKNI(dim(⌊MKNI)+1)
+Else
+⁻⌊MKJ(1)/2→⌊MKN(dim(⌊MKN)+1)
+√(⁻I)/2→⌊MKNI(dim(⌊MKNI)+1)
+End
+End
+If Y
+Then
+"#NO RATIONAL ZEROS"
+prgmZLA
+"APPROXIMATE ZEROS OF"
+prgmZLA
+⌊MKH→⌊MKF
+prgmZLFMT
+Str0+"=0"
+prgmZLA
+1→⌊MKS(2)
+For(I,1,dim(⌊MKN))
+⌊MKN(I)
+prgmZLFRC
+"X="+Str0→Str8
+If ⌊MKNI(I)
+Then
+⌊MKNI(I)
+prgmZLFRC
+Str8+"+/-"+Str0+"𝑖"→Str8
+End
+prgmZLADD
+End
+0→⌊MKS(2)
+End

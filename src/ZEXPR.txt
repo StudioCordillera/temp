@@ -30,10 +30,15 @@ If ⌊MKS(2)
 Then
 round(⌊MKE,8)→⌊MKE
 Else
+If max(abs(⌊MKE-round(⌊MKE,0)))<1ᴇ⁻9
+Then
+round(⌊MKE,0)→⌊MKE
+Else
 For(O,1,dim(⌊MKE))
 ⌊MKE(O)
 prgmZLFRC
 U/V→⌊MKE(O)
+End
 End
 End
 1→V
@@ -50,9 +55,11 @@ End
 End
 If V
 Then
-While dim(⌊MKE)>1 and abs(⌊MKE(1))<1ᴇ⁻9
-seq(⌊MKE(O),O,2,dim(⌊MKE))→⌊MKE
-End
+sum(not(cumSum(abs(⌊MKE)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKE)
+{0}→⌊MKE
+If θ and θ<dim(⌊MKE)
+seq(⌊MKE(O),O,θ+1,dim(⌊MKE))→⌊MKE
 End
 If V
 Then

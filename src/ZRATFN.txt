@@ -53,21 +53,21 @@ End
 Str0→Str4
 If M
 Goto AI
-"#FACTOR"→Str8
-prgmZLADD
+"#FACTOR"
+prgmZLA
 ⌊MKNU→⌊MKF
 prgmZLFMT
 "F(X)=("+Str0+")/"→Str8
 ⌊MKDE→⌊MKF
 prgmZLFMT
-Str8+"("+Str0+")"→Str8
-prgmZLADD
-"N="+Str4→Str8
-prgmZLADD
-"D="+Str3→Str8
-prgmZLADD
-"#DOMAIN"→Str8
-prgmZLADD
+Str8+"("+Str0+")"
+prgmZLA
+"N="+Str4
+prgmZLA
+"D="+Str3
+prgmZLA
+"#DOMAIN"
+prgmZLA
 "D=0 AT X="+Str2→Str8
 If not(dim(⌊MKDR))
 "D=0 AT X=NONE"→Str8
@@ -75,8 +75,8 @@ prgmZLADD
 "{X | X≠"+Str2+"}"→Str3
 If not(dim(⌊MKDR))
 "{X | X REAL}"→Str3
-Str3→Str8
-prgmZLADD
+Str3
+prgmZLA
 Lbl AI
 ⌊MKNU→⌊MKA
 ⌊MKDE→⌊MKB
@@ -104,8 +104,8 @@ End
 End
 If M
 Goto AJ
-"#HOLES"→Str8
-prgmZLADD
+"#HOLES"
+prgmZLA
 "NO COMMON FACTORS"→Str8
 If dim(⌊MKHO)
 "COMMON FACTOR CANCELS"→Str8
@@ -130,8 +130,8 @@ prgmZLFRC
 Str8+" AT ("+Str5+","+Str0+")"→Str8
 End
 Str4+Str8+", "→Str4
-"HOLE "+Str8→Str8
-prgmZLADD
+"HOLE "+Str8
+prgmZLA
 End
 "NONE"→Str5
 If dim(⌊MKHO)
@@ -142,14 +142,14 @@ prgmZLFMT
 "F(X)=("+Str0+")/"→Str8
 ⌊MKB→⌊MKF
 prgmZLFMT
-Str8+"("+Str0+")"→Str8
-prgmZLADD
+Str8+"("+Str0+")"
+prgmZLA
 End
 Str5→Str4
-"#X-INTERCEPTS"→Str8
-prgmZLADD
-"NUMERATOR = 0"→Str8
-prgmZLADD
+"#X-INTERCEPTS"
+prgmZLA
+"NUMERATOR = 0"
+prgmZLA
 " "→Str5
 ClrList ⌊MKXI
 1→J
@@ -220,21 +220,21 @@ If D=E+1
 "NONE (SLANT)"→Str6
 If M
 Goto AX
-"#VERTICAL ASYMPTOTES"→Str8
-prgmZLADD
-Str1→Str8
-prgmZLADD
+"#VERTICAL ASYMPTOTES"
+prgmZLA
+Str1
+prgmZLA
 If dim(⌊MKVA)
 Then
-"NEAR EACH, F(X) BLOWS UP"→Str8
-prgmZLADD
-"(TO INF OR ⁻INF)"→Str8
-prgmZLADD
+"NEAR EACH, F(X) BLOWS UP"
+prgmZLA
+"(TO INF OR ⁻INF)"
+prgmZLA
 End
-"#HORIZONTAL ASYMPTOTE"→Str8
-prgmZLADD
-"DEG N="+toString(D)+", DEG D="+toString(E)→Str8
-prgmZLADD
+"#HORIZONTAL ASYMPTOTE"
+prgmZLA
+"DEG N="+toString(D)+", DEG D="+toString(E)
+prgmZLA
 "N LOWER"→Str8
 If D=E
 "EQUAL DEGREES"→Str8
@@ -258,15 +258,15 @@ End
 prgmZLADD
 If D≤E
 Then
-"AS X GROWS, F(X) GETS"→Str8
-prgmZLADD
+"AS X GROWS, F(X) GETS"
+prgmZLA
 H
 prgmZLFRC
-"CLOSER AND CLOSER TO "+Str0→Str8
-prgmZLADD
+"CLOSER AND CLOSER TO "+Str0
+prgmZLA
 End
-"#Y-INTERCEPT"→Str8
-prgmZLADD
+"#Y-INTERCEPT"
+prgmZLA
 ⌊MKDE(dim(⌊MKDE))→G
 "NONE (X=0 EXCLUDED)"→Str2
 If G
@@ -275,26 +275,30 @@ Then
 prgmZLFRC
 "(0,"+Str0+")"→Str2
 End
-"F(0)="+Str2→Str8
+⌊MKNU(dim(⌊MKNU))/(G+not(G))
+prgmZLFRC
+"F(0)="+Str0→Str8
 If not(G)
 "F(0) IS UNDEFINED"→Str8
 prgmZLADD
-"#GRAPH"→Str8
+Str2→Str8
 prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
-"DOMAIN "+Str3→Str8
-prgmZLADD
-"X-INT "+Str5→Str8
-prgmZLADD
-"V.A. "+Str1→Str8
-prgmZLADD
-"H.A. "+Str6→Str8
-prgmZLADD
-"HOLES "+Str4→Str8
-prgmZLADD
-"Y-INT "+Str2→Str8
-prgmZLADD
+"#GRAPH"
+prgmZLA
+"#ANSWER"
+prgmZLA
+"DOMAIN "+Str3
+prgmZLA
+"X-INT "+Str5
+prgmZLA
+"V.A. "+Str1
+prgmZLA
+"H.A. "+Str6
+prgmZLA
+"HOLES "+Str4
+prgmZLA
+"Y-INT "+Str2
+prgmZLA
 augment(augment({0},⌊MKVA),⌊MKXI)→⌊MKA
 min(⌊MKA)-4→A
 max(⌊MKA)+4→B
@@ -337,19 +341,19 @@ Goto M
 K
 prgmZLEVL
 W→H
-"#SUBSTITUTE"→Str8
-prgmZLADD
-"F("+Str2+")=N("+Str2+")/D("+Str2+")"→Str8
-prgmZLADD
+"#SUBSTITUTE"
+prgmZLA
+"F("+Str2+")=N("+Str2+")/D("+Str2+")"
+prgmZLA
 H
 prgmZLFRC
 " ="+Str0+"/"→Str8
 G
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
+"#ANSWER"
+prgmZLA
 H/G
 prgmZLFRC
 "F("+Str2+")="+Str0→Str8
@@ -378,30 +382,32 @@ augment(seq(0,L,1,dim(⌊MKB)-dim(⌊MKA)),⌊MKA)→⌊MKA
 If dim(⌊MKB)<dim(⌊MKA)
 augment(seq(0,L,1,dim(⌊MKA)-dim(⌊MKB)),⌊MKB)→⌊MKB
 ⌊MKA-⌊MKB→⌊MKA
-While dim(⌊MKA)>1 and abs(⌊MKA(1))<1ᴇ⁻9
-seq(⌊MKA(L),L,2,dim(⌊MKA))→⌊MKA
-End
+sum(not(cumSum(abs(⌊MKA)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKA)
+{0}→⌊MKA
+If θ and θ<dim(⌊MKA)
+seq(⌊MKA(L),L,θ+1,dim(⌊MKA))→⌊MKA
 If ⌊MKA(1)<0
 ⁻⌊MKA→⌊MKA
-"#CLEAR THE DENOMINATOR"→Str8
-prgmZLADD
+"#CLEAR THE DENOMINATOR"
+prgmZLA
 ⌊MKNU→⌊MKF
 prgmZLFMT
-Str0+"="→Str8
-prgmZLADD
+Str0+"="
+prgmZLA
 C
 prgmZLFRC
 Str0→Str2
 ⌊MKDE→⌊MKF
 prgmZLFMT
-"  "+Str2+"("+Str0+")"→Str8
-prgmZLADD
-"#COLLECT"→Str8
-prgmZLADD
+"  "+Str2+"("+Str0+")"
+prgmZLA
+"#COLLECT"
+prgmZLA
 ⌊MKA→⌊MKF
 prgmZLFMT
-Str0+"=0"→Str8
-prgmZLADD
+Str0+"=0"
+prgmZLA
 " "→Str3
 If dim(⌊MKA)=1
 Then
@@ -441,10 +447,10 @@ If length(Str3)>1
 sub(Str3,2,length(Str3)-3)→Str8
 Str8→Str3
 Lbl S9
-"#ANSWER"→Str8
-prgmZLADD
-Str3→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+Str3
+prgmZLA
 prgmZLSHOW
 Goto M
 Lbl T
@@ -464,10 +470,10 @@ augment(augment({0},⌊MKDR),⌊MKRR)→⌊MKA
 int(min(⌊MKA))-3→A
 iPart(max(⌊MKA))+4→B
 1+int((B-A)/14)→C
-"#TABLE"→Str8
-prgmZLADD
-"  X      F(X)"→Str8
-prgmZLADD
+"#TABLE"
+prgmZLA
+"  X      F(X)"
+prgmZLA
 1→⌊MKS(2)
 For(K,A,B,C)
 ⌊MKDE→⌊MKF
@@ -483,21 +489,21 @@ W/G→H
 " "+sub(toString(K)+"       ",1,7)→Str8
 H
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 End
 End
 F→⌊MKS(2)
-"#ANSWER"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
 "V.A. CANDIDATES X="+Str6→Str8
 If dim(⌊MKDR)=0
 "NO V.A. CANDIDATES"→Str8
 prgmZLADD
-"PLOT THE TABLE POINTS ON"→Str8
-prgmZLADD
-"BOTH SIDES OF EACH V.A."→Str8
-prgmZLADD
+"PLOT THE TABLE POINTS ON"
+prgmZLA
+"BOTH SIDES OF EACH V.A."
+prgmZLA
 prgmZLSHOW
 Goto M
 Lbl AP
@@ -530,8 +536,8 @@ Str4+Str5→Str5
 1→M
 Goto A2
 Lbl AX
-"#INTERPRET"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
 sub(Str5,1,1)→Str4
 sub(Str5,2,length(Str5)-1)→Str5
 For(K,1,dim(⌊MKVA))
@@ -560,26 +566,15 @@ If D≤E
 Then
 H
 prgmZLFRC
-"AS X-"+">INF, "+Str4+"-"+">"+Str0→Str8
-prgmZLADD
-"LONG-RUN "+Str5+"-"+">"+Str0→Str8
-prgmZLADD
+"AS X-"+">INF, "+Str4+"-"+">"+Str0
+prgmZLA
+"LONG-RUN "+Str5+"-"+">"+Str0
+prgmZLA
 Else
-"AS X-"+">INF, "+Str4+" GROWS"→Str8
-prgmZLADD
-"WITHOUT BOUND (NO H.A.)"→Str8
-prgmZLADD
-End
-"#ANSWER"→Str8
-prgmZLADD
-inString(Str9,"#INTERPRET")→L
-For(K,1,dim(⌊MKL)-1)
-If ⌊MKL(K)=L
-K→J
-End
-For(K,J+1,dim(⌊MKL)-2)
-sub(Str9,⌊MKL(K),⌊MKL(K+1)-⌊MKL(K))→Str8
-prgmZLADD
+"AS X-"+">INF, "+Str4+" GROWS"
+prgmZLA
+"WITHOUT BOUND (NO H.A.)"
+prgmZLA
 End
 prgmZLSHOW
 0→M

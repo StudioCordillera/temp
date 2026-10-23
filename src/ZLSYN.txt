@@ -15,16 +15,25 @@ Then
 1→⌊MKZ(2)
 For(θ,1,O)
 θ→⌊MKZ(3)
-⌊MKT(θ)
+⌊MKT(⌊MKZ(3))
+If fPart(Ans)
 prgmZLFRC
+If not(fPart(⌊MKT(⌊MKZ(3))))
+toString(⌊MKT(⌊MKZ(3)))→Str0
 max(⌊MKZ(2),length(Str0))→⌊MKZ(2)
 ⌊MKY(⌊MKZ(3))
+If fPart(Ans)
 prgmZLFRC
+If not(fPart(⌊MKY(⌊MKZ(3))))
+toString(⌊MKY(⌊MKZ(3)))→Str0
 max(⌊MKZ(2),length(Str0))→⌊MKZ(2)
 If ⌊MKZ(3)>1
 Then
 ⌊MKY(⌊MKZ(3)-1)⌊MKZ(1)
+If fPart(Ans)
 prgmZLFRC
+If not(fPart(⌊MKY(⌊MKZ(3)-1)⌊MKZ(1)))
+toString(⌊MKY(⌊MKZ(3)-1)⌊MKZ(1))→Str0
 max(⌊MKZ(2),length(Str0))→⌊MKZ(2)
 End
 ⌊MKZ(3)→θ
@@ -38,16 +47,25 @@ sub("            ",1,P)+"+"+sub("--------------------------",1,min(25-P,O⌊MKZ(
 sub("            ",1,P+1)→Str5
 For(θ,1,O)
 θ→⌊MKZ(3)
-⌊MKT(θ)
+⌊MKT(⌊MKZ(3))
+If fPart(Ans)
 prgmZLFRC
+If not(fPart(⌊MKT(⌊MKZ(3))))
+toString(⌊MKT(⌊MKZ(3)))→Str0
 Str2+sub("            "+Str0,13+length(Str0)-⌊MKZ(4),⌊MKZ(4))→Str2
 ⌊MKY(⌊MKZ(3))
+If fPart(Ans)
 prgmZLFRC
+If not(fPart(⌊MKY(⌊MKZ(3))))
+toString(⌊MKY(⌊MKZ(3)))→Str0
 Str5+sub("            "+Str0,13+length(Str0)-⌊MKZ(4),⌊MKZ(4))→Str5
 If ⌊MKZ(3)>1
 Then
 ⌊MKY(⌊MKZ(3)-1)⌊MKZ(1)
+If fPart(Ans)
 prgmZLFRC
+If not(fPart(⌊MKY(⌊MKZ(3)-1)⌊MKZ(1)))
+toString(⌊MKY(⌊MKZ(3)-1)⌊MKZ(1))→Str0
 Str3+sub("            "+Str0,13+length(Str0)-⌊MKZ(4),⌊MKZ(4))→Str3
 End
 ⌊MKZ(3)→θ

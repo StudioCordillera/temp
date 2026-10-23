@@ -58,18 +58,22 @@ Goto M
 " "→Str5
 For(K,1,N)
 seq(⌊MKTN(7K-7+L),L,1,7)→⌊MKF
-While dim(⌊MKF)>1 and ⌊MKF(1)=0
-seq(⌊MKF(L),L,2,dim(⌊MKF))→⌊MKF
-End
+sum(not(cumSum(abs(⌊MKF)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKF)
+{0}→⌊MKF
+If θ and θ<dim(⌊MKF)
+seq(⌊MKF(L),L,θ+1,dim(⌊MKF))→⌊MKF
 sum(⌊MKF≠0)→G
 prgmZLFMT
 Str0→Str2
 If G>1
 "("+Str0+")"→Str2
 seq(⌊MKTD(7K-7+L),L,1,7)→⌊MKF
-While dim(⌊MKF)>1 and ⌊MKF(1)=0
-seq(⌊MKF(L),L,2,dim(⌊MKF))→⌊MKF
-End
+sum(not(cumSum(abs(⌊MKF)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKF)
+{0}→⌊MKF
+If θ and θ<dim(⌊MKF)
+seq(⌊MKF(L),L,θ+1,dim(⌊MKF))→⌊MKF
 sum(⌊MKF≠0)→G
 dim(⌊MKF)=1 and ⌊MKF(1)=1→H
 prgmZLFMT
@@ -96,20 +100,22 @@ If sub(Str4,1,1)="-"
 "⁻"+sub(Str4,2,length(Str4)-1)→Str4
 If sub(Str5,1,1)="-"
 "⁻"+sub(Str5,2,length(Str5)-1)→Str5
-"#THE EQUATION"→Str8
-prgmZLADD
-Str4+"="+Str5→Str8
-prgmZLADD
-"#RESTRICTIONS"→Str8
-prgmZLADD
+"#THE EQUATION"
+prgmZLA
+Str4+"="+Str5
+prgmZLA
+"#RESTRICTIONS"
+prgmZLA
 ClrList ⌊MKXV,⌊MKLR,⌊MKLM,⌊MKLQ
 1→C
 " "→Str3
 For(K,1,N)
 seq(⌊MKTD(7K-7+L),L,1,7)→⌊MKH
-While dim(⌊MKH)>1 and ⌊MKH(1)=0
-seq(⌊MKH(L),L,2,dim(⌊MKH))→⌊MKH
-End
+sum(not(cumSum(abs(⌊MKH)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKH)
+{0}→⌊MKH
+If θ and θ<dim(⌊MKH)
+seq(⌊MKH(L),L,θ+1,dim(⌊MKH))→⌊MKH
 If dim(⌊MKH)=1
 Then
 ⌊MKH(1)
@@ -125,10 +131,10 @@ Str0→Str2
 0→Y
 prgmZLZER
 prgmZLIFC
-If Str0≠Str2
+If Str0≠Str2 and Str0≠"("+Str2+")"
 Then
-Str2+" = "+Str0→Str8
-prgmZLADD
+Str2+" = "+Str0
+prgmZLA
 End
 Q
 prgmZLFRC
@@ -184,7 +190,7 @@ End
 End
 "NO EXCLUDED VALUES"→Str8
 If dim(⌊MKXV)
-"X≠"+sub(Str3,3,length(Str3)-2)→Str8
+"X≠"+sub(Str3,4,length(Str3)-3)→Str8
 prgmZLADD
 {C}→⌊MKLC
 C
@@ -216,9 +222,11 @@ Str2+"^"+toString(⌊MKLM(K))→Str2
 End
 For(K,1,dim(⌊MKLQ)/7)
 seq(⌊MKLQ(7K-7+L),L,1,7)→⌊MKX
-While dim(⌊MKX)>1 and ⌊MKX(1)=0
-seq(⌊MKX(L),L,2,dim(⌊MKX))→⌊MKX
-End
+sum(not(cumSum(abs(⌊MKX)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKX)
+{0}→⌊MKX
+If θ and θ<dim(⌊MKX)
+seq(⌊MKX(L),L,θ+1,dim(⌊MKX))→⌊MKX
 ⌊MKLC→⌊MKF
 prgmZLMUL
 ⌊MKF→⌊MKLC
@@ -228,25 +236,34 @@ Str2+"("+Str0+")"→Str2
 End
 If sub(Str2,1,1)=" " and length(Str2)>1
 sub(Str2,2,length(Str2)-1)→Str2
-"#LCD"→Str8
-prgmZLADD
-"LCD="+Str2→Str8
-prgmZLADD
+"#LCD"
+prgmZLA
+"LCD="+Str2
+prgmZLA
 {0}→⌊MKEQ
 " "→Str4
 " "→Str5
 For(K,1,N)
 seq(⌊MKTN(7K-7+L),L,1,7)→⌊MKF
+sum(not(cumSum(abs(⌊MKF)>1ᴇ⁻9)))→θ
+If θ=7
+{0}→⌊MKF
+If θ and θ<7
+seq(⌊MKF(L),L,θ+1,7)→⌊MKF
 ⌊MKLC→⌊MKX
 prgmZLMUL
 seq(⌊MKTD(7K-7+L),L,1,7)→⌊MKX
-While dim(⌊MKX)>1 and ⌊MKX(1)=0
-seq(⌊MKX(L),L,2,dim(⌊MKX))→⌊MKX
-End
+sum(not(cumSum(abs(⌊MKX)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKX)
+{0}→⌊MKX
+If θ and θ<dim(⌊MKX)
+seq(⌊MKX(L),L,θ+1,dim(⌊MKX))→⌊MKX
 prgmZLDVQ
-While dim(⌊MKF)>1 and abs(⌊MKF(1))<1ᴇ⁻9
-seq(⌊MKF(L),L,2,dim(⌊MKF))→⌊MKF
-End
+sum(not(cumSum(abs(⌊MKF)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKF)
+{0}→⌊MKF
+If θ and θ<dim(⌊MKF)
+seq(⌊MKF(L),L,θ+1,dim(⌊MKF))→⌊MKF
 If dim(⌊MKEQ)<dim(⌊MKF)
 augment(seq(0,L,1,dim(⌊MKF)-dim(⌊MKEQ)),⌊MKEQ)→⌊MKEQ
 If dim(⌊MKF)<dim(⌊MKEQ)
@@ -258,47 +275,49 @@ Str4+"+("+Str0+")"→Str4
 If ⌊MKTS(K)<0
 Str5+"+("+Str0+")"→Str5
 End
-"#MULTIPLY BY THE LCD"→Str8
-prgmZLADD
-sub(Str4,3,length(Str4)-2)→Str8
-prgmZLADD
-"="+sub(Str5,3,length(Str5)-2)→Str8
-prgmZLADD
-While dim(⌊MKEQ)>1 and abs(⌊MKEQ(1))<1ᴇ⁻9
-seq(⌊MKEQ(L),L,2,dim(⌊MKEQ))→⌊MKEQ
-End
+"#MULTIPLY BY THE LCD"
+prgmZLA
+sub(Str4,3,length(Str4)-2)
+prgmZLA
+"="+sub(Str5,3,length(Str5)-2)
+prgmZLA
+sum(not(cumSum(abs(⌊MKEQ)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKEQ)
+{0}→⌊MKEQ
+If θ and θ<dim(⌊MKEQ)
+seq(⌊MKEQ(L),L,θ+1,dim(⌊MKEQ))→⌊MKEQ
 If ⌊MKEQ(1)<0
 ⁻⌊MKEQ→⌊MKEQ
 If dim(⌊MKEQ)=1
 Then
-"#COLLECT"→Str8
-prgmZLADD
+"#COLLECT"
+prgmZLA
 "0=0 IS TRUE FOR EVERY X"→Str8
 If abs(⌊MKEQ(1))>1ᴇ⁻9
 "0≠0 IS NEVER TRUE"→Str8
 prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
 "ALL REAL X EXCEPT"→Str8
 If abs(⌊MKEQ(1))>1ᴇ⁻9
 "NO SOLUTION"→Str8
 prgmZLADD
 If abs(⌊MKEQ(1))<1ᴇ⁻9 and dim(⌊MKXV)
 Then
-"X≠"+sub(Str3,3,length(Str3)-2)→Str8
-prgmZLADD
+"X≠"+sub(Str3,4,length(Str3)-3)
+prgmZLA
 End
 End
 If dim(⌊MKEQ)=1
 Goto Z9
-"#COLLECT ON ONE SIDE"→Str8
-prgmZLADD
+"#COLLECT ON ONE SIDE"
+prgmZLA
 ⌊MKEQ→⌊MKF
 prgmZLFMT
-Str0+"=0"→Str8
-prgmZLADD
-"#SOLVE"→Str8
-prgmZLADD
+Str0+"=0"
+prgmZLA
+"#SOLVE"
+prgmZLA
 0→Y
 ⌊MKEQ→⌊MKH
 prgmZLZER
@@ -314,8 +333,8 @@ If ⌊MKQ(5)=3
 Str8+" (NOT REAL)"→Str8
 End
 prgmZLADD
-"#CHECK"→Str8
-prgmZLADD
+"#CHECK"
+prgmZLA
 " "→Str2
 " "→Str4
 1→J
@@ -330,10 +349,10 @@ If abs(⌊MKXV(D)-⌊MKRR(K))<1ᴇ⁻9
 End
 If G
 Then
-"X="+Str5+" IS EXCLUDED,"→Str8
-prgmZLADD
-" SO IT IS EXTRANEOUS"→Str8
-prgmZLADD
+"X="+Str5+" IS EXCLUDED,"
+prgmZLA
+" SO IT IS EXTRANEOUS"
+prgmZLA
 Str4+Str5+" IS EXTRANEOUS,"→Str4
 Else
 0→E
@@ -351,12 +370,12 @@ E+G/W→E
 If ⌊MKTS(L)<0
 F+G/W→F
 End
-"X="+Str5+" KEPT"→Str8
-prgmZLADD
+"X="+Str5+" KEPT"
+prgmZLA
 E
 prgmZLFRC
-" LEFT ="+Str0→Str8
-prgmZLADD
+" LEFT ="+Str0
+prgmZLA
 F
 prgmZLFRC
 " RIGHT="+Str0→Str8
@@ -366,8 +385,8 @@ prgmZLADD
 Str2+", "+Str5→Str2
 End
 End
-"#ANSWER"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
 "NO SOLUTION"→Str8
 If length(Str2)>1
 "{"+sub(Str2,4,length(Str2)-3)+"}"→Str8
@@ -381,8 +400,8 @@ Repeat not(D)
 inString(Str4,",",J)→D
 If D
 Then
-sub(Str4,J,D-J)→Str8
-prgmZLADD
+sub(Str4,J,D-J)
+prgmZLA
 D+1→J
 End
 End

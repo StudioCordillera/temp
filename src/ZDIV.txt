@@ -34,42 +34,42 @@ Str0→Str6
 K
 prgmZLFRC
 Str0→Str1
-"#SET UP"→Str8
-prgmZLADD
-"DIVIDE BY "+Str6+"  K="+Str1→Str8
-prgmZLADD
-Str2→Str8
-prgmZLADD
-sub(Str3,1,H+1)→Str8
-prgmZLADD
-Str4→Str8
-prgmZLADD
-sub(Str5,1,H+1)→Str8
-prgmZLADD
+"#SET UP"
+prgmZLA
+"DIVIDE BY "+Str6+"  K="+Str1
+prgmZLA
+Str2
+prgmZLA
+sub(Str3,1,H+1)
+prgmZLA
+Str4
+prgmZLA
+sub(Str5,1,H+1)
+prgmZLA
 For(J,1,N)
 If J=1
 Then
 ⌊MKA(1)
 prgmZLFRC
-"#BRING DOWN "+Str0→Str8
-prgmZLADD
+"#BRING DOWN "+Str0
+prgmZLA
 Else
 ⌊MKY(J-1)
 prgmZLFRC
 "#"+Str0+"*"+Str1+"="→Str8
 ⌊MKY(J-1)K
 prgmZLFRC
-Str8+Str0+", ADD"→Str8
-prgmZLADD
+Str8+Str0+", ADD"
+prgmZLA
 End
-Str2→Str8
-prgmZLADD
-sub(Str3,1,min(length(Str3),H+1+GJ))→Str8
-prgmZLADD
-Str4→Str8
-prgmZLADD
-sub(Str5,1,min(length(Str5),H+1+GJ))→Str8
-prgmZLADD
+Str2
+prgmZLA
+sub(Str3,1,min(length(Str3),H+1+GJ))
+prgmZLA
+Str4
+prgmZLA
+sub(Str5,1,min(length(Str5),H+1+GJ))
+prgmZLA
 If J>1
 Then
 ⌊MKA(J)
@@ -82,22 +82,22 @@ If ⌊MKY(J-1)K<0
 Str8+Str0+"="→Str8
 ⌊MKY(J)
 prgmZLFRC
-Str8+Str0→Str8
-prgmZLADD
+Str8+Str0
+prgmZLA
 End
 End
 seq(⌊MKY(I),I,1,N-1)→⌊MKF
 prgmZLFMT
 Str0→Str2
 ⌊MKY(N)→R
-"#ANSWER"→Str8
-prgmZLADD
-"QUOTIENT "+Str2→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+"QUOTIENT "+Str2
+prgmZLA
 R
 prgmZLFRC
-"REMAINDER "+Str0→Str8
-prgmZLADD
+"REMAINDER "+Str0
+prgmZLA
 abs(R)
 prgmZLFRC
 "= "+Str2→Str8
@@ -140,10 +140,10 @@ Str0→Str2
 ⌊MKB→⌊MKF
 prgmZLFMT
 Str0→Str3
-"#SET UP"→Str8
-prgmZLADD
-"("+Str2+")/("+Str3+")"→Str8
-prgmZLADD
+"#SET UP"
+prgmZLA
+"("+Str2+")/("+Str3+")"
+prgmZLA
 ⌊MKA→⌊MKC
 dim(⌊MKA)-dim(⌊MKB)+1→N
 seq(0,I,1,N)→⌊MKD
@@ -153,8 +153,8 @@ While dim(⌊MKC)-1≥E and max(abs(⌊MKC))>1ᴇ⁻9
 dim(⌊MKC)-1-E→F
 ⌊MKC(1)/⌊MKB(1)→T
 T→⌊MKD(N-F)
-"#ROUND "+toString(R)→Str8
-prgmZLADD
+"#ROUND "+toString(R)
+prgmZLA
 ⌊MKC(1)seq(I=1,I,1,F+E+1)→⌊MKF
 prgmZLFMT
 "DIVIDE "+Str0+"/"→Str8
@@ -164,17 +164,17 @@ Str8+Str0+"="→Str8
 Tseq(I=1,I,1,F+1)→⌊MKF
 prgmZLFMT
 Str0→Str4
-Str8+Str4→Str8
-prgmZLADD
-"MULTIPLY "+Str4+"("+Str3+")"→Str8
-prgmZLADD
+Str8+Str4
+prgmZLA
+"MULTIPLY "+Str4+"("+Str3+")"
+prgmZLA
 T⌊MKB→⌊MKG
 If F
 augment(⌊MKG,seq(0,I,1,F))→⌊MKG
 ⌊MKG→⌊MKF
 prgmZLFMT
-" ="+Str0→Str8
-prgmZLADD
+" ="+Str0
+prgmZLA
 ⌊MKC-⌊MKG→⌊MKC
 If dim(⌊MKC)=1
 Then
@@ -182,15 +182,17 @@ Then
 Else
 seq(⌊MKC(I),I,2,dim(⌊MKC))→⌊MKC
 End
-While dim(⌊MKC)>1 and abs(⌊MKC(1))<1ᴇ⁻9
-seq(⌊MKC(I),I,2,dim(⌊MKC))→⌊MKC
-End
-"SUBTRACT"→Str8
-prgmZLADD
+sum(not(cumSum(abs(⌊MKC)>1ᴇ⁻9)))→θ
+If θ=dim(⌊MKC)
+{0}→⌊MKC
+If θ and θ<dim(⌊MKC)
+seq(⌊MKC(I),I,θ+1,dim(⌊MKC))→⌊MKC
+"SUBTRACT"
+prgmZLA
 ⌊MKC→⌊MKF
 prgmZLFMT
-" "+Str0→Str8
-prgmZLADD
+" "+Str0
+prgmZLA
 R+1→R
 End
 ⌊MKD→⌊MKF
@@ -199,12 +201,12 @@ Str0→Str2
 ⌊MKC→⌊MKF
 prgmZLFMT
 Str0→Str4
-"#ANSWER"→Str8
-prgmZLADD
-"QUOTIENT "+Str2→Str8
-prgmZLADD
-"REMAINDER "+Str4→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+"QUOTIENT "+Str2
+prgmZLA
+"REMAINDER "+Str4
+prgmZLA
 "= "+Str2→Str8
 sum(abs(⌊MKC)>1ᴇ⁻9)→F
 If F=1 and sub(Str4,1,1)="⁻"

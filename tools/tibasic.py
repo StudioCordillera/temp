@@ -226,7 +226,7 @@ _TOKEN_CACHE = {}
 # Programs tokenized with maximal munch: their string literals must hold
 # the calculator's function tokens (√(, ln(, ⁻¹ ...) to match what a user
 # types. Every other program uses tivars' default "smart" mode.
-MAX_MUNCH = {"ZEXPR", "ZLADD", "ZLTOK"}
+MAX_MUNCH = {"ZEXPR", "ZLA", "ZLTOK"}
 
 
 def tokenize(text, mode="smart"):
@@ -559,10 +559,12 @@ class Program:
         s = self.stmts[i]
         return bool(s) and (s[0] in ("Then", "For(", "While ", "Repeat "))
 
-    def find_end(self, i, stop_at_else=False):
+    def find_end(self, i, stop_at_else=False, interp=None):
         """Scan forward from statement i (an opener) to its End (or Else)."""
         depth = 0
         j = i + 1
+        if interp is not None:
+            interp.cost["skip"] += 1
         while j < len(self.stmts):
             s = self.stmts[j]
             if s:
@@ -608,7 +610,7 @@ class Interp:
         self.steps = 0
         self.max_steps = max_steps
         # cost counters for the speed estimate
-        self.cost = {"stmt": 0, "tok": 0, "call": 0, "listel": 0, "strch": 0, "draw": 0}
+        self.cost = {"stmt": 0, "tok": 0, "call": 0, "listel": 0, "strch": 0, "draw": 0, "skip": 0}
         self.cost_marks = []
         self.inputs_done = 0
         self.last_input_cost = None
@@ -1243,17 +1245,21 @@ class Interp:
                     fr.pc += 1
                 else:
                     j = prog.find_end(fr.pc, stop_at_else=True)
+                    self.cost["skip"] += sum(len(x) + 1 for x in prog.stmts[fr.pc:j])
                     if prog.stmts[j][0] == "Else":
                         fr.blocks.append(("if", j))
                     fr.pc = j + 1
             elif c == 0:
+                if fr.pc < len(prog.stmts):
+                    self.cost["skip"] += len(prog.stmts[fr.pc]) + 1
                 fr.pc += 1
             return
         if h == "Then":
             raise TIError("SYNTAX", "Then without If")
         if h == "Else":
             # reached the end of a true branch: skip to End
-            j = prog.find_end(i, stop_at_else=False) if False else self.end_of_else(prog, i)
+            j = self.end_of_else(prog, i)
+            self.cost["skip"] += sum(len(x) + 1 for x in prog.stmts[i:j])
             if not fr.blocks or fr.blocks[-1][0] != "if":
                 raise TIError("SYNTAX", "Else")
             fr.blocks.pop()
@@ -1305,7 +1311,9 @@ class Interp:
                 raise TIError("DOMAIN", "For step 0")
             self.vars[var] = a
             if (st > 0 and a > b) or (st < 0 and a < b):
-                fr.pc = prog.find_end(i) + 1
+                j = prog.find_end(i)
+                self.cost["skip"] += sum(len(x) + 1 for x in prog.stmts[i:j])
+                fr.pc = j + 1
             else:
                 fr.blocks.append(("for", i, var, b, st))
             return
@@ -1314,7 +1322,9 @@ class Interp:
             if to_real(self.eval(node)) != 0:
                 fr.blocks.append(("while", i))
             else:
-                fr.pc = prog.find_end(i) + 1
+                j = prog.find_end(i)
+                self.cost["skip"] += sum(len(x) + 1 for x in prog.stmts[i:j])
+                fr.pc = j + 1
             return
         if h == "Repeat ":
             fr.blocks.append(("repeat", i))
@@ -1371,6 +1381,8 @@ class Interp:
             raise TIError("LABEL", label)
         if fr.blocks:
             self.leaks.append(f"{prog.name}: Goto {label} with {len(fr.blocks)} open block(s)")
+        # the calculator finds a label by scanning from the top of the program
+        self.cost["skip"] += sum(len(x) + 1 for x in prog.stmts[:prog.labels[label]])
         fr.pc = prog.labels[label] + 1
 
     # ---------------------------------------------------------- commands
@@ -1545,6 +1557,11 @@ class Interp:
         for nm in names:
             if nm not in LISTS and not nm.startswith("ʟ"):
                 raise TIError("SYNTAX", "ClrList")
+            if nm not in self.lists and nm not in LISTS:
+                # TI's behaviour on a missing custom list is not documented,
+                # so the harness treats it as an error (programs must create
+                # the list first, as ZLNEW does with SetUpEditor)
+                raise TIError("UNDEFINED", "ClrList " + nm)
             self.lists[nm] = []
 
     def c_setup(self, fr, i, s):
@@ -1563,7 +1580,14 @@ class Interp:
 
     def c_graph(self, fr, i, s):
         self.cost["draw"] += 1
-        self.graph_log.append("".join(s))
+        text = "".join(s)
+        if len(s) > 1 and s[0] in ("Vertical ", "Horizontal ", "Pt-On(", "Text(", "Line("):
+            try:
+                vals = [self.eval(a) for a in self.args_of(fr.prog, i, s, 1)]
+                text = s[0] + ",".join("".join(v) if isinstance(v, tuple) else fmt_num(v) for v in vals)
+            except TIError:
+                pass
+        self.graph_log.append(text)
 
     def c_sorta(self, fr, i, s):
         a = self.args_of(fr.prog, i, s, 1)
@@ -1599,9 +1623,14 @@ class Interp:
 
     def c_drawf(self, fr, i, s):
         self.cost["draw"] += 40
-        self.graph_log.append("".join(s))
-        # sample the expression the way the grapher would, ignoring errors
         node, _ = self.parse_expr_at(fr.prog, i, s, 1)
+        text = "".join(s)
+        if node.kind == "call" and node.a == "expr(":
+            v = self.eval(node.b[0])
+            if isinstance(v, tuple):
+                text = "DrawF " + "".join(v)
+        self.graph_log.append(text)
+        # sample the expression the way the grapher would, ignoring errors
         saved = self.vars["X"]
         for xx in (D(-3), D("0.5"), D(2)):
             self.vars["X"] = xx
@@ -1675,7 +1704,24 @@ class Library:
 # Estimated CE timings (ms). These are assumptions, not measurements: see
 # REPORT.md. A statement costs a base amount plus a per-token parse cost;
 # list elements, string characters and subprogram calls add their own.
-COST_MS = {"stmt": 0.9, "tok": 0.12, "call": 4.0, "listel": 0.06, "strch": 0.004, "draw": 2.0}
+COST_MS = {"stmt": 0.9, "tok": 0.12, "call": 4.0, "listel": 0.06, "strch": 0.004, "draw": 2.0, "skip": 0.02}
+
+
+def ram_bytes(interp, loader=None, running=()):
+    """Rough RAM the kit's own variables take: 9 bytes per real list element,
+    1-2 bytes per string token, plus a VAT entry per variable, plus the
+    programs that are running (an archived program is copied to RAM to run)."""
+    total = 0
+    for name, lst in interp.lists.items():
+        if name.startswith("ʟMK"):
+            total += 2 + 9 * len(lst) * (2 if any(isinstance(x, C) for x in lst) else 1) + 12
+    for name, st in interp.strs.items():
+        total += 2 + sum(2 if len(t) > 1 or ord(t[0]) > 127 else 1 for t in st) + 9
+    if loader is not None:
+        for name in running:
+            p = loader(name)
+            total += sum(2 if len(t) > 1 or (t and ord(t[0]) > 127) else 1 for t in p.toks) + 20
+    return total
 
 
 def cost_ms(c):

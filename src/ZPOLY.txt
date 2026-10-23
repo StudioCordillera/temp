@@ -16,22 +16,22 @@ Goto M
 dim(⌊MKA)-1→D
 ⌊MKA(1)→L
 ⌊MKA(D+1)→C
-"#THE POLYNOMIAL"→Str8
-prgmZLADD
+"#THE POLYNOMIAL"
+prgmZLA
 ⌊MKA→⌊MKF
 prgmZLFMT
 Str0→Str6
-"F(X)="+Str0→Str8
-prgmZLADD
-"#DEGREE AND LEADING"→Str8
-prgmZLADD
-"DEGREE "+toString(D)+sub(" (EVEN) (ODD)",1+7fPart(D/2)2,7-(fPart(D/2)>0))→Str8
-prgmZLADD
+"F(X)="+Str0
+prgmZLA
+"#DEGREE AND LEADING"
+prgmZLA
+"DEGREE "+toString(D)+sub(" (EVEN) (ODD)",1+7fPart(D/2)2,7-(fPart(D/2)>0))
+prgmZLA
 L
 prgmZLFRC
 Str0→Str4
-"LEADING COEF "+Str4→Str8
-prgmZLADD
+"LEADING COEF "+Str4
+prgmZLA
 C
 prgmZLFRC
 Str0→Str5
@@ -84,8 +84,8 @@ If A=1
 " "→Str6
 If A=⁻1
 "⁻"→Str6
-"#ZEROS AND MULTIPLICITY"→Str8
-prgmZLADD
+"#ZEROS AND MULTIPLICITY"
+prgmZLA
 For(K,1,N)
 {⌊MKFP(K),⌊MKFQ(K)}→⌊MKF
 prgmZLFMT
@@ -101,25 +101,25 @@ If ⌊MKFM(K)>3
 Str6+"^"+toString(⌊MKFM(K))→Str6
 ⁻⌊MKFQ(K)/⌊MKFP(K)
 prgmZLFRC
-"X="+Str0+"  MULT "+toString(⌊MKFM(K))+"  "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)→Str8
-prgmZLADD
+"X="+Str0+"  MULT "+toString(⌊MKFM(K))+"  "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)
+prgmZLA
 End
 If sub(Str6,1,1)=" "
 sub(Str6,2,length(Str6)-1)→Str6
-"#DEGREE"→Str8
-prgmZLADD
-"ADD THE MULTIPLICITIES"→Str8
-prgmZLADD
+"#DEGREE"
+prgmZLA
+"ADD THE MULTIPLICITIES"
+prgmZLA
 toString(⌊MKFM(1))→Str8
 For(K,2,N)
 Str8+"+"+toString(⌊MKFM(K))→Str8
 End
-Str8+"="+toString(D)→Str8
-prgmZLADD
-"#LEADING COEFFICIENT"→Str8
-prgmZLADD
-"MULTIPLY LEADING TERMS"→Str8
-prgmZLADD
+Str8+"="+toString(D)
+prgmZLA
+"#LEADING COEFFICIENT"
+prgmZLA
+"MULTIPLY LEADING TERMS"
+prgmZLA
 A
 prgmZLFRC
 Str0→Str8
@@ -140,18 +140,18 @@ prgmZLADD
 L
 prgmZLFRC
 Str0→Str4
-"="+Str4→Str8
-prgmZLADD
+"="+Str4
+prgmZLA
 C
 prgmZLFRC
 Str0→Str5
-"#Y-INTERCEPT"→Str8
-prgmZLADD
-"F(0)="+Str5→Str8
-prgmZLADD
+"#Y-INTERCEPT"
+prgmZLA
+"F(0)="+Str5
+prgmZLA
 Lbl EB
-"#END BEHAVIOR"→Str8
-prgmZLADD
+"#END BEHAVIOR"
+prgmZLA
 fPart(D/2)=0→E
 If E
 Then
@@ -166,49 +166,49 @@ End
 "INF"→Str3
 If L<0
 "⁻INF"→Str3
-"AS X-"+">⁻INF, F(X)-"+">"+Str2→Str8
-prgmZLADD
-"AS X-"+">INF, F(X)-"+">"+Str3→Str8
-prgmZLADD
+"AS X-"+">⁻INF, F(X)-"+">"+Str2
+prgmZLA
+"AS X-"+">INF, F(X)-"+">"+Str3
+prgmZLA
 sub("FALLSRISES",1+5(Str2="INF"),5)+" LEFT, "+sub("FALLSRISES",1+5(Str3="INF"),5)+" RIGHT"→Str1
-Str1→Str8
-prgmZLADD
+Str1
+prgmZLA
 If not(N)
 Then
-"#Y-INTERCEPT"→Str8
-prgmZLADD
-"F(0)="+Str5→Str8
-prgmZLADD
-"(0,"+Str5+")"→Str8
-prgmZLADD
+"#Y-INTERCEPT"
+prgmZLA
+"F(0)="+Str5
+prgmZLA
+"(0,"+Str5+")"
+prgmZLA
 End
-"#TURNING POINTS"→Str8
-prgmZLADD
-"AT MOST "+toString(max(0,D-1))→Str8
-prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
-"F(X)="+Str6→Str8
-prgmZLADD
-"DEGREE "+toString(D)+", LEADING "+Str4→Str8
-prgmZLADD
-"Y-INT (0,"+Str5+")"→Str8
-prgmZLADD
-Str1→Str8
-prgmZLADD
+"#TURNING POINTS"
+prgmZLA
+"AT MOST "+toString(max(0,D-1))
+prgmZLA
+"#ANSWER"
+prgmZLA
+"F(X)="+Str6
+prgmZLA
+"DEGREE "+toString(D)+", LEADING "+Str4
+prgmZLA
+"Y-INT (0,"+Str5+")"
+prgmZLA
+Str1
+prgmZLA
 If N
 Then
 For(K,1,N)
 ⁻⌊MKFQ(K)/⌊MKFP(K)
 prgmZLFRC
-"X="+Str0+" MULT "+toString(⌊MKFM(K))+" "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)→Str8
-prgmZLADD
+"X="+Str0+" MULT "+toString(⌊MKFM(K))+" "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)
+prgmZLA
 End
 Else
-"AS X-"+">⁻INF, F(X)-"+">"+Str2→Str8
-prgmZLADD
-"AS X-"+">INF, F(X)-"+">"+Str3→Str8
-prgmZLADD
+"AS X-"+">⁻INF, F(X)-"+">"+Str2
+prgmZLA
+"AS X-"+">INF, F(X)-"+">"+Str3
+prgmZLA
 End
 prgmZLSHOW
 0→N
@@ -256,10 +256,10 @@ If ⌊MKFM(K)>3
 Str6+"^"+toString(⌊MKFM(K))→Str6
 End
 sub(Str6,2,length(Str6)-1)→Str6
-"#START"→Str8
-prgmZLADD
-"F(X)=A"+Str6→Str8
-prgmZLADD
+"#START"
+prgmZLA
+"F(X)=A"+Str6
+prgmZLA
 If A=0
 Then
 Disp "POINT (X,Y)"
@@ -287,8 +287,8 @@ Str0→Str4
 H
 prgmZLFRC
 Str0→Str5
-"#PLUG IN ("+Str4+","+Str5+")"→Str8
-prgmZLADD
+"#PLUG IN ("+Str4+","+Str5+")"
+prgmZLA
 Str5+"=A"→Str8
 For(K,1,N)
 G-⌊MKFQ(K)
@@ -304,12 +304,12 @@ End
 prgmZLADD
 E
 prgmZLFRC
-Str5+"="+Str0+"A"→Str8
-prgmZLADD
+Str5+"="+Str0+"A"
+prgmZLA
 A
 prgmZLFRC
-"A="+Str0→Str8
-prgmZLADD
+"A="+Str0
+prgmZLA
 End
 A
 prgmZLFRC
@@ -320,13 +320,13 @@ If A=1
 " "→Str0
 If A=⁻1
 "⁻"→Str0
-"#ANSWER"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
 "F(X)="+Str0+Str6→Str8
 If A=1
 "F(X)="+Str6→Str8
 prgmZLADD
-"DEGREE "+toString(sum(⌊MKFM))→Str8
-prgmZLADD
+"DEGREE "+toString(sum(⌊MKFM))
+prgmZLA
 prgmZLSHOW
 Goto M

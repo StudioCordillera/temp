@@ -3,8 +3,15 @@ For(O,1,dim(⌊MKF))
 If abs(⌊MKF(O))>1ᴇ⁻9
 Then
 dim(⌊MKF)-O→P
-abs(⌊MKF(O))
+abs(⌊MKF(O))→U
+1→V
+If fPart(U)
+Then
+U
 prgmZLFRC
+Else
+toString(U)→Str0
+End
 If length(Str7)>1 or ⌊MKF(O)<0
 Str7+sub("⁻-+",1+(length(Str7)>1)(1+(⌊MKF(O)>0)),1)→Str7
 If P=0 or U≠1 or V≠1

@@ -24,12 +24,12 @@ Pause
 End
 If dim(⌊MKA)<2
 Goto M
-"#THE POLYNOMIAL"→Str8
-prgmZLADD
+"#THE POLYNOMIAL"
+prgmZLA
 ⌊MKA→⌊MKF
 prgmZLFMT
-"F(X)="+Str0→Str8
-prgmZLADD
+"F(X)="+Str0
+prgmZLA
 ⌊MKA→⌊MKH
 If M=2
 Goto FA
@@ -48,27 +48,27 @@ prgmZLSYN
 ⌊MKY(dim(⌊MKY))→N
 {1,⁻D}→⌊MKF
 prgmZLFMT
-"#DIVIDE BY ("+Str0+")"→Str8
-prgmZLADD
-Str2→Str8
-prgmZLADD
-Str3→Str8
-prgmZLADD
-Str4→Str8
-prgmZLADD
-Str5→Str8
-prgmZLADD
+"#DIVIDE BY ("+Str0+")"
+prgmZLA
+Str2
+prgmZLA
+Str3
+prgmZLA
+Str4
+prgmZLA
+Str5
+prgmZLA
 N
 prgmZLFRC
-"REMAINDER "+Str0→Str8
-prgmZLADD
+"REMAINDER "+Str0
+prgmZLA
 If N
 Goto NZ
 seq(⌊MKY(L),L,1,dim(⌊MKY)-1)→⌊MKH
 ⌊MKH→⌊MKF
 prgmZLFMT
-"LEAVES "+Str0→Str8
-prgmZLADD
+"LEAVES "+Str0
+prgmZLA
 1→K
 Goto FA
 Lbl CP
@@ -79,19 +79,19 @@ Str0→Str2
 prgmZLCST
 Str0→Str3
 {1,⁻2D,D²+E²}→⌊MKB
-"#CONJUGATE PAIR"→Str8
-prgmZLADD
-Str2+" IS A ZERO, SO"→Str8
-prgmZLADD
-Str3+" IS TOO"→Str8
-prgmZLADD
-"(X-("+Str2+"))(X-("+Str3+"))"→Str8
-prgmZLADD
+"#CONJUGATE PAIR"
+prgmZLA
+Str2+" IS A ZERO, SO"
+prgmZLA
+Str3+" IS TOO"
+prgmZLA
+"(X-("+Str2+"))(X-("+Str3+"))"
+prgmZLA
 ⌊MKB→⌊MKF
 prgmZLFMT
 Str0→Str4
-" ="+Str4→Str8
-prgmZLADD
+" ="+Str4
+prgmZLA
 ⌊MKA→⌊MKH
 If dim(⌊MKH)≥3
 Then
@@ -104,16 +104,16 @@ seq(⌊MKH(L),L,1,dim(⌊MKH)-2)→⌊MKH
 Else
 {1}→⌊MKC
 End
-"#DIVIDE BY "+Str4→Str8
-prgmZLADD
+"#DIVIDE BY "+Str4
+prgmZLA
 ⌊MKH→⌊MKF
 prgmZLFMT
-"QUOTIENT "+Str0→Str8
-prgmZLADD
+"QUOTIENT "+Str0
+prgmZLA
 ⌊MKC→⌊MKF
 prgmZLFMT
-"REMAINDER "+Str0→Str8
-prgmZLADD
+"REMAINDER "+Str0
+prgmZLA
 If max(abs(⌊MKC))>1ᴇ⁻9
 Goto NZ
 2→K
@@ -142,8 +142,8 @@ augment({D},⌊MKR)→⌊MKR
 augment({1},⌊MKM)→⌊MKM
 End
 End
-"#CHECK EACH ZERO"→Str8
-prgmZLADD
+"#CHECK EACH ZERO"
+prgmZLA
 a+b𝑖
 For(L,1,dim(⌊MKR))
 ⌊MKR(L)
@@ -202,10 +202,10 @@ End
 0→⌊MKS(2)
 End
 Real
-"#ANSWER"→Str8
-prgmZLADD
-"ZEROS"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+"ZEROS"
+prgmZLA
 " "→Str4
 If K=2
 "+/-"→Str4
@@ -254,17 +254,17 @@ Str4+","→Str4
 End
 0→⌊MKS(2)
 End
-sub(Str4,2,length(Str4)-2)→Str8
-prgmZLADD
+sub(Str4,2,length(Str4)-2)
+prgmZLA
 If Z=3
 Then
-"(DECIMALS ARE APPROX)"→Str8
-prgmZLADD
+"(DECIMALS ARE APPROX)"
+prgmZLA
 End
 If Z≠3
 Then
-"FACTORED"→Str8
-prgmZLADD
+"FACTORED"
+prgmZLA
 ⌊MKA(1)
 prgmZLFRC
 Str0→Str4
@@ -310,14 +310,14 @@ End
 End
 If sub(Str4,1,1)=" "
 sub(Str4,2,length(Str4)-1)→Str4
-Str4→Str8
-prgmZLADD
+Str4
+prgmZLA
 End
 prgmZLSHOW
 Goto M
 Lbl NZ
-"#ANSWER"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
 Str2→Str5
 If K=0 and not(E)
 Then
@@ -325,9 +325,9 @@ D
 prgmZLFRC
 Str0→Str5
 End
-Str5+" IS NOT A ZERO"→Str8
-prgmZLADD
-"(REMAINDER IS NOT 0)"→Str8
-prgmZLADD
+Str5+" IS NOT A ZERO"
+prgmZLA
+"(REMAINDER IS NOT 0)"
+prgmZLA
 prgmZLSHOW
 Goto M

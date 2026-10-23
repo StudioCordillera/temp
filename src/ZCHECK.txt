@@ -25,10 +25,10 @@ If inString(Str1,".")
 K
 prgmZLFRC
 Str0→Str3
-"#SUBSTITUTE X="+Str3→Str8
-prgmZLADD
-Str2→Str8
-prgmZLADD
+"#SUBSTITUTE X="+Str3
+prgmZLA
+Str2
+prgmZLA
 If E and min(abs(⌊MKX-K))<1ᴇ⁻9
 Goto XB
 X→⌊MKS(3)
@@ -52,18 +52,18 @@ Str0→Str5
 abs(L-R)≤1ᴇ⁻9max(1,abs(L))→G
 If N
 Then
-"LEFT SIDE  ="+Str4→Str8
-prgmZLADD
-"RIGHT SIDE ="+Str5→Str8
-prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
-"AT X="+Str3→Str8
-prgmZLADD
-"LEFT ="+Str4→Str8
-prgmZLADD
-"RIGHT="+Str5→Str8
-prgmZLADD
+"LEFT SIDE  ="+Str4
+prgmZLA
+"RIGHT SIDE ="+Str5
+prgmZLA
+"#ANSWER"
+prgmZLA
+"AT X="+Str3
+prgmZLA
+"LEFT ="+Str4
+prgmZLA
+"RIGHT="+Str5
+prgmZLA
 "SIDES MATCH"→Str8
 If not(G)
 "SIDES DIFFER"→Str8
@@ -73,30 +73,30 @@ If not(G)
 "X="+Str3+" IS NOT A SOLUTION"→Str8
 prgmZLADD
 Else
-"VALUE ="+Str4→Str8
-prgmZLADD
-"#ANSWER"→Str8
-prgmZLADD
-"F("+Str3+")="+Str4→Str8
-prgmZLADD
+"VALUE ="+Str4
+prgmZLA
+"#ANSWER"
+prgmZLA
+"F("+Str3+")="+Str4
+prgmZLA
 If G
 Then
-"F(X)=0 THERE, SO X="+Str3→Str8
-prgmZLADD
-"IS A ZERO (ROOT)"→Str8
-prgmZLADD
+"F(X)=0 THERE, SO X="+Str3
+prgmZLA
+"IS A ZERO (ROOT)"
+prgmZLA
 End
 End
 Goto XS
 Lbl XB
-"#ANSWER"→Str8
-prgmZLADD
-"X="+Str3+" IS EXCLUDED"→Str8
-prgmZLADD
-"(A DENOMINATOR IS 0)"→Str8
-prgmZLADD
-"NO SUBSTITUTION DONE"→Str8
-prgmZLADD
+"#ANSWER"
+prgmZLA
+"X="+Str3+" IS EXCLUDED"
+prgmZLA
+"(A DENOMINATOR IS 0)"
+prgmZLA
+"NO SUBSTITUTION DONE"
+prgmZLA
 Lbl XS
 prgmZLSHOW
 Menu("CHECK AGAIN","SAME, NEW X",X0,"NEW EXPRESSION",N,"BACK",Q)
