@@ -88,18 +88,18 @@ CASES = [
     ('R077', 'ZZEROS', '1{1,8,~3,~24}\n~8\n0\n#', ['⁻8, +/-√(3)']),
     ('R078', 'ZZEROS', '1{1,~9,1,~9}\n9\n0\n#', ['9, +/-𝑖']),
     ('R079', 'ZZEROS', '1{1,~11,39,~29}\n1\n0\n#', ['1, 5+/-2𝑖']),
-    ('R080', 'ZZEROS', '1{1,0,5,0,~36}\n0\n~3\n#', ['+/-3𝑖', '2, ⁻2']),
-    ('R081', 'ZZEROS', '1{1,2,~11,8,~60}\n0\n2\n#', ['+/-2𝑖', '3, ⁻5']),
-    ('R082', 'ZZEROS', '1{1,2,~11,~12}\n~1\n0\n#', ['(X+1)(X-3)(X+4)']),
+    ('R080', 'ZZEROS', '1{1,0,5,0,~36}\n0\n~3\n#', ['+/-3𝑖', '⁻2, 2']),  # CHANGED: zeros listed in ascending order
+    ('R081', 'ZZEROS', '1{1,2,~11,8,~60}\n0\n2\n#', ['+/-2𝑖', '⁻5, 3']),  # CHANGED: zeros listed in ascending order
+    ('R082', 'ZZEROS', '1{1,2,~11,~12}\n~1\n0\n#', ['(X+1)(X+4)(X-3)']),  # CHANGED: factors after the given zero follow ascending order
     ('R083', 'ZZEROS', '1{1,4,~3,~18}\n2\n0\n#', ['(X-2)(X+3)²']),
-    ('R084', 'ZZEROS', '1{3,4,~28,16}\n~4\n0\n#', ['3(X+4)(X-2)(X-2/3)']),
-    ('R085', 'ZZEROS', '2{1,0,~4,0}\n#', ['0, 2, ⁻2']),
-    ('R086', 'ZZEROS', '2{4,~2,~6}\n#', ['3/2, ⁻1']),
+    ('R084', 'ZZEROS', '1{3,4,~28,16}\n~4\n0\n#', ['3(X+4)(X-2/3)(X-2)']),  # CHANGED: factors after the given zero follow ascending order
+    ('R085', 'ZZEROS', '2{1,0,~4,0}\n#', ['⁻2, 0, 2']),  # CHANGED: zeros listed in ascending order
+    ('R086', 'ZZEROS', '2{4,~2,~6}\n#', ['⁻1, 3/2']),  # CHANGED: zeros listed in ascending order
     ('R087', 'ZZEROS', '2{1,0,16}\n#', ['+/-4𝑖']),
     ('R088', 'ZZEROS', '2{1,0,3}\n#', ['+/-𝑖√(3)']),
     ('R089', 'ZZEROS', '2{5,0,5,0}\n#', ['0, +/-𝑖']),
     ('R090', 'ZZEROS', '2{5,~1,~35,7}\n#', ['1/5, +/-√(7)']),
-    ('R091', 'ZZEROS', '2{1,~5,6,0}\n#', ['0, 3, 2']),
+    ('R091', 'ZZEROS', '2{1,~5,6,0}\n#', ['0, 2, 3']),  # CHANGED: zeros listed in ascending order
     ('R092', 'ZZEROS', '2{1,~6,1,~6}\n#', ['6, +/-𝑖']),
     ('R093', 'ZZEROS', '2{1,2,9,18}\n#', ['⁻2, +/-3𝑖']),
     ('R094', 'ZRATEQ', '12\n1\n{1,0}\n{1}\n{~6}\n{1,0}\n{5}\n{1}\n#', ['6', '⁻1']),

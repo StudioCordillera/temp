@@ -1532,6 +1532,21 @@ class Interp:
         else:
             raise TIError("SYNTAX", "DelVar")
 
+    def c_clrlist(self, fr, i, s):
+        names = []
+        cur = []
+        for t in s[1:] + [","]:
+            if t == ",":
+                if cur:
+                    names.append("".join(cur))
+                cur = []
+            else:
+                cur.append(t)
+        for nm in names:
+            if nm not in LISTS and not nm.startswith("ʟ"):
+                raise TIError("SYNTAX", "ClrList")
+            self.lists[nm] = []
+
     def c_setup(self, fr, i, s):
         names = "".join(s[1:])
         for nm in [x for x in names.split(",") if x]:
@@ -1621,6 +1636,7 @@ Interp.COMMANDS = {
     "Float": Interp.c_mode,
     "Fix ": Interp.c_mode,
     "SortA(": Interp.c_sorta,
+    "ClrList ": Interp.c_clrlist,
     "String►Equ(": Interp.c_strequ,
     "Equ►String(": Interp.c_equstr,
     "DrawF ": Interp.c_drawf,

@@ -5,18 +5,23 @@ which is what 2nd MEM > Mem Management > Prgm shows (within a few bytes).
 program     tokens  memory  .8xp file  min OS
 ZCHECK        1237    1254       1313  1.15.0
 ZCPLX         3312    3328       3388  5.2.0
+ZDIV          2378    2393       2454  5.2.0
 ZEXPR          709     725        785  5.2.0
 ZLADD          301     317        377  0.1013.0
+ZLCHK          193     209        269  0.1013.0
 ZLCST          351     367        427  5.2.0
 ZLFMT          292     308        368  5.2.0
 ZLFRC          416     432        492  5.2.0
 ZLQSV         1280    1296       1356  5.2.0
 ZLRAD           59      75        135  0.1013.0
 ZLSHOW        1073    1090       1149  5.2.0
+ZLSYN          849     865        925  1.15.0
+ZLZER         4292    4308       4368  5.2.0
 ZQSOLV        4363    4380       4439  5.2.0
 ZQUAD         5069    5085       5145  1.15.0
+ZZEROS        3155    3172       3231  5.2.0
 
-TOTAL        18462   18657      19374
-MATHKIT.8xg group file: 18709 bytes
+TOTAL        29329   29604      30621
+MATHKIT.8xg group file: 29646 bytes
 Highest OS any token needs: 5.2.0 (limit 5.2.0)
-Budget: 18657 of 61440 bytes (30%)
+Budget: 29604 of 61440 bytes (48%)

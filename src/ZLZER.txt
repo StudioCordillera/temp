@@ -1,0 +1,378 @@
+ClrList ⌊MKR,⌊MKM
+0→Z
+{0,0,1,0}→⌊MKJ
+0→J
+While dim(⌊MKH)>1 and ⌊MKH(dim(⌊MKH))=0
+J+1→J
+dim(⌊MKH)-1→dim(⌊MKH)
+End
+If J
+Then
+0→⌊MKR(1)
+J→⌊MKM(1)
+If Y
+Then
+"#FACTOR OUT X"→Str8
+If J=2
+Str8+"²"→Str8
+If J=3
+Str8+"³"→Str8
+If J>3
+Str8+"^"+toString(J)→Str8
+prgmZLADD
+augment(⌊MKH,seq(0,I,1,J))→⌊MKF
+prgmZLFMT
+Str0+"="→Str8
+prgmZLADD
+⌊MKH→⌊MKF
+prgmZLFMT
+"X"→Str8
+If J=2
+Str8+"²"→Str8
+If J=3
+Str8+"³"→Str8
+If J>3
+Str8+"^"+toString(J)→Str8
+Str8+"("+Str0+")"→Str8
+prgmZLADD
+"X=0 IS A ZERO"→Str8
+If J>1
+Str8+", MULT "+toString(J)→Str8
+prgmZLADD
+1→⌊MKJ(4)
+End
+End
+While ⌊MKJ(3) and dim(⌊MKH)≥4
+1→J
+For(I,1,dim(⌊MKH))
+⌊MKH(I)
+prgmZLFRC
+lcm(J,V)→J
+End
+round(J⌊MKH,0)→⌊MKI
+dim(⌊MKI)-1→⌊MKJ(2)
+abs(⌊MKI(dim(⌊MKI)))→J
+seq(θ(fPart(J/θ)=0),θ,1,int(√(J)+1ᴇ⁻9))→⌊MKCN
+augment(⌊MKCN,(⌊MKCN≠0)(J≠⌊MKCN²)J/(⌊MKCN+(⌊MKCN=0)))→⌊MKCN
+SortA(⌊MKCN)
+sum(⌊MKCN=0)→θ
+seq(⌊MKCN(I),I,θ+1,dim(⌊MKCN))→⌊MKCN
+abs(⌊MKI(1))→J
+seq(θ(fPart(J/θ)=0),θ,1,int(√(J)+1ᴇ⁻9))→⌊MKCD
+augment(⌊MKCD,(⌊MKCD≠0)(J≠⌊MKCD²)J/(⌊MKCD+(⌊MKCD=0)))→⌊MKCD
+SortA(⌊MKCD)
+sum(⌊MKCD=0)→θ
+seq(⌊MKCD(I),I,θ+1,dim(⌊MKCD))→⌊MKCD
+augment(⌊MKCN,⁻⌊MKCN)→⌊MKCX
+⌊MKCD(1)+0⌊MKCX→⌊MKCY
+For(I,2,dim(⌊MKCD))
+augment(⌊MKCX,augment(⌊MKCN,⁻⌊MKCN))→⌊MKCX
+augment(⌊MKCY,⌊MKCD(I)+0augment(⌊MKCN,⌊MKCN))→⌊MKCY
+End
+1ᴇ9(gcd(abs(⌊MKCX),⌊MKCY)≠1)+abs(⌊MKCX/⌊MKCY)+1ᴇ⁻7(⌊MKCX<0)→⌊MKCK
+SortA(⌊MKCK,⌊MKCX,⌊MKCY)
+sum(⌊MKCK<1ᴇ8)→J
+J→dim(⌊MKCX)
+J→dim(⌊MKCY)
+⌊MKI(1)+0⌊MKCX→⌊MKCK
+1+0⌊MKCX→⌊MKCZ
+For(I,2,dim(⌊MKI))
+⌊MKCZ⌊MKCY→⌊MKCZ
+⌊MKCK⌊MKCX+⌊MKI(I)⌊MKCZ→⌊MKCK
+End
+1+sum(not(cumSum(abs(⌊MKCK)<.5)))→J
+If Y
+Then
+"#RATIONAL ZERO TEST"→Str8
+prgmZLADD
+"P DIVIDES "+toString(abs(⌊MKI(dim(⌊MKI))))→Str8
+prgmZLADD
+" "→Str8
+For(I,1,dim(⌊MKCN))
+Str8+toString(⌊MKCN(I))+","→Str8
+End
+sub(Str8,1,length(Str8)-1)→Str8
+prgmZLADD
+"Q DIVIDES "+toString(abs(⌊MKI(1)))→Str8
+prgmZLADD
+" "→Str8
+For(I,1,dim(⌊MKCD))
+Str8+toString(⌊MKCD(I))+","→Str8
+End
+sub(Str8,1,length(Str8)-1)→Str8
+prgmZLADD
+min(J,dim(⌊MKCX))→I
+"TRY +/-P/Q"→Str8
+If I>3
+toString(I-3)+" TRIED, THEN"→Str8
+If J>dim(⌊MKCX)
+"ALL "+toString(I)+" FAIL, LAST ONES"→Str8
+prgmZLADD
+For(I,max(1,min(J,dim(⌊MKCX))-2),min(J,dim(⌊MKCX)))
+⌊MKCX(I)/⌊MKCY(I)
+prgmZLFRC
+"F("+Str0+")="→Str8
+⌊MKCK(I)/⌊MKCY(I)^⌊MKJ(2)
+prgmZLFRC
+Str8+Str0→Str8
+If I=J
+Str8+"  ZERO"→Str8
+prgmZLADD
+End
+If J>dim(⌊MKCX)
+Then
+"NO RATIONAL ZERO"→Str8
+prgmZLADD
+End
+1→⌊MKJ(4)
+End
+If J>dim(⌊MKCX)
+Then
+0→⌊MKJ(3)
+Else
+⌊MKCX(J)/⌊MKCY(J)→⌊MKJ(1)
+augment(⌊MKH,{⌊MKJ(1)})→⌊MKY
+prgmZLSYN
+If Y
+Then
+{1,⁻⌊MKJ(1)}→⌊MKF
+prgmZLFMT
+"#DIVIDE BY ("+Str0+")"→Str8
+prgmZLADD
+Str2→Str8
+prgmZLADD
+Str3→Str8
+prgmZLADD
+Str4→Str8
+prgmZLADD
+Str5→Str8
+prgmZLADD
+End
+seq(⌊MKY(I),I,1,dim(⌊MKY)-1)→⌊MKH
+If Y
+Then
+⌊MKH→⌊MKF
+prgmZLFMT
+"LEAVES "+Str0→Str8
+prgmZLADD
+End
+0→J
+For(I,1,dim(⌊MKR))
+If abs(⌊MKR(I)-⌊MKJ(1))<1ᴇ⁻9
+Then
+⌊MKM(I)+1→⌊MKM(I)
+1→J
+End
+End
+If not(J)
+Then
+⌊MKJ(1)→⌊MKR(dim(⌊MKR)+1)
+1→⌊MKM(dim(⌊MKM)+1)
+End
+End
+End
+If dim(⌊MKH)=3
+Then
+⌊MKH→⌊MKQ
+prgmZLQSV
+If Y
+Then
+"#QUADRATIC FORMULA"→Str8
+prgmZLADD
+Str0→Str6
+⌊MKH→⌊MKF
+prgmZLFMT
+"SOLVE "+Str0+"=0"→Str8
+prgmZLADD
+⌊MKQ(4)
+prgmZLFRC
+"D="+Str0→Str8
+prgmZLADD
+"X="+Str6→Str8
+prgmZLADD
+End
+If ⌊MKQ(5)=1
+Then
+For(J,8,9)
+0→I
+For(θ,1,dim(⌊MKR))
+If abs(⌊MKR(θ)-⌊MKQ(J))<1ᴇ⁻9
+Then
+⌊MKM(θ)+1→⌊MKM(θ)
+1→I
+End
+End
+If not(I)
+Then
+⌊MKQ(J)→⌊MKR(dim(⌊MKR)+1)
+1→⌊MKM(dim(⌊MKM)+1)
+End
+End
+Else
+2→Z
+⌊MKH→⌊MKG
+End
+End
+If dim(⌊MKH)=2
+Then
+⁻⌊MKH(2)/⌊MKH(1)→⌊MKJ(1)
+If Y and ⌊MKJ(4)
+Then
+"#LAST FACTOR"→Str8
+prgmZLADD
+⌊MKH→⌊MKF
+prgmZLFMT
+Str0+"=0"→Str8
+prgmZLADD
+⌊MKJ(1)
+prgmZLFRC
+"X="+Str0→Str8
+prgmZLADD
+End
+0→J
+For(I,1,dim(⌊MKR))
+If abs(⌊MKR(I)-⌊MKJ(1))<1ᴇ⁻9
+Then
+⌊MKM(I)+1→⌊MKM(I)
+1→J
+End
+End
+If not(J)
+Then
+⌊MKJ(1)→⌊MKR(dim(⌊MKR)+1)
+1→⌊MKM(dim(⌊MKM)+1)
+End
+End
+If dim(⌊MKH)≥4
+Then
+3→Z
+a+b𝑖
+⌊MKH/⌊MKH(1)→⌊MKNP
+ClrList ⌊MKN,⌊MKNI
+While dim(⌊MKNP)≥4
+dim(⌊MKNP)-1→I
+seq(I-θ,θ,0,I)→⌊MKPW
+seq(I-θ,θ,1,I)→⌊MKPD
+seq(⌊MKNP(θ)⌊MKPW(θ),θ,1,I)→⌊MKND
+.4+.9𝑖→J
+For(θ,1,60)
+J-sum(⌊MKNP*J^⌊MKPW)/sum(⌊MKND*J^⌊MKPD)→J
+End
+If abs(imag(J))<1ᴇ⁻6max(1,abs(J))
+Then
+real(J)→J
+J→⌊MKN(dim(⌊MKN)+1)
+0→⌊MKNI(dim(⌊MKNI)+1)
+For(θ,2,I)
+⌊MKNP(θ)+J⌊MKNP(θ-1)→⌊MKNP(θ)
+End
+I→dim(⌊MKNP)
+Else
+real(J)→⌊MKN(dim(⌊MKN)+1)
+abs(imag(J))→⌊MKNI(dim(⌊MKNI)+1)
+⁻2real(J)→⌊MKJ(1)
+abs(J)²→⌊MKJ(2)
+⌊MKNP(2)-⌊MKJ(1)⌊MKNP(1)→⌊MKNP(2)
+For(θ,3,I)
+⌊MKNP(θ)-⌊MKJ(1)⌊MKNP(θ-1)-⌊MKJ(2)⌊MKNP(θ-2)→⌊MKNP(θ)
+End
+I-1→dim(⌊MKNP)
+End
+End
+Real
+If dim(⌊MKNP)=2
+Then
+⁻⌊MKNP(2)/⌊MKNP(1)→⌊MKN(dim(⌊MKN)+1)
+0→⌊MKNI(dim(⌊MKNI)+1)
+End
+If dim(⌊MKNP)=3
+Then
+⌊MKNP(2)/⌊MKNP(1)→⌊MKJ(1)
+⌊MKNP(3)/⌊MKNP(1)→⌊MKJ(2)
+⌊MKJ(1)²-4⌊MKJ(2)→I
+If I≥0
+Then
+(⁻⌊MKJ(1)-√(I))/2→⌊MKN(dim(⌊MKN)+1)
+0→⌊MKNI(dim(⌊MKNI)+1)
+(⁻⌊MKJ(1)+√(I))/2→⌊MKN(dim(⌊MKN)+1)
+0→⌊MKNI(dim(⌊MKNI)+1)
+Else
+⁻⌊MKJ(1)/2→⌊MKN(dim(⌊MKN)+1)
+√(⁻I)/2→⌊MKNI(dim(⌊MKNI)+1)
+End
+End
+If Y
+Then
+"#NO RATIONAL ZEROS"→Str8
+prgmZLADD
+"APPROXIMATE ZEROS OF"→Str8
+prgmZLADD
+⌊MKH→⌊MKF
+prgmZLFMT
+Str0+"=0"→Str8
+prgmZLADD
+1→⌊MKS(2)
+For(I,1,dim(⌊MKN))
+⌊MKN(I)
+prgmZLFRC
+"X="+Str0→Str8
+If ⌊MKNI(I)
+Then
+⌊MKNI(I)
+prgmZLFRC
+Str8+"+/-"+Str0+"𝑖"→Str8
+End
+prgmZLADD
+End
+0→⌊MKS(2)
+End
+End
+ClrList ⌊MKRR,⌊MKRM,⌊MKRT
+For(I,1,dim(⌊MKR))
+⌊MKR(I)→⌊MKRR(I)
+⌊MKM(I)→⌊MKRM(I)
+1→⌊MKRT(I)
+End
+If Z=2
+Then
+⌊MKG→⌊MKQ
+prgmZLQSV
+If ⌊MKQ(5)=2
+Then
+For(I,2,3)
+⌊MKQ(I+6)→⌊MKRR(dim(⌊MKRR)+1)
+1→⌊MKRM(dim(⌊MKRM)+1)
+I→⌊MKRT(dim(⌊MKRT)+1)
+End
+End
+End
+If Z=3
+Then
+For(I,1,dim(⌊MKN))
+If ⌊MKNI(I)=0
+Then
+⌊MKN(I)→⌊MKRR(dim(⌊MKRR)+1)
+1→⌊MKRM(dim(⌊MKRM)+1)
+4→⌊MKRT(dim(⌊MKRT)+1)
+End
+End
+End
+" "→Str6
+If dim(⌊MKRR)
+Then
+SortA(⌊MKRR,⌊MKRM,⌊MKRT)
+For(I,1,dim(⌊MKRR))
+If ⌊MKRT(I)=4
+1→⌊MKS(2)
+⌊MKRR(I)
+prgmZLFRC
+If ⌊MKRT(I)=4
+0→⌊MKS(2)
+If ⌊MKRT(I)=2
+sub(Str7,1,inString(Str7,",")-1)→Str0
+If ⌊MKRT(I)=3
+sub(Str7,inString(Str7,",")+1,length(Str7)-inString(Str7,","))→Str0
+Str6+Str0+","→Str6
+End
+sub(Str6,2,length(Str6)-2)→Str6
+End

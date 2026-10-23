@@ -1,0 +1,19 @@
+⌊MKA(1)→O
+abs(⌊MKA(1))→P
+For(θ,2,dim(⌊MKA))
+OH+⌊MKA(θ)→O
+Pabs(H)+abs(⌊MKA(θ))→P
+End
+"F("+Str5+")="→Str8
+If abs(O)≤1ᴇ⁻9max(1,P)
+Then
+Str8+"0  OK"→Str8
+Else
+⌊MKS(2)→P
+1→⌊MKS(2)
+abs(O)
+prgmZLFRC
+P→⌊MKS(2)
+Str8+"NOT 0 (SIZE "+Str0+")"→Str8
+End
+prgmZLADD

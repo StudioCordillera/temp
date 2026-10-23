@@ -1,0 +1,53 @@
+{0,0,0,0}→⌊MKZ
+dim(⌊MKY)-1→O
+⌊MKY(O+1)
+prgmZLFRC
+Str0→Str2
+length(Str0)→P
+seq(⌊MKY(θ),θ,1,O)→⌊MKT
+For(θ,2,O)
+⌊MKY(θ)+⌊MKY(θ-1)⌊MKY(O+1)→⌊MKY(θ)
+End
+⌊MKY(O+1)→⌊MKZ(1)
+O→dim(⌊MKY)
+1→⌊MKZ(2)
+For(θ,1,O)
+θ→⌊MKZ(3)
+⌊MKT(θ)
+prgmZLFRC
+max(⌊MKZ(2),length(Str0))→⌊MKZ(2)
+⌊MKY(⌊MKZ(3))
+prgmZLFRC
+max(⌊MKZ(2),length(Str0))→⌊MKZ(2)
+If ⌊MKZ(3)>1
+Then
+⌊MKY(⌊MKZ(3)-1)⌊MKZ(1)
+prgmZLFRC
+max(⌊MKZ(2),length(Str0))→⌊MKZ(2)
+End
+⌊MKZ(3)→θ
+End
+max(3,⌊MKZ(2)+1)→⌊MKZ(4)
+If P+1+O⌊MKZ(4)>26
+⌊MKZ(2)→⌊MKZ(4)
+Str2+"|"→Str2
+sub("            ",1,P)+"|"+sub("            ",1,⌊MKZ(4))→Str3
+sub("            ",1,P)+"+"+sub("--------------------------",1,min(25-P,O⌊MKZ(4)))→Str4
+sub("            ",1,P+1)→Str5
+For(θ,1,O)
+θ→⌊MKZ(3)
+⌊MKT(θ)
+prgmZLFRC
+Str2+sub("            "+Str0,13+length(Str0)-⌊MKZ(4),⌊MKZ(4))→Str2
+⌊MKY(⌊MKZ(3))
+prgmZLFRC
+Str5+sub("            "+Str0,13+length(Str0)-⌊MKZ(4),⌊MKZ(4))→Str5
+If ⌊MKZ(3)>1
+Then
+⌊MKY(⌊MKZ(3)-1)⌊MKZ(1)
+prgmZLFRC
+Str3+sub("            "+Str0,13+length(Str0)-⌊MKZ(4),⌊MKZ(4))→Str3
+End
+⌊MKZ(3)→θ
+End
+⌊MKZ(4)→O

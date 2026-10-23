@@ -1,0 +1,341 @@
+Float
+Real
+SetUpEditor MKS
+SetUpEditor 
+If dim(⌊MKS)<3
+{1,0,0}→⌊MKS
+Lbl M
+6→P
+Menu("ZEROS (3.4)","GIVEN ONE ZERO",G,"FIND ALL ZEROS",F,"BACK",Q)
+Lbl Q
+Return
+Lbl G
+1→M
+Goto I
+Lbl F
+2→M
+Lbl I
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL
+0→K
+Disp "COEFFICIENTS {..} OR","TYPE THE POLYNOMIAL"
+Input "F(X)=",Str1
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKA
+If dim(⌊MKA)<2
+Then
+Disp "NEED DEGREE ≥ 1"
+Pause 
+End
+If dim(⌊MKA)<2
+Goto M
+"#THE POLYNOMIAL"→Str8
+prgmZLADD
+⌊MKA→⌊MKF
+prgmZLFMT
+"F(X)="+Str0→Str8
+prgmZLADD
+⌊MKA→⌊MKH
+If M=2
+Goto FA
+Disp "ZERO K=R+S𝑖"
+Input "R=?",Str1
+prgmZEXPR
+⌊MKE(1)→D
+Input "S=?",Str1
+prgmZEXPR
+⌊MKE(1)→E
+If E
+Goto CP
+augment(⌊MKA,{D})→⌊MKY
+prgmZLSYN
+⌊MKY(dim(⌊MKY))→N
+{1,⁻D}→⌊MKF
+prgmZLFMT
+"#DIVIDE BY ("+Str0+")"→Str8
+prgmZLADD
+Str2→Str8
+prgmZLADD
+Str3→Str8
+prgmZLADD
+Str4→Str8
+prgmZLADD
+Str5→Str8
+prgmZLADD
+N
+prgmZLFRC
+"REMAINDER "+Str0→Str8
+prgmZLADD
+If N
+Goto NZ
+seq(⌊MKY(L),L,1,dim(⌊MKY)-1)→⌊MKH
+⌊MKH→⌊MKF
+prgmZLFMT
+"LEAVES "+Str0→Str8
+prgmZLADD
+1→K
+Goto FA
+Lbl CP
+{D,E,1}→⌊MKT
+prgmZLCST
+Str0→Str2
+{D,⁻E,1}→⌊MKT
+prgmZLCST
+Str0→Str3
+{1,⁻2D,D²+E²}→⌊MKB
+"#CONJUGATE PAIR"→Str8
+prgmZLADD
+Str2+" IS A ZERO, SO"→Str8
+prgmZLADD
+Str3+" IS TOO"→Str8
+prgmZLADD
+"(X-("+Str2+"))(X-("+Str3+"))"→Str8
+prgmZLADD
+⌊MKB→⌊MKF
+prgmZLFMT
+Str0→Str4
+" ="+Str4→Str8
+prgmZLADD
+⌊MKA→⌊MKH
+If dim(⌊MKH)≥3
+Then
+⌊MKH(2)+2D⌊MKH(1)→⌊MKH(2)
+For(L,3,dim(⌊MKH))
+⌊MKH(L)+2D⌊MKH(L-1)-(D²+E²)⌊MKH(L-2)→⌊MKH(L)
+End
+{⌊MKH(dim(⌊MKH)-1),⌊MKH(dim(⌊MKH))-2D⌊MKH(dim(⌊MKH)-1)}→⌊MKC
+seq(⌊MKH(L),L,1,dim(⌊MKH)-2)→⌊MKH
+Else
+{1}→⌊MKC
+End
+"#DIVIDE BY "+Str4→Str8
+prgmZLADD
+⌊MKH→⌊MKF
+prgmZLFMT
+"QUOTIENT "+Str0→Str8
+prgmZLADD
+⌊MKC→⌊MKF
+prgmZLFMT
+"REMAINDER "+Str0→Str8
+prgmZLADD
+If max(abs(⌊MKC))>1ᴇ⁻9
+Goto NZ
+2→K
+Lbl FA
+If dim(⌊MKH)>1
+Then
+1→Y
+prgmZLZER
+Else
+ClrList ⌊MKR,⌊MKM
+0→Z
+End
+If K=1
+Then
+0→N
+For(L,1,dim(⌊MKR))
+If abs(⌊MKR(L)-D)<1ᴇ⁻9
+Then
+⌊MKM(L)+1→⌊MKM(L)
+1→N
+End
+End
+If not(N)
+Then
+augment({D},⌊MKR)→⌊MKR
+augment({1},⌊MKM)→⌊MKM
+End
+End
+"#CHECK EACH ZERO"→Str8
+prgmZLADD
+a+b𝑖
+For(L,1,dim(⌊MKR))
+⌊MKR(L)
+prgmZLFRC
+Str0→Str5
+⌊MKR(L)→H
+prgmZLCHK
+End
+If K=2
+Then
+D+E𝑖→H
+Str2→Str5
+prgmZLCHK
+D-E𝑖→H
+Str3→Str5
+prgmZLCHK
+End
+If Z=2
+Then
+⌊MKG→⌊MKQ
+prgmZLQSV
+Str0→Str6
+inString(Str7,",")→N
+sub(Str7,1,N-1)→Str5
+⌊MKQ(8)+(⌊MKQ(5)=3)(⁻⌊MKQ(9)𝑖)→H
+If ⌊MKQ(5)=2
+⌊MKQ(8)→H
+prgmZLCHK
+sub(Str7,N+1,length(Str7)-N)→Str5
+⌊MKQ(8)+(⌊MKQ(5)=3)⌊MKQ(9)𝑖→H
+If ⌊MKQ(5)=2
+⌊MKQ(9)→H
+prgmZLCHK
+End
+If Z=3
+Then
+1→⌊MKS(2)
+For(L,1,dim(⌊MKN))
+For(G,⁻1,1,2)
+If G=⁻1 or ⌊MKNI(L)
+Then
+⌊MKN(L)
+prgmZLFRC
+Str0→Str5
+If ⌊MKNI(L)
+Then
+⌊MKNI(L)
+prgmZLFRC
+Str5+sub("-+",(G+3)/2,1)+Str0+"𝑖"→Str5
+End
+⌊MKN(L)+G⌊MKNI(L)𝑖→H
+prgmZLCHK
+End
+End
+End
+0→⌊MKS(2)
+End
+Real
+"#ANSWER"→Str8
+prgmZLADD
+"ZEROS"→Str8
+prgmZLADD
+" "→Str4
+If K=2
+"+/-"→Str4
+If K=2 and D
+Then
+D
+prgmZLFRC
+Str0+"+/-"→Str4
+End
+If K=2
+Then
+{0,abs(E),1}→⌊MKT
+prgmZLCST
+" "+Str4+Str0+","→Str4
+End
+If dim(⌊MKR)
+Then
+⌊MKR→⌊MKCX
+⌊MKM→⌊MKCY
+SortA(⌊MKCX,⌊MKCY)
+For(L,1,dim(⌊MKCX))
+⌊MKCX(L)
+prgmZLFRC
+Str4+" "+Str0→Str4
+If ⌊MKCY(L)>1
+Str4+" (MULT "+toString(⌊MKCY(L))+")"→Str4
+Str4+","→Str4
+End
+End
+If Z=2
+Str4+" "+Str6+","→Str4
+If Z=3
+Then
+1→⌊MKS(2)
+For(L,1,dim(⌊MKN))
+⌊MKN(L)
+prgmZLFRC
+Str4+" "+Str0→Str4
+If ⌊MKNI(L)
+Then
+⌊MKNI(L)
+prgmZLFRC
+Str4+"+/-"+Str0+"𝑖"→Str4
+End
+Str4+","→Str4
+End
+0→⌊MKS(2)
+End
+sub(Str4,2,length(Str4)-2)→Str8
+prgmZLADD
+If Z=3
+Then
+"(DECIMALS ARE APPROX)"→Str8
+prgmZLADD
+End
+If Z≠3
+Then
+"FACTORED"→Str8
+prgmZLADD
+⌊MKA(1)
+prgmZLFRC
+Str0→Str4
+If V>1
+"("+Str0+")"→Str4
+If ⌊MKA(1)=1
+" "→Str4
+If ⌊MKA(1)=⁻1
+"⁻"→Str4
+If K=2
+Then
+⌊MKB→⌊MKF
+prgmZLFMT
+Str4+"("+Str0+")"→Str4
+End
+For(L,1,dim(⌊MKR))
+{1,⁻⌊MKR(L)}→⌊MKF
+prgmZLFMT
+"("+Str0+")"→Str0
+If not(⌊MKR(L))
+"X"→Str0
+Str4+Str0→Str4
+If ⌊MKM(L)=2
+Str4+"²"→Str4
+If ⌊MKM(L)=3
+Str4+"³"→Str4
+If ⌊MKM(L)>3
+Str4+"^"+toString(⌊MKM(L))→Str4
+End
+If Z=2
+Then
+⌊MKG→⌊MKQ
+prgmZLQSV
+If ⌊MKQ(5)=2 and abs(⌊MKQ(8)+⌊MKQ(9))<1ᴇ⁻9
+Then
+inString(Str7,",")→N
+Str4+"(X-"+sub(Str7,N+1,length(Str7)-N)+")(X+"+sub(Str7,N+1,length(Str7)-N)+")"→Str4
+Else
+⌊MKG/⌊MKG(1)→⌊MKF
+prgmZLFMT
+Str4+"("+Str0+")"→Str4
+End
+End
+If sub(Str4,1,1)=" "
+sub(Str4,2,length(Str4)-1)→Str4
+Str4→Str8
+prgmZLADD
+End
+prgmZLSHOW
+Goto M
+Lbl NZ
+"#ANSWER"→Str8
+prgmZLADD
+Str2→Str5
+If K=0 and not(E)
+Then
+D
+prgmZLFRC
+Str0→Str5
+End
+Str5+" IS NOT A ZERO"→Str8
+prgmZLADD
+"(REMAINDER IS NOT 0)"→Str8
+prgmZLADD
+prgmZLSHOW
+Goto M
