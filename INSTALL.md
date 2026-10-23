@@ -49,16 +49,16 @@ To run the kit, press **prgm**, choose **MATHKIT** and press **enter enter**.
 
 **Speed.** If archived programs are copied to RAM each time they run, keeping the helpers in RAM may also be faster. HARDWARE-TEST.md item H2 compares the two.
 
-**On OS 5.2.x, keep everything in RAM.** The kit needs 58,063 bytes of RAM storage, plus working space.
+**On OS 5.2.x, keep everything in RAM.** The kit needs 58,403 bytes of RAM storage, plus working space.
 
 ## 5. How much memory the kit uses
 
 | What | Size | Source |
 |---|---|---|
-| All 33 programs | **58,063 bytes** (under the 60 KB budget) | `build/sizes.txt`, token bytes plus each variable's header |
-| Largest single program (ZGRAPH) | 8,466 bytes | well under the 16 KB target and the 65,535-byte limit for one variable |
+| All 33 programs | **58,403 bytes** (under the 60 KB budget) | `build/sizes.txt`, token bytes plus each variable's header |
+| Largest single program (ZGRAPH) | 8,561 bytes | well under the 16 KB target and the 65,535-byte limit for one variable |
 | Working lists and strings while a problem runs | about 3.6 KB at most | harness measurement, largest case |
-| Running programs, if archived programs are copied to RAM | about 10 KB at most (MATHKIT + ZZEROS + ZLZER + ZLZRL + ZLSYN + ZLFRC + ZLA) | estimate |
+| Running programs, if archived programs are copied to RAM | about 11 KB at most (MATHKIT + ZZEROS + ZLZER + ZLZRL + ZLSYN + ZLFRC + ZLA + ZLSHOW) | estimate from `build/sizes.txt` |
 | **Free RAM needed while running** | **about 15 KB; keep 30 KB free** | |
 
 The working lists are all named ⌊MK…. Each problem reuses the same set rather than making new ones. **MATHKIT > 7:SETTINGS / QUIT > 3:CLEAN UP AND QUIT** deletes them. The settings list ⌊MKS is recreated, with show-work on, the next time any program runs.

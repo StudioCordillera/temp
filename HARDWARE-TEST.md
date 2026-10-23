@@ -55,6 +55,7 @@ None of this has been run on a calculator yet. Every result in REPORT.md comes f
 | T24 | Pager, longest trace (high risk for speed) | Run T13, then hold **enter** through every page, then **▲** back to page 1 | Every page shows. Note the slowest page turn: ______ | ⏱ | ☐ |
 | T25 | Answer-only mode | MATHKIT `7` `2` **enter**, then `1` `1` `0 enter 1 enter 212 enter 1 enter` | The first screen is `1/1 ANSWER` with `2i√(53)`. Set `7` `1` afterwards to show work again. | | ☐ |
 | T26 | Validation | ZQUAD `1` `0 enter 2 enter 3 enter` | `A CANNOT BE 0`. **enter** returns to the menu. | | ☐ |
+| T27 | Empty entry | ZQUAD `1`, then **enter** three times without typing anything | `A CANNOT BE 0` (an empty entry counts as 0). If ERR:INVALID DIM or ERR:DOMAIN appears instead, note it: the harness assumes an empty **Input** stores an empty string. | | ☐ |
 
 ## C. Things to look at closely
 
@@ -67,6 +68,6 @@ None of this has been run on a calculator yet. Every result in REPORT.md comes f
 
 | Total cases | Passed | Failed | Notes |
 |---|---|---|---|
-| 32 | | | |
+| 33 | | | |
 
 Copy the timings into REPORT.md, in the "Speed" section, and replace the estimates there.

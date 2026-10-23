@@ -790,12 +790,13 @@ You can still use **ZPOLY > FROM ZEROS+POINT** to check an answer to 19–23 onc
   - A degree-5 find-all is estimated at about 9 seconds.
   - All of these are estimates from a cost model, not timings from a calculator (see REPORT.md).
   - A busy indicator runs in the top right while the program works.
-- **Degree.** Polynomials are limited to degree 6, except ZPOLY > COEFFICIENTS, which goes up to degree 10.
+- **Degree.** Polynomials are limited to degree 6, except ZPOLY > COEFFICIENTS, which goes up to degree 10. Wherever you enter zeros with multiplicities (ZPOLY, ZGRAPH > POLY FROM ZEROS, ZINEQ > FROM GRAPH), each multiplicity must be a whole number ≥ 1 and the total degree at most 10.
 - **Typed expressions.**
   - Type X, not p, t or u.
   - `1/(X−5)`, `√(X…)`, `X⁻¹`, `ln(` and `log(` are refused as not polynomials.
   - Some other non-polynomials, such as `√(1-X)`, can stop with a TI error while being sampled.
-- **Mistyped entries.** These still stop with ERR:SYNTAX. TI-BASIC cannot catch errors. Choose **1:Quit** and run the program again.
+- **Empty entries.** Pressing **enter** at a prompt without typing anything counts as `0`. The program's usual check then catches it (for example `A CANNOT BE 0`). ZCHECK asks again instead.
+- **Mistyped entries.** These still stop with an error: ERR:SYNTAX for a typo such as `21/2` run together, ERR:DATA TYPE for a list typed where a single number belongs. TI-BASIC cannot catch errors. Choose **1:Quit** and run the program again.
 - **What MATHKIT changes on your calculator.**
   - It overwrites Str0–Str9 and the real variables other than X.
   - It sets Float and Real mode.
