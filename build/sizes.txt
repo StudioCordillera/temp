@@ -3,25 +3,37 @@ tokens = tokenized program body; memory = tokens + size field + VAT entry,
 which is what 2nd MEM > Mem Management > Prgm shows (within a few bytes).
 
 program     tokens  memory  .8xp file  min OS
-ZCHECK        1237    1254       1313  1.15.0
-ZCPLX         3312    3328       3388  5.2.0
-ZDIV          2378    2393       2454  5.2.0
+ZCHECK        1184    1201       1260  1.15.0
+ZCPLX         3233    3249       3309  5.2.0
+ZDIV          2303    2318       2379  5.2.0
 ZEXPR          709     725        785  5.2.0
+ZGRAPH        8810    8827       8886  5.2.0
+ZINEQ         4191    4207       4267  5.2.0
 ZLADD          301     317        377  0.1013.0
 ZLCHK          193     209        269  0.1013.0
 ZLCST          351     367        427  5.2.0
+ZLDVQ          214     230        290  0.1013.0
+ZLEVL           41      57        117  0.1013.0
+ZLFLD           66      82        142  0.1013.0
 ZLFMT          292     308        368  5.2.0
 ZLFRC          416     432        492  5.2.0
+ZLIFC          408     424        484  5.2.0
+ZLMUL          111     127        187  0.1013.0
+ZLNEW           64      80        140  0.1013.0
 ZLQSV         1280    1296       1356  5.2.0
 ZLRAD           59      75        135  0.1013.0
 ZLSHOW        1073    1090       1149  5.2.0
-ZLSYN          849     865        925  1.15.0
+ZLSYN          856     872        932  1.15.0
+ZLTOK           27      43        103  0.1013.0
 ZLZER         4292    4308       4368  5.2.0
-ZQSOLV        4363    4380       4439  5.2.0
-ZQUAD         5069    5085       5145  1.15.0
-ZZEROS        3155    3172       3231  5.2.0
+ZPOLY         3642    3658       3718  5.2.0
+ZQSOLV        4284    4301       4360  5.2.0
+ZQUAD         4948    4964       5024  1.15.0
+ZRATEQ        4403    4420       4479  5.2.0
+ZRATFN        6068    6085       6144  5.2.0
+ZZEROS        3101    3118       3177  5.2.0
 
-TOTAL        29329   29604      30621
-MATHKIT.8xg group file: 29646 bytes
+TOTAL        56920   57390      59124
+MATHKIT.8xg group file: 57408 bytes
 Highest OS any token needs: 5.2.0 (limit 5.2.0)
-Budget: 29604 of 61440 bytes (48%)
+Budget: 57390 of 61440 bytes (93%)

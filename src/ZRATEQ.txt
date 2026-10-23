@@ -1,0 +1,392 @@
+Lbl M
+6→P
+Menu("EQUATION (1.6)","SOLVE EQUATION",S,"BACK",Q)
+Lbl Q
+Return
+Lbl S
+prgmZLNEW
+Input "LEFT TERMS=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "RIGHT TERMS=?",Str1
+prgmZEXPR
+⌊MKE(1)→B
+A+B→N
+A<1 or B<1 or N>5 or fPart(A) or fPart(B)→E
+If E
+Then
+Disp "USE 1 TO 4 TERMS PER","SIDE, 5 IN ALL"
+Pause 
+End
+If E
+Goto M
+ClrList ⌊MKTN,⌊MKTD,⌊MKTS
+1→K
+Repeat K>N or E
+ClrHome
+Disp "TERM "+sub("LR",1+(K>A),1)+toString(K-A(K>A))+"  NUM/DEN","{..} OR TYPE IT"
+Input "NUM=",Str1
+prgmZEXPR
+not(O)→E
+If O
+Then
+If dim(⌊MKE)<7
+augment(seq(0,L,1,7-dim(⌊MKE)),⌊MKE)→⌊MKE
+augment(⌊MKTN,⌊MKE)→⌊MKTN
+Input "DEN=",Str1
+prgmZEXPR
+not(O)→E
+End
+If O
+Then
+If dim(⌊MKE)=1 and ⌊MKE(1)=0
+Then
+Disp "DENOMINATOR CANNOT","BE 0"
+Pause 
+1→E
+End
+If dim(⌊MKE)<7
+augment(seq(0,L,1,7-dim(⌊MKE)),⌊MKE)→⌊MKE
+augment(⌊MKTD,⌊MKE)→⌊MKTD
+1-2(K>A)→⌊MKTS(K)
+End
+K+1→K
+End
+If E
+Goto M
+" "→Str4
+" "→Str5
+For(K,1,N)
+seq(⌊MKTN(7K-7+L),L,1,7)→⌊MKF
+While dim(⌊MKF)>1 and ⌊MKF(1)=0
+seq(⌊MKF(L),L,2,dim(⌊MKF))→⌊MKF
+End
+sum(⌊MKF≠0)→G
+prgmZLFMT
+Str0→Str2
+If G>1
+"("+Str0+")"→Str2
+seq(⌊MKTD(7K-7+L),L,1,7)→⌊MKF
+While dim(⌊MKF)>1 and ⌊MKF(1)=0
+seq(⌊MKF(L),L,2,dim(⌊MKF))→⌊MKF
+End
+sum(⌊MKF≠0)→G
+dim(⌊MKF)=1 and ⌊MKF(1)=1→H
+prgmZLFMT
+If G>1
+"("+Str0+")"→Str0
+If not(H)
+Str2+"/"+Str0→Str2
+If sub(Str2,1,1)="⁻"
+"-"+sub(Str2,2,length(Str2)-1)→Str2
+If sub(Str2,1,1)≠"-"
+"+"+Str2→Str2
+If ⌊MKTS(K)>0
+Str4+Str2→Str4
+If ⌊MKTS(K)<0
+Str5+Str2→Str5
+End
+sub(Str4,2,length(Str4)-1)→Str4
+sub(Str5,2,length(Str5)-1)→Str5
+If sub(Str4,1,1)="+"
+sub(Str4,2,length(Str4)-1)→Str4
+If sub(Str5,1,1)="+"
+sub(Str5,2,length(Str5)-1)→Str5
+If sub(Str4,1,1)="-"
+"⁻"+sub(Str4,2,length(Str4)-1)→Str4
+If sub(Str5,1,1)="-"
+"⁻"+sub(Str5,2,length(Str5)-1)→Str5
+"#THE EQUATION"→Str8
+prgmZLADD
+Str4+"="+Str5→Str8
+prgmZLADD
+"#RESTRICTIONS"→Str8
+prgmZLADD
+ClrList ⌊MKXV,⌊MKLR,⌊MKLM,⌊MKLQ
+1→C
+" "→Str3
+For(K,1,N)
+seq(⌊MKTD(7K-7+L),L,1,7)→⌊MKH
+While dim(⌊MKH)>1 and ⌊MKH(1)=0
+seq(⌊MKH(L),L,2,dim(⌊MKH))→⌊MKH
+End
+If dim(⌊MKH)=1
+Then
+⌊MKH(1)
+prgmZLFRC
+If V=1
+lcm(C,abs(U))→C
+If V>1
+Cabs(U)V→C
+Else
+⌊MKH→⌊MKF
+prgmZLFMT
+Str0→Str2
+0→Y
+prgmZLZER
+prgmZLIFC
+If Str0≠Str2
+Then
+Str2+" = "+Str0→Str8
+prgmZLADD
+End
+Q
+prgmZLFRC
+If V=1
+lcm(C,abs(U))→C
+If V>1
+Cabs(U)V→C
+1→J
+For(L,1,dim(⌊MKRR))
+inString(Str6+",",",",J)→D
+sub(Str6,J,D-J)→Str0
+D+1→J
+0→G
+For(D,1,dim(⌊MKXV))
+If abs(⌊MKXV(D)-⌊MKRR(L))<1ᴇ⁻9
+1→G
+End
+If not(G)
+Then
+⌊MKRR(L)→⌊MKXV(dim(⌊MKXV)+1)
+Str3+", "+Str0→Str3
+End
+End
+For(L,1,dim(⌊MKR))
+0→G
+For(D,1,dim(⌊MKLR))
+If abs(⌊MKLR(D)-⌊MKR(L))<1ᴇ⁻9
+Then
+max(⌊MKLM(D),⌊MKM(L))→⌊MKLM(D)
+1→G
+End
+End
+If not(G)
+Then
+⌊MKR(L)→⌊MKLR(dim(⌊MKLR)+1)
+⌊MKM(L)→⌊MKLM(dim(⌊MKLM)+1)
+End
+End
+If Z
+Then
+⌊MKH/⌊MKH(1)→⌊MKE
+If dim(⌊MKE)<7
+augment(seq(0,L,1,7-dim(⌊MKE)),⌊MKE)→⌊MKE
+0→G
+For(L,1,dim(⌊MKLQ)/7)
+If max(abs(seq(⌊MKLQ(7L-7+D),D,1,7)-⌊MKE))<1ᴇ⁻9
+1→G
+End
+If not(G)
+augment(⌊MKLQ,⌊MKE)→⌊MKLQ
+End
+End
+End
+"NO EXCLUDED VALUES"→Str8
+If dim(⌊MKXV)
+"X≠"+sub(Str3,3,length(Str3)-2)→Str8
+prgmZLADD
+{C}→⌊MKLC
+C
+prgmZLFRC
+Str0→Str2
+If C=1
+" "→Str2
+For(K,1,dim(⌊MKLR))
+⌊MKLR(K)
+prgmZLFRC
+{V,⁻U}→⌊MKX
+For(L,1,⌊MKLM(K))
+⌊MKLC→⌊MKF
+prgmZLMUL
+⌊MKF→⌊MKLC
+End
+⌊MKX→⌊MKF
+prgmZLFMT
+"("+Str0+")"→Str0
+If ⌊MKX(2)=0
+"X"→Str0
+Str2+Str0→Str2
+If ⌊MKLM(K)=2
+Str2+"²"→Str2
+If ⌊MKLM(K)=3
+Str2+"³"→Str2
+If ⌊MKLM(K)>3
+Str2+"^"+toString(⌊MKLM(K))→Str2
+End
+For(K,1,dim(⌊MKLQ)/7)
+seq(⌊MKLQ(7K-7+L),L,1,7)→⌊MKX
+While dim(⌊MKX)>1 and ⌊MKX(1)=0
+seq(⌊MKX(L),L,2,dim(⌊MKX))→⌊MKX
+End
+⌊MKLC→⌊MKF
+prgmZLMUL
+⌊MKF→⌊MKLC
+⌊MKX→⌊MKF
+prgmZLFMT
+Str2+"("+Str0+")"→Str2
+End
+If sub(Str2,1,1)=" " and length(Str2)>1
+sub(Str2,2,length(Str2)-1)→Str2
+"#LCD"→Str8
+prgmZLADD
+"LCD="+Str2→Str8
+prgmZLADD
+{0}→⌊MKEQ
+" "→Str4
+" "→Str5
+For(K,1,N)
+seq(⌊MKTN(7K-7+L),L,1,7)→⌊MKF
+⌊MKLC→⌊MKX
+prgmZLMUL
+seq(⌊MKTD(7K-7+L),L,1,7)→⌊MKX
+While dim(⌊MKX)>1 and ⌊MKX(1)=0
+seq(⌊MKX(L),L,2,dim(⌊MKX))→⌊MKX
+End
+prgmZLDVQ
+While dim(⌊MKF)>1 and abs(⌊MKF(1))<1ᴇ⁻9
+seq(⌊MKF(L),L,2,dim(⌊MKF))→⌊MKF
+End
+If dim(⌊MKEQ)<dim(⌊MKF)
+augment(seq(0,L,1,dim(⌊MKF)-dim(⌊MKEQ)),⌊MKEQ)→⌊MKEQ
+If dim(⌊MKF)<dim(⌊MKEQ)
+augment(seq(0,L,1,dim(⌊MKEQ)-dim(⌊MKF)),⌊MKF)→⌊MKF
+⌊MKEQ+⌊MKTS(K)⌊MKF→⌊MKEQ
+prgmZLFMT
+If ⌊MKTS(K)>0
+Str4+"+("+Str0+")"→Str4
+If ⌊MKTS(K)<0
+Str5+"+("+Str0+")"→Str5
+End
+"#MULTIPLY BY THE LCD"→Str8
+prgmZLADD
+sub(Str4,3,length(Str4)-2)→Str8
+prgmZLADD
+"="+sub(Str5,3,length(Str5)-2)→Str8
+prgmZLADD
+While dim(⌊MKEQ)>1 and abs(⌊MKEQ(1))<1ᴇ⁻9
+seq(⌊MKEQ(L),L,2,dim(⌊MKEQ))→⌊MKEQ
+End
+If ⌊MKEQ(1)<0
+⁻⌊MKEQ→⌊MKEQ
+If dim(⌊MKEQ)=1
+Then
+"#COLLECT"→Str8
+prgmZLADD
+"0=0 IS TRUE FOR EVERY X"→Str8
+If abs(⌊MKEQ(1))>1ᴇ⁻9
+"0≠0 IS NEVER TRUE"→Str8
+prgmZLADD
+"#ANSWER"→Str8
+prgmZLADD
+"ALL REAL X EXCEPT"→Str8
+If abs(⌊MKEQ(1))>1ᴇ⁻9
+"NO SOLUTION"→Str8
+prgmZLADD
+If abs(⌊MKEQ(1))<1ᴇ⁻9 and dim(⌊MKXV)
+Then
+"X≠"+sub(Str3,3,length(Str3)-2)→Str8
+prgmZLADD
+End
+End
+If dim(⌊MKEQ)=1
+Goto Z9
+"#COLLECT ON ONE SIDE"→Str8
+prgmZLADD
+⌊MKEQ→⌊MKF
+prgmZLFMT
+Str0+"=0"→Str8
+prgmZLADD
+"#SOLVE"→Str8
+prgmZLADD
+0→Y
+⌊MKEQ→⌊MKH
+prgmZLZER
+"X="+Str6→Str8
+If not(dim(⌊MKRR))
+"NO REAL ZEROS"→Str8
+If dim(⌊MKEQ)=3
+Then
+⌊MKEQ→⌊MKQ
+prgmZLQSV
+"X="+Str0→Str8
+If ⌊MKQ(5)=3
+Str8+" (NOT REAL)"→Str8
+End
+prgmZLADD
+"#CHECK"→Str8
+prgmZLADD
+" "→Str2
+" "→Str4
+1→J
+For(K,1,dim(⌊MKRR))
+inString(Str6+",",",",J)→D
+sub(Str6,J,D-J)→Str5
+D+1→J
+0→G
+For(D,1,dim(⌊MKXV))
+If abs(⌊MKXV(D)-⌊MKRR(K))<1ᴇ⁻9
+1→G
+End
+If G
+Then
+"X="+Str5+" IS EXCLUDED,"→Str8
+prgmZLADD
+" SO IT IS EXTRANEOUS"→Str8
+prgmZLADD
+Str4+Str5+" IS EXTRANEOUS,"→Str4
+Else
+0→E
+0→F
+For(L,1,N)
+seq(⌊MKTN(7L-7+D),D,1,7)→⌊MKF
+⌊MKRR(K)
+prgmZLEVL
+W→G
+seq(⌊MKTD(7L-7+D),D,1,7)→⌊MKF
+⌊MKRR(K)
+prgmZLEVL
+If ⌊MKTS(L)>0
+E+G/W→E
+If ⌊MKTS(L)<0
+F+G/W→F
+End
+"X="+Str5+" KEPT"→Str8
+prgmZLADD
+E
+prgmZLFRC
+" LEFT ="+Str0→Str8
+prgmZLADD
+F
+prgmZLFRC
+" RIGHT="+Str0→Str8
+If abs(E-F)≤1ᴇ⁻9max(1,abs(E))
+Str8+"  MATCH"→Str8
+prgmZLADD
+Str2+", "+Str5→Str2
+End
+End
+"#ANSWER"→Str8
+prgmZLADD
+"NO SOLUTION"→Str8
+If length(Str2)>1
+"{"+sub(Str2,4,length(Str2)-3)+"}"→Str8
+If length(Str2)=1 and not(dim(⌊MKRR))
+"NO REAL SOLUTION"→Str8
+prgmZLADD
+If length(Str4)>1
+Then
+1→J
+Repeat not(D)
+inString(Str4,",",J)→D
+If D
+Then
+sub(Str4,J,D-J)→Str8
+prgmZLADD
+D+1→J
+End
+End
+End
+Lbl Z9
+prgmZLSHOW
+Goto M

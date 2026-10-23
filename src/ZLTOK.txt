@@ -1,0 +1,5 @@
+Ans→θ
+If θ=1
+"abs("→Str0
+If θ=2
+"√("→Str0

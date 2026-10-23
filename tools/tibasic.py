@@ -226,7 +226,7 @@ _TOKEN_CACHE = {}
 # Programs tokenized with maximal munch: their string literals must hold
 # the calculator's function tokens (√(, ln(, ⁻¹ ...) to match what a user
 # types. Every other program uses tivars' default "smart" mode.
-MAX_MUNCH = {"ZEXPR", "ZLADD"}
+MAX_MUNCH = {"ZEXPR", "ZLADD", "ZLTOK"}
 
 
 def tokenize(text, mode="smart"):
@@ -877,6 +877,8 @@ class Interp:
                 lst = args[0]
                 if not isinstance(lst, list):
                     raise TIError("DATA TYPE", f)
+                if not lst:
+                    raise TIError("INVALID DIM", f + " of an empty list")
                 self.cost["listel"] += len(lst)
                 return pick(to_real(x) for x in lst)
             need(2)
@@ -1461,8 +1463,6 @@ class Interp:
         self.cost_marks.append(("input", dict(self.cost)))
         self.events.append(("input", "".join(prompt), "".join(typed)))
         if len(target) == 1 and target[0] in STRVARS:
-            if not typed:
-                raise TIError("SYNTAX", "empty input")
             self.strs[target[0]] = tuple(typed)
             return
         v = self.eval_tokens(typed)

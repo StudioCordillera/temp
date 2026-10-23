@@ -1,19 +1,10 @@
-Float
-Real
-SetUpEditor MKS
-SetUpEditor 
-If dim(⌊MKS)<3
-{1,0,0}→⌊MKS
 Lbl M
 6→P
 Menu("DIVIDE (3.2)","SYNTHETIC",S,"LONG DIVISION",L,"BACK",Q)
 Lbl Q
 Return
 Lbl S
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 Disp "COEFFICIENTS {..} OR","TYPE THE POLYNOMIAL"
 Input "DIVIDEND=",Str1
 prgmZEXPR
@@ -33,6 +24,7 @@ If dim(⌊MKA)<2
 Goto M
 dim(⌊MKA)→N
 augment(⌊MKA,{K})→⌊MKY
+1→Y
 prgmZLSYN
 O→G
 P→H
@@ -115,10 +107,7 @@ prgmZLADD
 prgmZLSHOW
 Goto M
 Lbl L
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 Disp "COEFFICIENTS {..} OR","TYPE THE POLYNOMIAL"
 Input "DIVIDEND=",Str1
 prgmZEXPR

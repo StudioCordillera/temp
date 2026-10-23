@@ -1,0 +1,332 @@
+Lbl M
+6→P
+Menu("BEHAVIOR (3.3)","COEFFICIENTS",C,"FACTORED FORM",F,"FROM ZEROS+POINT",Z,"BACK",Q)
+Lbl Q
+Return
+Lbl C
+prgmZLNEW
+Disp "COEFFICIENTS {..} OR","TYPE THE POLYNOMIAL"
+Input "F(X)=",Str1
+10→P
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKA
+0→N
+dim(⌊MKA)-1→D
+⌊MKA(1)→L
+⌊MKA(D+1)→C
+"#THE POLYNOMIAL"→Str8
+prgmZLADD
+⌊MKA→⌊MKF
+prgmZLFMT
+Str0→Str6
+"F(X)="+Str0→Str8
+prgmZLADD
+"#DEGREE AND LEADING"→Str8
+prgmZLADD
+"DEGREE "+toString(D)+sub(" (EVEN) (ODD)",1+7fPart(D/2)2,7-(fPart(D/2)>0))→Str8
+prgmZLADD
+L
+prgmZLFRC
+Str0→Str4
+"LEADING COEF "+Str4→Str8
+prgmZLADD
+C
+prgmZLFRC
+Str0→Str5
+Goto EB
+Lbl F
+prgmZLNEW
+Disp "A(PX+Q)^M(PX+Q)^M ETC"
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "FACTORS=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+If N<1 or N>6 or fPart(N) or A=0
+Then
+Disp "NEED A≠0 AND 1 TO 6","FACTORS"
+Pause 
+End
+If N<1 or N>6 or fPart(N) or A=0
+Goto M
+ClrList ⌊MKFP,⌊MKFQ,⌊MKFM
+For(K,1,N)
+ClrHome
+Disp "FACTOR "+toString(K)+"  (PX+Q)^M"
+Input "P=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFP(K)
+Input "Q=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFQ(K)
+Input "M=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFM(K)
+End
+min(⌊MKFP≠0 and ⌊MKFM≥1 and fPart(⌊MKFM)=0)→E
+If not(E)
+Then
+Disp "NEED P≠0 AND M A","WHOLE NUMBER ≥ 1"
+Pause 
+End
+If not(E)
+Goto M
+sum(⌊MKFM)→D
+Aprod(⌊MKFP^⌊MKFM)→L
+Aprod(⌊MKFQ^⌊MKFM)→C
+A
+prgmZLFRC
+Str0→Str6
+If A=1
+" "→Str6
+If A=⁻1
+"⁻"→Str6
+"#ZEROS AND MULTIPLICITY"→Str8
+prgmZLADD
+For(K,1,N)
+{⌊MKFP(K),⌊MKFQ(K)}→⌊MKF
+prgmZLFMT
+"("+Str0+")"→Str0
+If Str0="(X)"
+"X"→Str0
+Str6+Str0→Str6
+If ⌊MKFM(K)=2
+Str6+"²"→Str6
+If ⌊MKFM(K)=3
+Str6+"³"→Str6
+If ⌊MKFM(K)>3
+Str6+"^"+toString(⌊MKFM(K))→Str6
+⁻⌊MKFQ(K)/⌊MKFP(K)
+prgmZLFRC
+"X="+Str0+"  MULT "+toString(⌊MKFM(K))+"  "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)→Str8
+prgmZLADD
+End
+If sub(Str6,1,1)=" "
+sub(Str6,2,length(Str6)-1)→Str6
+"#DEGREE"→Str8
+prgmZLADD
+"ADD THE MULTIPLICITIES"→Str8
+prgmZLADD
+toString(⌊MKFM(1))→Str8
+For(K,2,N)
+Str8+"+"+toString(⌊MKFM(K))→Str8
+End
+Str8+"="+toString(D)→Str8
+prgmZLADD
+"#LEADING COEFFICIENT"→Str8
+prgmZLADD
+"MULTIPLY LEADING TERMS"→Str8
+prgmZLADD
+A
+prgmZLFRC
+Str0→Str8
+For(K,1,N)
+⌊MKFP(K)
+prgmZLFRC
+If U<0 or V>1
+"("+Str0+")"→Str0
+Str8+"*"+Str0→Str8
+If ⌊MKFM(K)=2
+Str8+"²"→Str8
+If ⌊MKFM(K)=3
+Str8+"³"→Str8
+If ⌊MKFM(K)>3
+Str8+"^"+toString(⌊MKFM(K))→Str8
+End
+prgmZLADD
+L
+prgmZLFRC
+Str0→Str4
+"="+Str4→Str8
+prgmZLADD
+C
+prgmZLFRC
+Str0→Str5
+"#Y-INTERCEPT"→Str8
+prgmZLADD
+"F(0)="+Str5→Str8
+prgmZLADD
+Lbl EB
+"#END BEHAVIOR"→Str8
+prgmZLADD
+fPart(D/2)=0→E
+If E
+Then
+"INF"→Str2
+If L<0
+"⁻INF"→Str2
+Else
+"⁻INF"→Str2
+If L<0
+"INF"→Str2
+End
+"INF"→Str3
+If L<0
+"⁻INF"→Str3
+"AS X-"+">⁻INF, F(X)-"+">"+Str2→Str8
+prgmZLADD
+"AS X-"+">INF, F(X)-"+">"+Str3→Str8
+prgmZLADD
+sub("FALLSRISES",1+5(Str2="INF"),5)+" LEFT, "+sub("FALLSRISES",1+5(Str3="INF"),5)+" RIGHT"→Str1
+Str1→Str8
+prgmZLADD
+If not(N)
+Then
+"#Y-INTERCEPT"→Str8
+prgmZLADD
+"F(0)="+Str5→Str8
+prgmZLADD
+"(0,"+Str5+")"→Str8
+prgmZLADD
+End
+"#TURNING POINTS"→Str8
+prgmZLADD
+"AT MOST "+toString(max(0,D-1))→Str8
+prgmZLADD
+"#ANSWER"→Str8
+prgmZLADD
+"F(X)="+Str6→Str8
+prgmZLADD
+"DEGREE "+toString(D)+", LEADING "+Str4→Str8
+prgmZLADD
+"Y-INT (0,"+Str5+")"→Str8
+prgmZLADD
+Str1→Str8
+prgmZLADD
+If N
+Then
+For(K,1,N)
+⁻⌊MKFQ(K)/⌊MKFP(K)
+prgmZLFRC
+"X="+Str0+" MULT "+toString(⌊MKFM(K))+" "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)→Str8
+prgmZLADD
+End
+Else
+"AS X-"+">⁻INF, F(X)-"+">"+Str2→Str8
+prgmZLADD
+"AS X-"+">INF, F(X)-"+">"+Str3→Str8
+prgmZLADD
+End
+prgmZLSHOW
+0→N
+Goto M
+Lbl Z
+prgmZLNEW
+Input "ZEROS=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+If N<1 or N>6 or fPart(N)
+Then
+Disp "USE 1 TO 6 ZEROS"
+Pause 
+End
+If N<1 or N>6 or fPart(N)
+Goto M
+ClrList ⌊MKFQ,⌊MKFM
+For(K,1,N)
+ClrHome
+Disp "ZERO "+toString(K)
+Input "ZERO=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFQ(K)
+Input "MULT=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFM(K)
+End
+ClrHome
+Input "A (0=FIND)=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+" "→Str6
+For(K,1,N)
+{1,⁻⌊MKFQ(K)}→⌊MKF
+prgmZLFMT
+"("+Str0+")"→Str0
+If not(⌊MKFQ(K))
+"X"→Str0
+Str6+Str0→Str6
+If ⌊MKFM(K)=2
+Str6+"²"→Str6
+If ⌊MKFM(K)=3
+Str6+"³"→Str6
+If ⌊MKFM(K)>3
+Str6+"^"+toString(⌊MKFM(K))→Str6
+End
+sub(Str6,2,length(Str6)-1)→Str6
+"#START"→Str8
+prgmZLADD
+"F(X)=A"+Str6→Str8
+prgmZLADD
+If A=0
+Then
+Disp "POINT (X,Y)"
+Input "X=?",Str1
+prgmZEXPR
+⌊MKE(1)→G
+Input "Y=?",Str1
+prgmZEXPR
+⌊MKE(1)→H
+prod((G-⌊MKFQ)^⌊MKFM)→E
+End
+If A=0 and E=0
+Then
+Disp "POINT IS A ZERO,","CHOOSE ANOTHER"
+Pause 
+End
+If A=0 and E=0
+Goto M
+If A=0
+Then
+H/E→A
+G
+prgmZLFRC
+Str0→Str4
+H
+prgmZLFRC
+Str0→Str5
+"#PLUG IN ("+Str4+","+Str5+")"→Str8
+prgmZLADD
+Str5+"=A"→Str8
+For(K,1,N)
+G-⌊MKFQ(K)
+prgmZLFRC
+Str8+"("+Str0+")"→Str8
+If ⌊MKFM(K)=2
+Str8+"²"→Str8
+If ⌊MKFM(K)=3
+Str8+"³"→Str8
+If ⌊MKFM(K)>3
+Str8+"^"+toString(⌊MKFM(K))→Str8
+End
+prgmZLADD
+E
+prgmZLFRC
+Str5+"="+Str0+"A"→Str8
+prgmZLADD
+A
+prgmZLFRC
+"A="+Str0→Str8
+prgmZLADD
+End
+A
+prgmZLFRC
+"("+Str0+")"→Str0
+If V=1
+sub(Str0,2,length(Str0)-2)→Str0
+If A=1
+" "→Str0
+If A=⁻1
+"⁻"→Str0
+"#ANSWER"→Str8
+prgmZLADD
+"F(X)="+Str0+Str6→Str8
+If A=1
+"F(X)="+Str6→Str8
+prgmZLADD
+"DEGREE "+toString(sum(⌊MKFM))→Str8
+prgmZLADD
+prgmZLSHOW
+Goto M

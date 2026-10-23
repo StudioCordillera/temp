@@ -79,8 +79,8 @@ CASES = [
     ('R068', 'ZDIV', '1{~4,~14,26,~20}\n~5\n#', ['⁻4X²+6X-4']),
     ('R069', 'ZDIV', '1{1,0,0,1,0,5}\n2\n#', ['X^4+2X³+4X²+9X+18+41/(X-2)']),
     ('R070', 'ZDIV', '1{1,~3,1,7,~9}\n1\n#', ['X³-2X²-X+6-3/(X-1)']),
-    ('R071', 'ZPOLY', '1{8,3,3,0,0,0,7}\n#', ['DEGREE 6', 'LEADING COEF 8']),
-    ('R072', 'ZPOLY', '1{4,0,0,0,0,9,19,3,0,~10}\n#', ['DEGREE 9', 'X→⁻INF, F(X)→⁻INF']),
+    ('R071', 'ZPOLY', '1{8,3,3,0,0,0,7}\n#', ['DEGREE 6', 'LEADING 8']),  # CHANGED: answer line reads 'DEGREE 6, LEADING 8'
+    ('R072', 'ZPOLY', '1{4,0,0,0,0,9,19,3,0,~10}\n#', ['DEGREE 9', 'X->⁻INF, F(X)->⁻INF']),
     ('R073', 'ZPOLY', '2~4\n3\n1\n~8\n1\n5\n1\n2\n1\n~3\n4\n#', ['LEADING ⁻100', 'DEGREE 7']),
     ('R074', 'ZPOLY', '2~2\n3\n1\n0\n6\n1\n7\n2\n1\n~5\n6\n#', ['X=0 MULT 6', 'X=⁻7 MULT 2', 'X=5 MULT 6']),
     ('R075', 'ZPOLY', '33\n~4\n1\n~1\n1\n3\n1\n0\n0\n~3\n#', ['(1/4)(X+4)(X+1)(X-3)']),
@@ -108,7 +108,7 @@ CASES = [
     ('R097', 'ZRATEQ', '11\n1\n{2}\n{1,0}\n{1,0}\n{5,~12}\n#', ['4', '6']),
     ('R098', 'ZRATEQ', '12\n1\n{~1,5}\n{1,0}\n{3}\n{4}\n{7}\n{1,0}\n#', ['{⁻8}']),
     ('R099', 'ZRATEQ', '12\n1\n{9}\n{1,~4}\n{~7}\n{1,4}\n{6}\n{1,0,~16}\n#', ['{⁻29}']),
-    ('R100', 'ZRATEQ', '12\n1\n{1}\n{1,5}\n{3}\n{1,4}\n{~1}\n{1,9,20}\n#', ['NO REAL SOLUTION']),
+    ('R100', 'ZRATEQ', '12\n1\n{1}\n{1,5}\n{3}\n{1,4}\n{~1}\n{1,9,20}\n#', ['NO SOLUTION', '⁻5 IS EXTRANEOUS']),  # CHANGED: the only candidate is excluded, so the answer reads NO SOLUTION and names the extraneous root
     ('R101', 'ZRATFN', '{7,4}\n{~2,1}\n1#', ['X-INT (⁻4/7,0)', 'V.A. X=1/2', 'H.A. Y=⁻7/2']),
     ('R102', 'ZRATFN', '{1,~2}\n{1,9,0}\n1#', ['X=⁻9', 'X=0', 'H.A. Y=0']),
     ('R103', 'ZRATFN', '{1,~6}\n{1,5,4}\n1#', ['X=⁻4, X=⁻1', 'X-INT (6,0)']),

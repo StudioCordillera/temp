@@ -1,0 +1,7 @@
+seq(0,θ,1,dim(⌊MKF)+dim(⌊MKX)-1)→⌊MKXP
+For(U,1,dim(⌊MKF))
+For(V,1,dim(⌊MKX))
+⌊MKXP(U+V-1)+⌊MKF(U)⌊MKX(V)→⌊MKXP(U+V-1)
+End
+End
+⌊MKXP→⌊MKF

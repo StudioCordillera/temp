@@ -1,0 +1,10 @@
+Float
+Real
+SetUpEditor MKS
+SetUpEditor 
+If dim(⌊MKS)<3
+{1,0,0}→⌊MKS
+ClrHome
+0→⌊MKS(2)
+" "→Str9
+{2}→⌊MKL

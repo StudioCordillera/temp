@@ -1,9 +1,3 @@
-Float
-Real
-SetUpEditor MKS
-SetUpEditor 
-If dim(⌊MKS)<3
-{1,0,0}→⌊MKS
 Lbl M
 6→P
 0→Y
@@ -15,10 +9,7 @@ Return
 Lbl AP
 1→G
 Lbl S
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 Disp "F(X)=AX²+BX+C"
 Input "A=?",Str1
 prgmZEXPR
@@ -39,10 +30,7 @@ Lbl G2
 2→G
 Goto AQ
 Lbl V
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 Disp "F(X)=A(X-H)²+K"
 Input "A=?",Str1
 prgmZEXPR
@@ -58,10 +46,7 @@ prgmZEXPR
 AH²+K→C
 Goto AQ
 Lbl T
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 Disp "TYPE F(X) AS PRINTED","USE X FOR THE VARIABLE"
 Input "F(X)=",Str1
 Str1→Str2
@@ -394,10 +379,7 @@ prgmZLADD
 prgmZLSHOW
 Goto M
 Lbl GR
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 Disp "VERTEX (H,K)"
 Input "H=?",Str1
 prgmZEXPR

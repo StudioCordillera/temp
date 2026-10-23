@@ -40,7 +40,7 @@ def os_tuple(v):
     return tuple(int(x) for x in parts[:3]) + (0,) * (3 - len(parts[:3]))
 
 
-STRING_TOKENS_OK = {"√(", "ln(", "log(", "⁻¹"}
+STRING_TOKENS_OK = {"√(", "ln(", "log(", "⁻¹", "abs("}
 
 
 def static_checks(name, text):

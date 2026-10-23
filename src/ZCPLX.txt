@@ -1,9 +1,3 @@
-Float
-Real
-SetUpEditor MKS
-SetUpEditor 
-If dim(⌊MKS)<3
-{1,0,0}→⌊MKS
 Lbl M
 6→P
 Menu("COMPLEX (1.3)","SIMPLIFY (A+B√(⁻N))/D",S,"ADD",A,"SUBTRACT",B,"MULTIPLY",C,"BACK",Q)
@@ -19,10 +13,7 @@ Lbl C
 3→M
 Goto I
 Lbl S
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 Disp "(A+B√(⁻N))/D"
 Input "A=?",Str1
 prgmZEXPR
@@ -130,10 +121,7 @@ prgmZLADD
 prgmZLSHOW
 Goto M
 Lbl I
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 " "→Str4
 Disp "1ST  A+B√(⁻N)","(N=1 FOR A+B𝑖)"
 Input "A=?",Str1

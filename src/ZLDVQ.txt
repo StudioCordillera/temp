@@ -1,0 +1,18 @@
+dim(⌊MKF)-dim(⌊MKX)+1→W
+If W<1
+Then
+⌊MKF→⌊MKXR
+{0}→⌊MKF
+Else
+seq(0,θ,1,W)→⌊MKXP
+For(U,1,W)
+⌊MKF(U)/⌊MKX(1)→⌊MKXP(U)
+For(V,1,dim(⌊MKX))
+⌊MKF(U+V-1)-⌊MKXP(U)⌊MKX(V)→⌊MKF(U+V-1)
+End
+End
+seq(⌊MKF(θ),θ,W+1,dim(⌊MKF))→⌊MKXR
+If dim(⌊MKX)=1
+{0}→⌊MKXR
+⌊MKXP→⌊MKF
+End

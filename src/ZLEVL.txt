@@ -1,0 +1,5 @@
+Ans→θ
+⌊MKF(1)→W
+For(U,2,dim(⌊MKF))
+Wθ+⌊MKF(U)→W
+End

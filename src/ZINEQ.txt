@@ -1,0 +1,437 @@
+Lbl M
+6→P
+Menu("INEQUALITY (3.6)","POLY COEFS",C,"POLY FACTORS",F,"RATIONAL",R,"FROM GRAPH",G,"BACK",Q)
+Lbl Q
+Return
+Lbl C
+1→M
+Goto I
+Lbl R
+3→M
+Lbl I
+prgmZLNEW
+1→G
+If M=3
+Goto I3
+Disp "F(X) ? RIGHT SIDE","{..} OR TYPE EACH SIDE"
+Input "F(X)=",Str1
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKNU
+Input "RIGHT SIDE=",Str1
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKA
+If dim(⌊MKNU)<dim(⌊MKA)
+augment(seq(0,L,1,dim(⌊MKA)-dim(⌊MKNU)),⌊MKNU)→⌊MKNU
+If dim(⌊MKA)<dim(⌊MKNU)
+augment(seq(0,L,1,dim(⌊MKNU)-dim(⌊MKA)),⌊MKA)→⌊MKA
+⌊MKNU-⌊MKA→⌊MKNU
+While dim(⌊MKNU)>1 and abs(⌊MKNU(1))<1ᴇ⁻9
+seq(⌊MKNU(L),L,2,dim(⌊MKNU))→⌊MKNU
+End
+{1}→⌊MKDE
+⌊MKNU→⌊MKF
+prgmZLFMT
+Str0→Str4
+Goto SY
+Lbl I3
+Disp "F(X)=NUM/DEN","{..} OR TYPE EACH PART"
+Input "NUMERATOR=",Str1
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKNU
+Input "DENOMINATOR=",Str1
+prgmZEXPR
+If not(O)
+Goto M
+⌊MKE→⌊MKDE
+If dim(⌊MKDE)=1 and ⌊MKDE(1)=0
+Goto M
+⌊MKNU→⌊MKF
+prgmZLFMT
+"("+Str0+")/"→Str4
+⌊MKDE→⌊MKF
+prgmZLFMT
+Str4+"("+Str0+")"→Str4
+Goto SY
+Lbl F
+prgmZLNEW
+2→G
+Disp "A(PX+Q)^M(PX+Q)^M"
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "FACTORS=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+If N<1 or N>6 or fPart(N) or A=0
+Goto M
+ClrList ⌊MKFP,⌊MKFQ,⌊MKFM
+For(K,1,N)
+ClrHome
+Disp "FACTOR "+toString(K)+"  (PX+Q)^M"
+Input "P=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFP(K)
+Input "Q=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFQ(K)
+Input "M=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFM(K)
+End
+If min(⌊MKFP≠0 and ⌊MKFM≥1 and fPart(⌊MKFM)=0)=0
+Goto M
+A
+prgmZLFRC
+Str0→Str4
+If A=1
+" "→Str4
+If A=⁻1
+"⁻"→Str4
+For(K,1,N)
+{⌊MKFP(K),⌊MKFQ(K)}→⌊MKF
+prgmZLFMT
+"("+Str0+")"→Str0
+If Str0="(X)"
+"X"→Str0
+Str4+Str0→Str4
+If ⌊MKFM(K)=2
+Str4+"²"→Str4
+If ⌊MKFM(K)=3
+Str4+"³"→Str4
+If ⌊MKFM(K)>3
+Str4+"^"+toString(⌊MKFM(K))→Str4
+End
+If sub(Str4,1,1)=" "
+sub(Str4,2,length(Str4)-1)→Str4
+Goto SY
+Lbl G
+prgmZLNEW
+2→G
+ClrList ⌊MKFP,⌊MKFQ,⌊MKFM
+Disp "READ OFF THE GRAPH"
+Input "HOW MANY ZEROS=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+Input "HOW MANY V.A.=?",Str1
+prgmZEXPR
+⌊MKE(1)→K
+If N<0 or K<0 or N+K>8 or fPart(N) or fPart(K)
+Goto M
+For(L,1,N+K)
+ClrHome
+Disp sub("ZERO V.A.",1+5(L>N),4)+" "+toString(L-N(L>N))
+Input "X=?",Str1
+prgmZEXPR
+1→⌊MKFP(L)
+⁻⌊MKE(1)→⌊MKFQ(L)
+Input "MULT=?",Str1
+prgmZEXPR
+⌊MKE(1)(1-2(L>N))→⌊MKFM(L)
+End
+N+K→N
+Menu("SIGN AT FAR RIGHT","+ (RISES OR ABOVE)",G1,"- (FALLS OR BELOW)",G2)
+Lbl G1
+1→A
+Goto G3
+Lbl G2
+⁻1→A
+Lbl G3
+"F FROM THE GRAPH"→Str4
+Lbl SY
+Menu("F(X) ? 0",">",S1,"≥",S2,"<",S3,"≤",S4)
+Lbl S1
+1→H
+Goto S0
+Lbl S2
+2→H
+Goto S0
+Lbl S3
+3→H
+Goto S0
+Lbl S4
+4→H
+Lbl S0
+sub("> ≥ < ≤ ",2H-1,1)→Str5
+"#ONE SIDE"→Str8
+prgmZLADD
+If M=1 and G=1
+Then
+"MOVE EVERYTHING LEFT"→Str8
+prgmZLADD
+End
+Str4+Str5+"0"→Str8
+prgmZLADD
+ClrList ⌊MKIV,⌊MKIK,⌊MKII
+" "→Str3
+If G=1
+Then
+0→Y
+If dim(⌊MKNU)>1
+Then
+⌊MKNU→⌊MKH
+prgmZLZER
+For(K,1,dim(⌊MKRR))
+⌊MKRR(K)→⌊MKIV(K)
+1→⌊MKIK(K)
+K→⌊MKII(K)
+End
+Str6→Str3
+End
+If dim(⌊MKDE)>1
+Then
+⌊MKDE→⌊MKH
+prgmZLZER
+Str6→Str1
+dim(⌊MKIV)→E
+For(K,1,dim(⌊MKRR))
+0→D
+For(L,1,E)
+If abs(⌊MKIV(L)-⌊MKRR(K))<1ᴇ⁻9
+Then
+2→⌊MKIK(L)
+1→D
+End
+End
+If not(D)
+Then
+⌊MKRR(K)→⌊MKIV(dim(⌊MKIV)+1)
+2→⌊MKIK(dim(⌊MKIK)+1)
+⁻K→⌊MKII(dim(⌊MKIV))
+
+End
+End
+End
+Else
+For(K,1,N)
+⁻⌊MKFQ(K)/⌊MKFP(K)→D
+0→E
+For(L,1,dim(⌊MKIV))
+If abs(⌊MKIV(L)-D)<1ᴇ⁻9
+Then
+max(⌊MKIK(L),1+(⌊MKFM(K)<0))→⌊MKIK(L)
+1→E
+End
+End
+If not(E)
+Then
+D→⌊MKIV(dim(⌊MKIV)+1)
+1+(⌊MKFM(K)<0)→⌊MKIK(dim(⌊MKIV))
+dim(⌊MKIV)→⌊MKII(dim(⌊MKIV))
+End
+End
+End
+dim(⌊MKIV)→N
+If N
+SortA(⌊MKIV,⌊MKIK,⌊MKII)
+" "→Str2
+For(K,1,N)
+If G=1 and ⌊MKII(K)>0
+Then
+Str3→Str6
+⌊MKII(K)
+prgmZLFLD
+End
+If G=1 and ⌊MKII(K)<0
+Then
+Str1→Str6
+⁻⌊MKII(K)
+prgmZLFLD
+End
+If G=2
+Then
+⌊MKIV(K)
+prgmZLFRC
+End
+Str2+Str0+","→Str2
+End
+If N
+sub(Str2,2,length(Str2)-2)→Str2
+"#CRITICAL VALUES"→Str8
+prgmZLADD
+" "→Str1
+" "→Str3
+For(K,1,N)
+Str2→Str6
+K
+prgmZLFLD
+If ⌊MKIK(K)=1
+Str1+Str0+", "→Str1
+If ⌊MKIK(K)=2
+Str3+Str0+", "→Str3
+End
+"ZEROS NONE"→Str8
+If length(Str1)>1
+"ZEROS "+sub(Str1,2,length(Str1)-3)→Str8
+prgmZLADD
+0→D
+If G=1
+dim(⌊MKDE)>1→D
+If G=2
+min(⌊MKFM)<0→D
+If D
+Then
+"UNDEFINED NONE"→Str8
+If length(Str3)>1
+"UNDEFINED "+sub(Str3,2,length(Str3)-3)→Str8
+prgmZLADD
+End
+ClrList ⌊MKSG
+For(K,1,N+1)
+0→T
+If N>0
+Then
+If K=1
+int(⌊MKIV(1))-1→T
+If K=N+1
+⁻int(⁻⌊MKIV(N))+1→T
+End
+If K>1 and K≤N
+Then
+int(⌊MKIV(K-1))+1→D
+⁻int(⁻⌊MKIV(K))-1→E
+(⌊MKIV(K-1)+⌊MKIV(K))/2→T
+If D≤E
+min(E,max(D,round(T,0)))→T
+End
+If G=1
+Then
+⌊MKNU→⌊MKF
+T
+prgmZLEVL
+W→D
+⌊MKDE→⌊MKF
+T
+prgmZLEVL
+D/W→D
+Else
+Aprod((⌊MKFP*T+⌊MKFQ)^⌊MKFM)→D
+End
+1-2(D<0)→⌊MKSG(K)
+"(⁻INF,"→Str8
+If K>1
+Then
+Str2→Str6
+K-1
+prgmZLFLD
+"("+Str0+","→Str8
+End
+If K≤N
+Then
+Str8→Str1
+Str2→Str6
+K
+prgmZLFLD
+Str1+Str0+")"→Str8
+Else
+Str8+"INF)"→Str8
+End
+If length(Str8)<14
+sub(Str8+"              ",1,14)→Str8
+If length(Str8)≥14
+Str8+" "→Str8
+Str8→Str1
+T
+prgmZLFRC
+"X="+Str0→Str0
+If length(Str0)<8
+sub(Str0+"        ",1,8)→Str0
+Str1+Str0+sub("-+",1+(D>0),1)→Str8
+prgmZLADD
+End
+1-2(H>2)→F
+H=2 or H=4→E
+"#CHOOSE"→Str8
+prgmZLADD
+"NEED THE "+sub("-+",1+(F>0),1)+" INTERVALS"→Str8
+prgmZLADD
+"ZEROS EXCLUDED ( )"→Str8
+If E
+"ZEROS INCLUDED [ ]"→Str8
+prgmZLADD
+0→D
+If N
+max(⌊MKIK=2)→D
+If D
+Then
+"UNDEFINED ALWAYS ( )"→Str8
+prgmZLADD
+End
+" "→Str3
+0→C
+For(K,1,2N+1)
+If fPart(K/2)
+Then
+⌊MKSG((K+1)/2)=F→D
+Else
+E and ⌊MKIK(K/2)=1→D
+End
+If D and not(C)
+Then
+K→C
+If fPart(K/2)
+Then
+"(⁻INF"→Str1
+If K>1
+Then
+Str2→Str6
+(K-1)/2
+prgmZLFLD
+"("+Str0→Str1
+End
+Else
+Str2→Str6
+K/2
+prgmZLFLD
+"["+Str0→Str1
+End
+End
+If C and (not(D) or K=2N+1)
+Then
+K-not(D)→L
+If fPart(L/2)
+Then
+","+"INF)"→Str0
+If L<2N+1
+Then
+Str2→Str6
+(L+1)/2
+prgmZLFLD
+","+Str0+")"→Str0
+End
+Else
+Str2→Str6
+L/2
+prgmZLFLD
+","+Str0+"]"→Str0
+End
+Str1+Str0→Str1
+If C=L and not(fPart(C/2))
+Then
+Str2→Str6
+C/2
+prgmZLFLD
+"{"+Str0+"}"→Str1
+End
+Str3+"U"+Str1→Str3
+0→C
+End
+End
+"#ANSWER"→Str8
+prgmZLADD
+"NO SOLUTION"→Str8
+If length(Str3)>1
+sub(Str3,3,length(Str3)-2)→Str8
+prgmZLADD
+If Str8="(⁻INF,INF)"
+Then
+"ALL REAL NUMBERS"→Str8
+prgmZLADD
+End
+prgmZLSHOW
+Goto M

@@ -1,0 +1,7 @@
+Ans→θ
+1→W
+For(U,2,θ)
+inString(Str6,",",W)+1→W
+End
+inString(Str6+",",",",W)→U
+sub(Str6,W,U-W)→Str0

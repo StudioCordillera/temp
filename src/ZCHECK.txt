@@ -1,11 +1,5 @@
-Float
-Real
-SetUpEditor MKS
-SetUpEditor 
-If dim(⌊MKS)<3
-{1,0,0}→⌊MKS
 Lbl N
-ClrHome
+prgmZLNEW
 Disp "CHECK BY SUBSTITUTION","TYPE AN EXPRESSION OR","EQUATION IN X"
 Input Str2
 {0}→⌊MKX
@@ -23,10 +17,7 @@ If sub(Str1,1,1)≠"{"
 {expr(Str1)}→⌊MKX
 1→E
 Lbl X0
-ClrHome
-0→⌊MKS(2)
-" "→Str9
-{2}→⌊MKL
+prgmZLNEW
 Input "X VALUE=",Str1
 expr(Str1)→K
 If inString(Str1,".")

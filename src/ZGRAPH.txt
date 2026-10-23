@@ -1,0 +1,807 @@
+Lbl M
+6→P
+Menu("GRAPHS","FUNCTION FROM GRAPH",FG,"GRAPH FROM FUNCTION",GF,"POLY FROM ZEROS",PZ,"POLY THROUGH POINTS",PP,"BACK",Q)
+Lbl Q
+Return
+Lbl FG
+0→M
+Goto TY
+Lbl GF
+1→M
+Lbl TY
+Menu("FUNCTION TYPE","LINEAR",T1,"QUADRATIC",T2,"ABSOLUTE VALUE",T3,"SQUARE ROOT",T4,"MORE TYPES",T0,"BACK",M)
+Lbl T0
+Menu("MORE TYPES","CUBIC",T5,"RECIPROCAL 1/X",T6,"RECIPROCAL 1/X²",T7,"BACK",M)
+Lbl T1
+1→T
+Goto TT
+Lbl T2
+2→T
+Goto TT
+Lbl T3
+3→T
+Goto TT
+Lbl T4
+4→T
+Goto TT
+Lbl T5
+5→T
+Goto TT
+Lbl T6
+6→T
+Goto TT
+Lbl T7
+7→T
+Lbl TT
+prgmZLNEW
+If T=1
+Goto LN
+"QUADRATIC,ABSOLUTE VALUE,SQUARE ROOT,CUBIC,RECIPROCAL 1/X,RECIPROCAL 1/X²"→Str6
+T-1
+prgmZLFLD
+Str0→Str2
+"VERTEX,VERTEX,START POINT,CENTER,ASYMPTOTE CROSSING,ASYMPTOTE CROSSING"→Str6
+T-1
+prgmZLFLD
+Str0→Str3
+If M
+Goto GV
+Disp Str3+" (H,K)"
+Input "H=?",Str1
+prgmZEXPR
+⌊MKE(1)→H
+Input "K=?",Str1
+prgmZEXPR
+⌊MKE(1)→K
+Disp "ANOTHER POINT (X,Y)"
+Input "X=?",Str1
+prgmZEXPR
+⌊MKE(1)→G
+Input "Y=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+G-H→U
+U→D
+0→E
+If T=2
+D²→E
+If T=3
+abs(D)→E
+If T=4 and D≥0
+√(D)→E
+If T=5
+D³→E
+If T=6 and D
+1/D→E
+If T=7 and D
+1/D²→E
+If E=0
+Then
+Disp "THAT POINT CANNOT","FIX A, CHOOSE ANOTHER"
+Pause 
+End
+If E=0
+Goto M
+(N-K)/E→A
+"#PARENT FUNCTION"→Str8
+prgmZLADD
+Str2→Str8
+prgmZLADD
+"Y=X²,Y=|X|,Y=√(X),Y=X³,Y=1/X,Y=1/X²"→Str6
+T-1
+prgmZLFLD
+Str0→Str8
+prgmZLADD
+"A(X-H)²+K,A|X-H|+K,A√(X-H)+K,A(X-H)³+K,A/(X-H)+K,A/(X-H)²+K"→Str6
+T-1
+prgmZLFLD
+"GENERAL Y="+Str0→Str8
+prgmZLADD
+"#USE THE "+sub(Str3,1,inString(Str3+" "," ")-1)→Str8
+prgmZLADD
+H
+prgmZLFRC
+Str0→Str4
+K
+prgmZLFRC
+Str0→Str5
+Str3+" ("+Str4+","+Str5+")"→Str8
+prgmZLADD
+"SO H="+Str4+", K="+Str5→Str8
+prgmZLADD
+"#SOLVE FOR A"→Str8
+prgmZLADD
+G
+prgmZLFRC
+"PLUG IN ("+Str0+","→Str8
+N
+prgmZLFRC
+Str8+Str0+")"→Str8
+prgmZLADD
+D
+prgmZLFRC
+"(,|,√(,(,1/(,1/("→Str6
+T-1
+prgmZLFLD
+Str0→Str1
+D
+prgmZLFRC
+Str1+Str0→Str1
+")²,|,),)³,),)²"→Str6
+T-1
+prgmZLFLD
+Str1+Str0→Str1
+N
+prgmZLFRC
+Str0+"=A*"+Str1→Str8
+abs(K)
+prgmZLFRC
+If K
+Str8+sub("+-",1+(K<0),1)+Str0→Str8
+prgmZLADD
+N-K
+prgmZLFRC
+Str0+"=A*"→Str8
+E
+prgmZLFRC
+Str8+Str0→Str8
+prgmZLADD
+A
+prgmZLFRC
+"A="+Str0→Str8
+prgmZLADD
+Goto FS
+Lbl GV
+"Y=A(X-H)²+K,Y=A|X-H|+K,Y=A√(X-H)+K,Y=A(X-H)³+K,Y=A/(X-H)+K,Y=A/(X-H)²+K"→Str6
+T-1
+prgmZLFLD
+Disp Str0
+Input "A=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "H=?",Str1
+prgmZEXPR
+⌊MKE(1)→H
+Input "K=?",Str1
+prgmZEXPR
+⌊MKE(1)→K
+If A=0
+Then
+Disp "A CANNOT BE 0"
+Pause 
+End
+If A=0
+Goto M
+H
+prgmZLFRC
+Str0→Str4
+K
+prgmZLFRC
+Str0→Str5
+Lbl FS
+{1,⁻H}→⌊MKF
+prgmZLFMT
+Str0→Str1
+abs(A)
+prgmZLFRC
+"("+Str0+")"→Str3
+If V=1
+Str0→Str3
+If abs(A)=1 and T<6
+" "→Str3
+If A<0
+"⁻"+Str3→Str3
+If sub(Str3,1,1)=" "
+"("+Str3+")"→Str3
+If Str3="( )"
+"*"→Str3
+If T=2 and H=0
+Str3+"X²"→Str2
+If T=2 and H
+Str3+"("+Str1+")²"→Str2
+If T=3
+Str3+"|"+Str1+"|"→Str2
+If T=4
+Str3+"√("+Str1+")"→Str2
+If T=5 and H=0
+Str3+"X³"→Str2
+If T=5 and H
+Str3+"("+Str1+")³"→Str2
+If T=6
+Str3+"/("+Str1+")"→Str2
+If T=7
+Str3+"/("+Str1+")²"→Str2
+If sub(Str2,1,1)="*"
+sub(Str2,2,length(Str2)-1)→Str2
+If sub(Str2,1,2)="⁻*"
+"⁻"+sub(Str2,3,length(Str2)-2)→Str2
+abs(K)
+prgmZLFRC
+If K
+Str2+sub("+-",1+(K<0),1)+Str0→Str2
+If M
+Then
+"#THE FUNCTION"→Str8
+prgmZLADD
+"F(X)="+Str2→Str8
+prgmZLADD
+End
+"#TRANSLATIONS"→Str8
+prgmZLADD
+"INSIDE (ACTS ON X)"→Str8
+prgmZLADD
+" NO HORIZONTAL SHIFT"→Str8
+abs(H)
+prgmZLFRC
+If H
+" SHIFT "+sub("LEFT RIGHT",1+5(H>0),5)+Str0+" (X-"+">"+Str1+")"→Str8
+prgmZLADD
+"OUTSIDE (ACTS ON Y)"→Str8
+prgmZLADD
+abs(A)
+prgmZLFRC
+If abs(A)>1
+Then
+" STRETCH VERTICALLY *"+Str0→Str8
+prgmZLADD
+End
+If abs(A)<1
+Then
+" SHRINK VERTICALLY *"+Str0→Str8
+prgmZLADD
+End
+If A<0
+Then
+" REFLECT OVER THE X-AXIS"→Str8
+prgmZLADD
+End
+" NO VERTICAL SHIFT"→Str8
+abs(K)
+prgmZLFRC
+If K
+" SHIFT "+sub("DOWNUP  ",1+4(K>0),4)+Str0→Str8
+prgmZLADD
+"#KEY POINTS"→Str8
+prgmZLADD
+"(X,Y)-"+">(X+H,A*Y+K)"→Str8
+prgmZLADD
+{⁻2,⁻1,0,1,2}→⌊MKPX
+If T=4
+{0,1,4,9}→⌊MKPX
+If T≥6
+{⁻2,⁻1,1,2}→⌊MKPX
+⌊MKPX²→⌊MKPY
+If T=3
+abs(⌊MKPX)→⌊MKPY
+If T=4
+√(⌊MKPX)→⌊MKPY
+If T=5
+⌊MKPX³→⌊MKPY
+If T=6
+1/⌊MKPX→⌊MKPY
+If T=7
+1/⌊MKPX²→⌊MKPY
+For(L,1,dim(⌊MKPX))
+⌊MKPX(L)
+prgmZLFRC
+"("+Str0+","→Str8
+⌊MKPY(L)
+prgmZLFRC
+Str8+Str0+")-"+">("→Str8
+⌊MKPX(L)+H
+prgmZLFRC
+Str8+Str0+","→Str8
+A⌊MKPY(L)+K
+prgmZLFRC
+Str8+Str0+")"→Str8
+prgmZLADD
+End
+If T≥6
+Then
+"#ASYMPTOTES"→Str8
+prgmZLADD
+"VERTICAL X="+Str4→Str8
+prgmZLADD
+"HORIZONTAL Y="+Str5→Str8
+prgmZLADD
+End
+"#GRAPH"→Str8
+prgmZLADD
+"#ANSWER"→Str8
+prgmZLADD
+"F(X)="+Str2→Str8
+prgmZLADD
+If T<6
+Then
+"VERTEX,VERTEX,START POINT,CENTER"→Str6
+T-1
+prgmZLFLD
+Str0+" ("+Str4+","+Str5+")"→Str8
+Else
+"V.A. X="+Str4+"  H.A. Y="+Str5→Str8
+End
+prgmZLADD
+"DOMAIN (⁻INF,INF)"→Str8
+If T=4
+"DOMAIN ["+Str4+",INF)"→Str8
+If T≥6
+"DOMAIN X≠"+Str4→Str8
+prgmZLADD
+"RANGE (⁻INF,"+Str5+"]"→Str8
+If A>0
+"RANGE ["+Str5+",INF)"→Str8
+If T=5
+"RANGE (⁻INF,INF)"→Str8
+If T=6
+"RANGE Y≠"+Str5→Str8
+If T=7 and A>0
+"RANGE ("+Str5+",INF)"→Str8
+If T=7 and A<0
+"RANGE (⁻INF,"+Str5+")"→Str8
+prgmZLADD
+A
+prgmZLFRC
+"("+Str0+")*"→Str6
+If T=2
+Str6+"("+Str1+")²"→Str6
+If T=3 or T=4
+Then
+T-2
+prgmZLTOK
+Str6+Str0+Str1+"))"→Str6
+End
+If T=5
+Str6+"("+Str1+")³"→Str6
+If T=6
+Str6+"(1/("+Str1+"))"→Str6
+If T=7
+Str6+"(1/("+Str1+")²)"→Str6
+K
+prgmZLFRC
+Str6+"+("+Str0+")"→Str6
+⌊MKPX+H→⌊MKPX
+A⌊MKPY+K→⌊MKPY
+min(augment(⌊MKPX,{0,H}))-2→D
+max(augment(⌊MKPX,{0,H}))+2→E
+min(augment(⌊MKPY,{0,K}))-2→F
+max(augment(⌊MKPY,{0,K}))+2→G
+{D,E,F,G,(T≥6)}→⌊MKW
+If T≥6
+augment(⌊MKW,{H})→⌊MKW
+augment(⌊MKW,{dim(⌊MKPX)})→⌊MKW
+For(L,1,dim(⌊MKPX))
+augment(⌊MKW,{⌊MKPX(L),⌊MKPY(L)})→⌊MKW
+End
+prgmZLSHOW
+Goto M
+Lbl LN
+If M
+Goto LG
+Disp "POINT 1 (X,Y)"
+Input "X=?",Str1
+prgmZEXPR
+⌊MKE(1)→A
+Input "Y=?",Str1
+prgmZEXPR
+⌊MKE(1)→B
+Disp "POINT 2 (X,Y)"
+Input "X=?",Str1
+prgmZEXPR
+⌊MKE(1)→C
+Input "Y=?",Str1
+prgmZEXPR
+⌊MKE(1)→D
+If A=C
+Then
+"#ANSWER"→Str8
+prgmZLADD
+"SAME X, VERTICAL LINE"→Str8
+prgmZLADD
+A
+prgmZLFRC
+"X="+Str0→Str8
+prgmZLADD
+prgmZLSHOW
+End
+If A=C
+Goto M
+(D-B)/(C-A)→H
+B-HA→K
+"#SLOPE"→Str8
+prgmZLADD
+"M=(Y2-Y1)/(X2-X1)"→Str8
+prgmZLADD
+D
+prgmZLFRC
+" =("+Str0+"-"→Str8
+B
+prgmZLFRC
+If B<0
+"("+Str0+")"→Str0
+Str8+Str0+")/("→Str8
+C
+prgmZLFRC
+Str8+Str0+"-"→Str8
+A
+prgmZLFRC
+If A<0
+"("+Str0+")"→Str0
+Str8+Str0+")"→Str8
+prgmZLADD
+D-B
+prgmZLFRC
+" ="+Str0+"/"→Str8
+C-A
+prgmZLFRC
+Str8+Str0+"="→Str8
+H
+prgmZLFRC
+Str8+Str0→Str8
+prgmZLADD
+"#Y-INTERCEPT"→Str8
+prgmZLADD
+"B=Y1-M*X1"→Str8
+prgmZLADD
+B
+prgmZLFRC
+" ="+Str0+"-("→Str8
+H
+prgmZLFRC
+Str8+Str0+")("→Str8
+A
+prgmZLFRC
+Str8+Str0+")"→Str8
+prgmZLADD
+K
+prgmZLFRC
+" ="+Str0→Str8
+prgmZLADD
+Goto LS
+Lbl LG
+Disp "Y=MX+B"
+Input "M=?",Str1
+prgmZEXPR
+⌊MKE(1)→H
+Input "B=?",Str1
+prgmZEXPR
+⌊MKE(1)→K
+"#THE LINE"→Str8
+prgmZLADD
+{H,K}→⌊MKF
+prgmZLFMT
+"Y="+Str0→Str8
+prgmZLADD
+H
+prgmZLFRC
+"SLOPE "+Str0+" = RISE "+toString(U)+" PER RUN "+toString(V)→Str8
+prgmZLADD
+Lbl LS
+"#TRANSLATIONS"→Str8
+prgmZLADD
+"FROM Y=X"→Str8
+prgmZLADD
+"OUTSIDE (ACTS ON Y)"→Str8
+prgmZLADD
+abs(H)
+prgmZLFRC
+If abs(H)>1
+Then
+" STRETCH VERTICALLY *"+Str0→Str8
+prgmZLADD
+End
+If abs(H)<1 and H
+Then
+" SHRINK VERTICALLY *"+Str0→Str8
+prgmZLADD
+End
+If H<0
+Then
+" REFLECT OVER THE X-AXIS"→Str8
+prgmZLADD
+End
+" NO VERTICAL SHIFT"→Str8
+abs(K)
+prgmZLFRC
+If K
+" SHIFT "+sub("DOWNUP  ",1+4(K>0),4)+Str0→Str8
+prgmZLADD
+"#GRAPH"→Str8
+prgmZLADD
+"#ANSWER"→Str8
+prgmZLADD
+{H,K}→⌊MKF
+prgmZLFMT
+Str0→Str6
+"Y="+Str0→Str8
+prgmZLADD
+H
+prgmZLFRC
+"SLOPE "+Str0→Str8
+K
+prgmZLFRC
+Str8+"  Y-INT (0,"+Str0+")"→Str8
+prgmZLADD
+"NO X-INT (HORIZONTAL)"→Str8
+If H
+Then
+⁻K/H
+prgmZLFRC
+"X-INT ("+Str0+",0)"→Str8
+End
+prgmZLADD
+{⁻10,10,⁻10,10,0,1,0,K}→⌊MKW
+prgmZLSHOW
+Goto M
+Lbl PZ
+prgmZLNEW
+Input "ZEROS=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+If N<1 or N>6 or fPart(N)
+Goto M
+ClrList ⌊MKFQ,⌊MKFM
+For(K,1,N)
+ClrHome
+Disp "ZERO "+toString(K)+" (READ OFF X-AXIS)"
+Input "ZERO=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFQ(K)
+Input "MULT=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKFM(K)
+End
+ClrHome
+Disp "ANOTHER POINT (X,Y)"
+Input "X=?",Str1
+prgmZEXPR
+⌊MKE(1)→G
+Input "Y=?",Str1
+prgmZEXPR
+⌊MKE(1)→H
+prod((G-⌊MKFQ)^⌊MKFM)→E
+If E=0
+Then
+Disp "POINT IS A ZERO,","CHOOSE ANOTHER"
+Pause 
+End
+If E=0
+Goto M
+H/E→A
+sum(⌊MKFM)→D
+"#ZEROS GIVE FACTORS"→Str8
+prgmZLADD
+" "→Str2
+For(K,1,N)
+{1,⁻⌊MKFQ(K)}→⌊MKF
+prgmZLFMT
+"("+Str0+")"→Str3
+If not(⌊MKFQ(K))
+"X"→Str3
+If ⌊MKFM(K)=2
+Str3+"²"→Str3
+If ⌊MKFM(K)=3
+Str3+"³"→Str3
+If ⌊MKFM(K)>3
+Str3+"^"+toString(⌊MKFM(K))→Str3
+Str2+Str3→Str2
+⌊MKFQ(K)
+prgmZLFRC
+"X="+Str0+" MULT "+toString(⌊MKFM(K))+" -"+"> "+Str3→Str8
+prgmZLADD
+"  "+sub("TOUCHESCROSSES",1+7fPart(⌊MKFM(K)/2)2,7)→Str8
+prgmZLADD
+End
+sub(Str2,2,length(Str2)-1)→Str2
+"F(X)=A"+Str2→Str8
+prgmZLADD
+"#SOLVE FOR A"→Str8
+prgmZLADD
+G
+prgmZLFRC
+"PLUG IN ("+Str0+","→Str8
+H
+prgmZLFRC
+Str0→Str4
+Str8+Str4+")"→Str8
+prgmZLADD
+Str4+"=A"→Str8
+For(K,1,N)
+G-⌊MKFQ(K)
+prgmZLFRC
+Str8+"("+Str0+")"→Str8
+If ⌊MKFM(K)=2
+Str8+"²"→Str8
+If ⌊MKFM(K)=3
+Str8+"³"→Str8
+If ⌊MKFM(K)>3
+Str8+"^"+toString(⌊MKFM(K))→Str8
+End
+prgmZLADD
+E
+prgmZLFRC
+Str4+"="+Str0+"A"→Str8
+prgmZLADD
+A
+prgmZLFRC
+Str0→Str5
+"A="+Str5→Str8
+prgmZLADD
+"#CHECK THE ENDS"→Str8
+prgmZLADD
+"DEGREE "+toString(D)+sub(" (EVEN) (ODD)",1+7fPart(D/2)2,7-(fPart(D/2)>0))+", A"+sub("<>",1+(A>0),1)+"0"→Str8
+prgmZLADD
+fPart(D/2)=0→F
+"RISES BOTH ENDS"→Str8
+If F and A<0
+"FALLS BOTH ENDS"→Str8
+If not(F) and A>0
+"FALLS LEFT, RISES RIGHT"→Str8
+If not(F) and A<0
+"RISES LEFT, FALLS RIGHT"→Str8
+prgmZLADD
+"COMPARE WITH THE GRAPH"→Str8
+prgmZLADD
+"("+Str5+")"→Str3
+If V=1
+Str5→Str3
+If A=1
+"*"→Str3
+If A=⁻1
+"⁻"→Str3
+Str3+Str2→Str3
+If sub(Str3,1,1)="*"
+sub(Str3,2,length(Str3)-1)→Str3
+"("+Str5+")"+Str2→Str6
+"#GRAPH"→Str8
+prgmZLADD
+"#ANSWER"→Str8
+prgmZLADD
+"F(X)="+Str3→Str8
+prgmZLADD
+"DEGREE "+toString(D)→Str8
+prgmZLADD
+min(augment(⌊MKFQ,{G}))-2→D
+max(augment(⌊MKFQ,{G}))+2→E
+seq(expr(Str6),X,D,E,(E-D)/12)→⌊MKPY
+{D,E,min(augment(⌊MKPY,{H}))-2,max(augment(⌊MKPY,{H}))+2,0,N+1,G,H}→⌊MKW
+For(K,1,N)
+augment(⌊MKW,{⌊MKFQ(K),0})→⌊MKW
+End
+prgmZLSHOW
+Goto M
+Lbl PP
+prgmZLNEW
+Input "POINTS (2-6)=?",Str1
+prgmZEXPR
+⌊MKE(1)→N
+If N<2 or N>6 or fPart(N)
+Then
+Disp "USE 2 TO 6 POINTS"
+Pause 
+End
+If N<2 or N>6 or fPart(N)
+Goto M
+ClrList ⌊MKPX,⌊MKPY
+For(K,1,N)
+ClrHome
+Disp "POINT "+toString(K)+" (X,Y)"
+Input "X=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKPX(K)
+Input "Y=?",Str1
+prgmZEXPR
+⌊MKE(1)→⌊MKPY(K)
+End
+0→E
+For(K,1,N-1)
+For(L,K+1,N)
+If ⌊MKPX(K)=⌊MKPX(L)
+1→E
+End
+End
+If E
+Then
+Disp "TWO POINTS SHARE AN X"
+Pause 
+End
+If E
+Goto M
+"#THE POINTS"→Str8
+prgmZLADD
+" "→Str8
+For(K,1,N)
+⌊MKPX(K)
+prgmZLFRC
+Str8+"("+Str0+","→Str8
+⌊MKPY(K)
+prgmZLFRC
+Str8+Str0+") "→Str8
+End
+prgmZLADD
+"A DEGREE ≤"+toString(N-1)+" POLYNOMIAL"→Str8
+prgmZLADD
+"FITS EXACTLY ONE WAY"→Str8
+prgmZLADD
+⌊MKPY→⌊MKPC
+{⌊MKPY(1)}→⌊MKPN
+For(K,1,N-1)
+"#DIFFERENCES, ORDER "+toString(K)→Str8
+prgmZLADD
+For(L,1,N-K)
+(⌊MKPC(L+1)-⌊MKPC(L))/(⌊MKPX(L+K)-⌊MKPX(L))→G
+⌊MKPC(L+1)
+prgmZLFRC
+"("+Str0+"-"→Str8
+⌊MKPC(L)
+prgmZLFRC
+If U<0
+"("+Str0+")"→Str0
+Str8+Str0+")/("→Str8
+⌊MKPX(L+K)
+prgmZLFRC
+Str8+Str0+"-"→Str8
+⌊MKPX(L)
+prgmZLFRC
+If U<0
+"("+Str0+")"→Str0
+Str8+Str0+")="→Str8
+G
+prgmZLFRC
+Str8+Str0→Str8
+prgmZLADD
+G→⌊MKPC(L)
+End
+N-K→dim(⌊MKPC)
+⌊MKPC(1)→⌊MKPN(K+1)
+End
+"#NEWTON FORM"→Str8
+prgmZLADD
+⌊MKPN(1)
+prgmZLFRC
+"F(X)="+Str0→Str8
+prgmZLADD
+For(K,2,N)
+If ⌊MKPN(K)
+Then
+abs(⌊MKPN(K))
+prgmZLFRC
+" "+sub("+-",1+(⌊MKPN(K)<0),1)+Str0→Str8
+For(L,1,K-1)
+{1,⁻⌊MKPX(L)}→⌊MKF
+prgmZLFMT
+Str8+"("+Str0+")"→Str8
+End
+prgmZLADD
+End
+End
+{⌊MKPN(N)}→⌊MKF
+For(K,N-1,1,⁻1)
+augment(⌊MKF,{0})-⌊MKPX(K)augment({0},⌊MKF)→⌊MKF
+⌊MKF(dim(⌊MKF))+⌊MKPN(K)→⌊MKF(dim(⌊MKF))
+End
+While dim(⌊MKF)>1 and abs(⌊MKF(1))<1ᴇ⁻9
+seq(⌊MKF(L),L,2,dim(⌊MKF))→⌊MKF
+End
+dim(⌊MKF)-1→D
+prgmZLFMT
+Str0→Str6
+"#MULTIPLY OUT"→Str8
+prgmZLADD
+"F(X)="+Str6→Str8
+prgmZLADD
+"#GRAPH"→Str8
+prgmZLADD
+"#ANSWER"→Str8
+prgmZLADD
+"F(X)="+Str6→Str8
+prgmZLADD
+"DEGREE "+toString(D)→Str8
+prgmZLADD
+min(⌊MKPX)-2→D
+max(⌊MKPX)+2→E
+{D,E,min(⌊MKPY)-3,max(⌊MKPY)+3,0,N}→⌊MKW
+For(K,1,N)
+augment(⌊MKW,{⌊MKPX(K),⌊MKPY(K)})→⌊MKW
+End
+prgmZLSHOW
+Goto M

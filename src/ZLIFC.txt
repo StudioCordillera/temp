@@ -1,0 +1,41 @@
+⌊MKH(1)→Q
+" "→Str8
+For(R,1,dim(⌊MKR))
+⌊MKR(R)
+prgmZLFRC
+Q/V^⌊MKM(R)→Q
+{V,⁻U}→⌊MKF
+prgmZLFMT
+"("+Str0+")"→Str0
+If not(⌊MKR(R))
+"X"→Str0
+Str8+Str0→Str8
+If ⌊MKM(R)=2
+Str8+"²"→Str8
+If ⌊MKM(R)=3
+Str8+"³"→Str8
+If ⌊MKM(R)>3
+Str8+"^"+toString(⌊MKM(R))→Str8
+End
+If Z
+Then
+⌊MKH/⌊MKH(1)→⌊MKF
+prgmZLFMT
+Str8+"("+Str0+")"→Str8
+End
+Q
+prgmZLFRC
+If V>1
+"("+Str0+")"→Str0
+If Q=1 and length(Str8)>1
+" "→Str0
+If Q=⁻1 and length(Str8)>1
+"⁻"→Str0
+Str0+Str8→Str0
+While inString(Str0," ")
+inString(Str0," ")→R
+If R=1
+sub(Str0,2,length(Str0)-1)→Str0
+If R>1
+sub(Str0,1,R-1)+sub(Str0,R+1,length(Str0)-R)→Str0
+End
