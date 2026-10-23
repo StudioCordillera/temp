@@ -804,10 +804,10 @@ H & I --> J[Disp interval notation]</pre>
         <div class="screen"><span class="dim">prgm9:SIGNCH</span>
 -4u(u+2)²(5-u)&gt;0
 CRIT: -2(×2) 0 5
-TEST: (-∞,-2) neg
-(-2,0) neg
-(0,5) pos
-(5,∞) neg
+TEST: (-∞,-2) pos
+(-2,0) pos
+(0,5) neg
+(5,∞) pos
 <span class="hi">(-∞,-2)∪(-2,0)∪(5,∞)</span></div>
       </div>
     </div>
@@ -1272,7 +1272,7 @@ x²=3 → x=±√3
 
   // ---------- 09: sign chart reveal ----------
   var m09order=['m09r1','m09r2','m09r3','m09r4'];
-  var m09signs=['neg','neg','pos','neg'];
+  var m09signs=['pos','pos','neg','pos'];
   var m09names=['(-∞,-2)','(-2,0)','(0,5)','(5,∞)'];
   var m09idx=0;
   function m09render(){

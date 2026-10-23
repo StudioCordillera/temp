@@ -1,0 +1,703 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>T2PREP Operator's Manual</title>
+<script>
+window.MathJax = { tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ===================================================================
+   LAYOUT CONCEPT: an operator's manual bound into the same engineering
+   notebook as the field guide. A back-trail bar tracks drill-downs
+   between the general "how input works" chapter and a program's own
+   card. Every program gets a keystroke chip-sequence; the handful with
+   real branching also get a flowchart of that branch.
+   =================================================================== */
+:root{
+  --paper:#f3ede0;         --paper-line:#d8cdb2;        --ink:#272218;
+  --ink-dim:#6b6354;       --card-bg:#faf6ea;           --card-edge:#c9bd9c;
+  --rule:#cdbf9b;          --screen:#dce7e1;             --screen-ink:#162019;
+  --case:#2c2f2b;          --case-edge:#45483f;
+  --red:#a33a2c;           --blue:#2b5f8a;               --ochre:#9c7a22;
+  --link:#2f7a6b;          --link-dim:#1f5a4e;
+  --shadow: 0 1px 0 rgba(0,0,0,.05);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1b1a14;        --paper-line:#352f20;        --ink:#e9e2cf;
+    --ink-dim:#aa9f87;      --card-bg:#211f17;            --card-edge:#4a4531;
+    --rule:#4a4531;         --screen:#1a2420;              --screen-ink:#9fe3c2;
+    --case:#131410;         --case-edge:#302e26;
+    --red:#e2806c;          --blue:#7fb3dd;                --ochre:#d8b24f;
+    --link:#5fcdb6;         --link-dim:#86e0cd;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1b1a14;          --paper-line:#352f20;         --ink:#e9e2cf;
+  --ink-dim:#aa9f87;        --card-bg:#211f17;            --card-edge:#4a4531;
+  --rule:#4a4531;           --screen:#1a2420;              --screen-ink:#9fe3c2;
+  --case:#131410;           --case-edge:#302e26;
+  --red:#e2806c;            --blue:#7fb3dd;                --ochre:#d8b24f;
+  --link:#5fcdb6;           --link-dim:#86e0cd;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Spectral',Georgia,serif; font-size:15.5px; line-height:1.6;
+  background-image:
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.wrap{
+  max-width:860px; margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+h1,h2,h3{font-family:'Spectral',Georgia,serif; text-wrap:balance; margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+a{color:var(--link)}
+.jump{color:var(--link); text-decoration:underline dotted; text-underline-offset:3px; cursor:pointer}
+.jump:hover{color:var(--link-dim)}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--case)}
+header.site{position:sticky; top:env(safe-area-inset-top,0px); z-index:15; background:var(--case); color:#eee6d2; border-bottom:3px solid var(--case-edge)}
+header.site .wrap{padding-block:14px 10px; display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 16px}
+header.site h1{font-size:1.2rem; letter-spacing:.02em}
+header.site .sub{font-family:'IBM Plex Mono'; font-size:.68rem; color:#b9ae8f; letter-spacing:.06em; text-transform:uppercase}
+
+.trailbar{position:sticky; top:calc(env(safe-area-inset-top,0px) + 42px); z-index:14; background:var(--case); border-bottom:1px solid var(--case-edge); font-family:'IBM Plex Mono'; font-size:.72rem}
+.trailbar .wrap{display:flex; align-items:center; gap:6px; padding-block:7px; flex-wrap:wrap}
+.trail-home{color:#eee6d2; background:var(--link-dim); border:none; border-radius:3px; padding:3px 8px; cursor:pointer; font-family:inherit; font-size:.72rem}
+.trail-chip{display:inline-flex; align-items:center; gap:5px; color:#d8cfb4}
+.trail-chip::before{content:"›"; color:#8b8266}
+.trail-chip button{background:none; border:none; color:#eee6d2; font-family:inherit; font-size:.72rem; cursor:pointer; text-decoration:underline dotted; padding:0}
+.trail-empty{color:#8b8266; font-style:italic}
+
+main{padding-top:22px; padding-bottom:70px}
+.intro{padding-block:4px 20px}
+.intro p{max-width:62ch}
+.linklist{font-family:'IBM Plex Mono'; font-size:.78rem; margin:10px 0; padding:10px 12px; border-left:3px solid var(--link); background:var(--card-bg)}
+.linklist a{display:block; margin:3px 0}
+
+.chapter-head{margin:40px 0 14px; display:flex; align-items:baseline; gap:10px}
+.chapter-head .num{font-family:'IBM Plex Mono'; font-size:.9rem; color:var(--ochre); border:1px solid var(--ochre); border-radius:3px; padding:1px 7px}
+.chapter-head h2{font-size:1.1rem; text-transform:uppercase; letter-spacing:.05em}
+
+.card{background:var(--card-bg); border:1px solid var(--card-edge); border-radius:2px; padding:22px clamp(16px,4vw,30px) 26px; margin-block:0 26px; position:relative; box-shadow:var(--shadow)}
+.card::before{content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:repeating-linear-gradient(135deg, var(--rule) 0 2px, transparent 2px 6px)}
+.eyebrow{font-family:'IBM Plex Mono'; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim); display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline; margin-bottom:6px}
+.eyebrow .path{color:var(--ochre)}
+.card h2{font-size:1.25rem; margin-bottom:4px}
+.card .purpose{font-style:italic; color:var(--ink-dim); margin-bottom:14px; max-width:60ch}
+.prose p{margin:0 0 12px; max-width:64ch}
+.prose p:last-child{margin-bottom:0}
+dfn{font-style:normal; font-weight:600; border-bottom:1px solid var(--ochre)}
+
+.spec{width:100%; border-collapse:collapse; margin:14px 0; font-family:'IBM Plex Mono'; font-size:.78rem}
+.spec th{text-align:left; font-size:.64rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-dim); padding:4px 8px 6px; border-bottom:1px solid var(--card-edge)}
+.spec td{padding:6px 8px; border-bottom:1px dotted var(--card-edge); vertical-align:top}
+.spec tr:last-child td{border-bottom:none}
+
+.keyseq{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:14px 0}
+.kc{font-family:'IBM Plex Mono'; font-size:.72rem; background:var(--case); color:#eee6d2; border-radius:4px; padding:4px 8px; white-space:nowrap}
+.kc.ochre{background:var(--ochre); color:#241c04}
+.kc.sep{color:var(--ink-dim); background:none; padding:0 2px}
+
+.flow-block{margin:18px 0}
+.flow-block .flow-label{font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px}
+pre.mermaid{background:var(--paper); border:1px solid var(--paper-line); padding:10px; overflow-x:auto}
+
+.calc-wrap{margin:18px 0}
+.calc-label{font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px}
+.calc-case{background:var(--case); border:1px solid var(--case-edge); border-radius:10px; padding:12px 12px 14px; max-width:420px}
+.calc-case .top{display:flex; justify-content:space-between; align-items:center; padding:0 4px 8px; font-family:'IBM Plex Mono'; font-size:.6rem; color:#9a9279; letter-spacing:.08em}
+.screen{background:var(--screen); color:var(--screen-ink); border-radius:3px; padding:10px 11px; font-family:'IBM Plex Mono'; font-size:.78rem; line-height:1.5; white-space:pre-wrap; word-break:break-word; box-shadow:inset 0 0 0 1px #00000022}
+.screen .dim{opacity:.6}
+.screen .pz{opacity:.5; font-style:italic}
+
+.note{margin-top:14px; padding:10px 12px; border-left:3px solid var(--link); background:var(--paper); font-size:.86rem; color:var(--ink-dim)}
+.warn{margin-top:14px; padding:10px 12px; border-left:3px solid var(--red); background:var(--paper); font-size:.86rem; color:var(--ink-dim)}
+
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--ink-dim); margin:4px 0 26px}
+.legend span{display:inline-flex; align-items:center; gap:5px}
+.sw{width:10px; height:10px; border-radius:2px; display:inline-block}
+
+.idx{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:4px 16px; margin:16px 0 30px; font-family:'IBM Plex Mono'; font-size:.8rem}
+.idx a{display:flex; justify-content:space-between; gap:8px; padding:3px 0; border-bottom:1px dotted var(--paper-line)}
+.idx .n{color:var(--ink-dim)}
+
+.foot{font-family:'IBM Plex Mono'; font-size:.72rem; color:var(--ink-dim); padding-top:10px; border-top:1px solid var(--paper-line); max-width:64ch}
+@media (max-width:480px){ header.site h1{font-size:1.05rem} .card{padding:18px 14px 22px} }
+</style>
+
+<header class="site">
+  <div class="wrap">
+    <h1>T2PREP Operator's Manual</h1>
+    <span class="sub">How to drive all 14 programs</span>
+  </div>
+</header>
+<div class="trailbar">
+  <div class="wrap" id="trailRow">
+    <button class="trail-home" id="trailHome">⌂ MANUAL</button>
+    <span class="trail-empty" id="trailEmpty">— no section open —</span>
+  </div>
+</div>
+
+<main><div class="wrap">
+
+  <section class="intro">
+    <h2 style="font-size:1.6rem; margin-bottom:10px">Reading the simulator like a real calculator</h2>
+    <p>This manual documents the <dfn>T2PREP Calculator</dfn>, a playable TI-84 Plus CE simulator with all 14 T2PREP routines wired up as real, runnable programs. It assumes nothing about the math — that's covered by the companion field guide — and instead answers one question per program: <em>what do I press, in what order, and what comes back?</em></p>
+    <div class="linklist">
+      <a href="https://claude.ai/artifact/NkjU6wojwwwpm1F2eQN1o7" target="_blank" rel="noopener">→ T2PREP Calculator — the playable simulator this manual documents</a>
+      <a href="https://claude.ai/artifact/HFU8URCRKo9mWTnNNR9nth" target="_blank" rel="noopener">→ T2PREP Field Guide — the math each program is built on</a>
+    </div>
+    <p>Every worked example below was run step by step against the actual program code, not idealized — where the real screen output is rougher than a textbook answer (a decimal instead of a fraction, an explicit "1" coefficient a textbook would drop), that's called out rather than cleaned up.</p>
+  </section>
+
+  <div class="legend">
+    <span><i class="sw" style="background:var(--blue)"></i>blue — a key you press</span>
+    <span><i class="sw" style="background:var(--red); border-radius:0"></i>red text — what the calculator displays back</span>
+    <span><i class="sw" style="background:var(--ochre)"></i>ochre — a menu choice or program name</span>
+  </div>
+
+  <!-- ============ GENERAL MECHANICS ============ -->
+  <section class="card" id="gen">
+    <div class="eyebrow"><span>CHAPTER 0</span><span class="path">general mechanics</span></div>
+    <h2>How input and output work</h2>
+    <div class="prose">
+      <p>The screen is 26 characters wide and 10 lines tall — real TI-84 dimensions. A line that runs long gets cut off with "…", so every program's own messages are kept short; your typed input can run longer and will wrap or scroll within the entry line as needed.</p>
+    </div>
+
+    <h3 id="keys" style="font-size:.95rem; margin:18px 0 8px">The keypad</h3>
+    <div class="prose">
+      <p>Click a key, or click the calculator once to focus it and then type on your physical keyboard — digits, <span class="mono">+ - * /</span>, parentheses, <span class="mono">,</span>, Enter, Backspace (= <span class="kc">DEL</span>), Escape (= <span class="kc">CLEAR</span>), arrow keys, and the letter <span class="mono">x</span> for the variable <span class="mono">X</span> all work directly. <span class="kc">2ND</span> then a key gives its blue label (shown above the key); <span class="kc">ALPHA</span> then a key gives its green label. Both are toggles — press once to arm, then press the next key.</p>
+      <p><strong>Negative numbers:</strong> there are two different minus-looking keys. <span class="kc ochre">(−)</span> means "this number is negative" and goes <em>before</em> a value with nothing in front of it (the start of a list entry, right after a comma, right after <span class="mono">{</span>). <span class="kc ochre">−</span> is subtraction and goes <em>between</em> two values. Clicking the wrong one is the single most common mis-entry on this simulator. Typing a physical keyboard's <span class="mono">-</span> key is smarter — it figures out which one you mean from context.</p>
+    </div>
+
+    <h3 id="prompt" style="font-size:.95rem; margin:18px 0 8px">Single-value input — Prompt</h3>
+    <div class="prose">
+      <p>When a program needs one number per variable, it shows <span class="mono">A=?</span> (or whatever letter), waits for digits and <span class="kc">ENTER</span>, then moves to the next one. You can type a full expression, not just a digit — <span class="mono">1/5</span> or <span class="mono">2nd[√]9</span> both evaluate before being stored.</p>
+    </div>
+
+    <h3 id="list" style="font-size:.95rem; margin:18px 0 8px">List input — coefficients, zeros, multiplicities</h3>
+    <div class="prose">
+      <p>Several programs ask for a whole set of numbers at once, shown as e.g. <span class="mono">COEF {a,..,c}=?</span>. Type an actual list literal: <span class="kc">2ND</span><span class="kc ochre">{</span> then each value separated by <span class="kc">,</span>, closed with <span class="kc">2ND</span><span class="kc ochre">}</span>, then <span class="kc">ENTER</span> — e.g. <span class="mono">{5,-14,-26,8}</span>. Coefficient lists always run highest degree first, same convention a textbook uses for synthetic division.</p>
+    </div>
+
+    <h3 id="expr" style="font-size:.95rem; margin:18px 0 8px">Expression input — typing a function of X</h3>
+    <div class="prose">
+      <p>Three programs (<a class="jump" href="#RATSLV" data-label="RATSLV">RATSLV</a>, <a class="jump" href="#SIGNCH" data-label="SIGNCH">SIGNCH</a>, <a class="jump" href="#CHECK" data-label="CHECK">CHECK</a>) ask you to type real math using <span class="mono">X</span> as the variable, e.g. <span class="mono">5X³-X²-35X+7</span>. This isn't read as text — the simulator's real expression engine parses and evaluates it later at whatever value of X the program needs, the same engine the calculator's home screen uses. A malformed expression won't be caught until it's evaluated, so if a program later shows <span class="mono">ERR:SYNTAX</span>, the expression was the problem.</p>
+    </div>
+
+    <h3 id="menu" style="font-size:.95rem; margin:18px 0 8px">Menus</h3>
+    <div class="prose">
+      <p>A titled list of choices appears full-screen. Use <span class="kc">▲</span>/<span class="kc">▼</span> then <span class="kc">ENTER</span>, or press the number key next to the option directly. The screen returns to exactly where the program left it once you choose.</p>
+    </div>
+
+    <h3 id="pause" style="font-size:.95rem; margin:18px 0 8px">Staged output — Pause</h3>
+    <div class="prose">
+      <p>Most programs print a first batch of lines, then freeze with a dim, non-blinking busy indicator in the status bar. That's a <dfn>Pause</dfn> — press <span class="kc">ENTER</span> to let the rest print. It exists so the screen doesn't fill and scroll past an intermediate step before you've read it.</p>
+    </div>
+
+    <h3 id="err" style="font-size:.95rem; margin:18px 0 8px">Errors</h3>
+    <div class="prose">
+      <p>A bad input (dividing by zero, a negative under an even root, a syntax mistake) stops the program and shows <span class="mono">ERR:<em>MESSAGE</em></span> with <span class="mono">1:Quit</span> / <span class="mono">2:Goto</span>. <span class="mono">1</span> (or <span class="kc">ON</span>) returns to the home screen; <span class="mono">2</span> opens the program's listing so you can see what it was trying to do. Press <span class="kc">ON</span> at any time to interrupt a running program early.</p>
+    </div>
+  </section>
+
+  <nav class="idx" id="programIndex">
+    <a href="#RADCPLX"><span>1. RADCPLX</span><span class="n">radical / complex</span></a>
+    <a href="#QUADAN"><span>2. QUADAN</span><span class="n">quadratic analyzer</span></a>
+    <a href="#QUADSV"><span>3. QUADSV</span><span class="n">exact solver</span></a>
+    <a href="#REBUILD"><span>4. REBUILD</span><span class="n">vertex + point</span></a>
+    <a href="#SYNDIV"><span>5. SYNDIV</span><span class="n">synthetic division</span></a>
+    <a href="#POLYAN"><span>6. POLYAN</span><span class="n">polynomial zeros</span></a>
+    <a href="#ZEROFX"><span>7. ZEROFX</span><span class="n">zeros → factored</span></a>
+    <a href="#ZCHAIN"><span>8. ZCHAIN</span><span class="n">zero-chain solver</span></a>
+    <a href="#RATAN"><span>9. RATAN</span><span class="n">rational analyzer</span></a>
+    <a href="#RATSLV"><span>10. RATSLV</span><span class="n">rational equation check</span></a>
+    <a href="#SIGNCH"><span>11. SIGNCH</span><span class="n">sign-chart inequality</span></a>
+    <a href="#APPMDL"><span>12. APPMDL</span><span class="n">applied models</span></a>
+    <a href="#CHECK"><span>13. CHECK</span><span class="n">answer checker</span></a>
+    <a href="#XFORM"><span>14. XFORM</span><span class="n">parent-function transform</span></a>
+  </nav>
+
+  <!-- ============ CHAPTER 1 ============ -->
+  <div class="chapter-head"><span class="num">I</span><h2>Numbers &amp; Quadratics</h2></div>
+
+  <section class="card" id="RADCPLX">
+    <div class="eyebrow"><span>PRGM SLOT 1</span><span class="path">RADCPLX</span></div>
+    <h2>RADCPLX</h2>
+    <p class="purpose">Simplifies a radical of a negative number, or adds/subtracts/multiplies/divides two complex numbers.</p>
+    <div class="prose"><p>Use this for radical-simplification problems and any arithmetic written as $a+bi$. It opens on a <a class="jump" href="#menu" data-label="Menus">menu</a> with two choices.</p></div>
+    <table class="spec">
+      <tr><th>Mode</th><th>Prompts</th><th>Output</th></tr>
+      <tr><td>1: SIMPLIFY i√(−n)</td><td><span class="mono">N=?</span> (must be &lt;0)</td><td>$i\cdot s\sqrt{r}$, the reduced form</td></tr>
+      <tr><td>2: COMPLEX a+bi OP c+di</td><td><span class="mono">A,B</span> then <span class="mono">C,D</span>, then a 4-way <a class="jump" href="#menu" data-label="Menus">menu</a></td><td>the result in $a+bi$ form</td></tr>
+    </table>
+    <div class="flow-block">
+      <div class="flow-label">Branch</div>
+      <pre class="mermaid">flowchart TD
+A[PRGM 1 RADCPLX] --> B{Menu}
+B -- "1 SIMPLIFY" --> C[Input N]
+C --> D{N &lt; 0?}
+D -- no --> E[ERR-style message, stop]
+D -- yes --> F[factor, Disp i·s√r]
+B -- "2 COMPLEX" --> G[Prompt A,B,C,D]
+G --> H[Menu: ADD SUB MUL DIV]
+H --> I[Disp result a+bi]</pre>
+    </div>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">▼</span><span class="kc">ENTER</span><span class="kc sep">(launch)</span>
+      <span class="kc ochre">2</span><span class="kc sep">(COMPLEX)</span>
+      <span class="kc">7</span><span class="kc">ENTER</span><span class="kc">(−)</span><span class="kc">2</span><span class="kc">ENTER</span>
+      <span class="kc">5</span><span class="kc">ENTER</span><span class="kc">3</span><span class="kc">ENTER</span>
+      <span class="kc ochre">3</span><span class="kc sep">(MULTIPLY)</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 2e: (7−√−4)(5+√−9)</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">(enter A=7,B=-2 — since √-4=2i —
+and C=5,D=3 — since √-9=3i)
+(7−2i)
+× (5+3i)
+<span class="pz">[Pause — press ENTER]</span>
+= 41+11i</div>
+      </div>
+    </div>
+    <div class="note">Enter the complex numbers already in $a+bi$ form — RADCPLX doesn't simplify $\sqrt{-4}$ for you inside mode 2; do that by hand (or in mode 1) first, same as the review expects you to show.</div>
+  </section>
+
+  <section class="card" id="QUADAN">
+    <div class="eyebrow"><span>PRGM SLOT 2</span><span class="path">QUADAN</span></div>
+    <h2>QUADAN</h2>
+    <p class="purpose">Full profile of $f(x)=ax^2+bx+c$: vertex, direction, axis, intercepts, min/max.</p>
+    <div class="prose"><p>Use this for "analyze the quadratic function" problems. No menus — just three <a class="jump" href="#prompt" data-label="Prompt">prompts</a> and one staged read-out.</p></div>
+    <table class="spec"><tr><th>Prompts</th><th>Output, in order</th></tr>
+      <tr><td><span class="mono">A, B, C</span></td><td>h,k work → <em>pause</em> → vertex, opens-up/down, axis, y-int, x-int(s) or none, min/max value</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">2</span><span class="kc sep">(or ▼▼ENTER)</span>
+      <span class="kc">1</span><span class="kc">ENTER</span>
+      <span class="kc">(−)</span><span class="kc">4</span><span class="kc">ENTER</span>
+      <span class="kc">(−)</span><span class="kc">5</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 9b: h(x)=x²−4x−5</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">h=-B/(2A)=2
+k=f(h)=−9
+<span class="pz">[Pause — press ENTER]</span>
+VERTEX:(2,−9)
+OPENS UP, MIN
+AXIS: X=2
+Y-INT: (0,−5)
+X-INT: 5,−1
+MIN VALUE: −9</div>
+      </div>
+    </div>
+    <div class="note">X-INT prints the "+root" before the "−root" — <span class="mono">5,−1</span> not <span class="mono">−1,5</span>. Same two numbers as the key, different order; read both off before writing your answer.</div>
+  </section>
+
+  <section class="card" id="QUADSV">
+    <div class="eyebrow"><span>PRGM SLOT 3</span><span class="path">QUADSV</span></div>
+    <h2>QUADSV</h2>
+    <p class="purpose">Solves $ax^2+bx+c=0$ exactly — simplified radical or $a\pm bi$, never a decimal.</p>
+    <div class="prose"><p>Use this whenever a problem says "solve... give exact, simplified answers." Internally it's the same discriminant classification as <a class="jump" href="#QUADAN" data-label="QUADAN">QUADAN</a>, carried one step further.</p></div>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td><span class="mono">A, B, C</span></td><td>$D=b^2-4ac$ → <em>pause</em> → real or complex label, then the exact root(s)</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">3</span><span class="kc">1</span><span class="kc">ENTER</span><span class="kc">1</span><span class="kc">ENTER</span><span class="kc">3</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 12d: x²+x+3=0</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">D=B²-4AC=−11
+<span class="pz">[Pause — press ENTER]</span>
+D&lt;0: complex pair
+x = −1/2 ± (√11/2)i</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="REBUILD">
+    <div class="eyebrow"><span>PRGM SLOT 4</span><span class="path">REBUILD</span></div>
+    <h2>REBUILD</h2>
+    <p class="purpose">Rebuilds $f(x)=a(x-h)^2+k$ from a vertex and one more point read off a graph.</p>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td><span class="mono">H, K</span> (vertex), then <span class="mono">X, Y</span> (second point)</td><td>the a= work → <em>pause</em> → reduced a, then the full equation</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">4</span><span class="kc">3</span><span class="kc">ENTER</span><span class="kc">(−)</span><span class="kc">3</span><span class="kc">ENTER</span><span class="kc">5</span><span class="kc">ENTER</span><span class="kc">1</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 7a: vertex (3,−3), point (5,1)</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">a=(y-k)/(x-h)²
+a=4/4
+<span class="pz">[Pause — press ENTER]</span>
+a=1
+f(x)=1(x-3)²−3</div>
+      </div>
+    </div>
+    <div class="note">REBUILD always prints the coefficient even when it's 1 — the key writes $f(x)=(x-3)^2-3$; the screen says <span class="mono">f(x)=1(x-3)²−3</span>. Same function.</div>
+  </section>
+
+  <!-- ============ CHAPTER 2 ============ -->
+  <div class="chapter-head"><span class="num">II</span><h2>Polynomials</h2></div>
+
+  <section class="card" id="SYNDIV">
+    <div class="eyebrow"><span>PRGM SLOT 5</span><span class="path">SYNDIV</span></div>
+    <h2>SYNDIV</h2>
+    <p class="purpose">Synthetic division of a polynomial by $(x-k)$ — quotient and remainder.</p>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td><a class="jump" href="#list" data-label="list input">COEF list</a>, then <span class="mono">K</span></td><td>divisor label → <em>pause</em> → quotient coefficient list, remainder</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">5</span>
+      <span class="kc ochre">{</span><span class="kc">5</span><span class="kc">,</span><span class="kc">(−)</span><span class="kc">1</span><span class="kc">4</span><span class="kc">,</span><span class="kc">(−)</span><span class="kc">2</span><span class="kc">6</span><span class="kc">,</span><span class="kc">8</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+      <span class="kc">4</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 17a: (5x³−14x²−26x+8)÷(x−4)</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">DIVIDE BY (x-4)
+<span class="pz">[Pause — press ENTER]</span>
+QUOTIENT COEF:
+{5,6,−2}
+REMAINDER: 0</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="POLYAN">
+    <div class="eyebrow"><span>PRGM SLOT 6</span><span class="path">POLYAN</span></div>
+    <h2>POLYAN</h2>
+    <p class="purpose">Degree, leading coefficient, and end behavior from a list of zeros and multiplicities.</p>
+    <div class="prose"><p>You supply the zeros and multiplicities — POLYAN reads them off an already-factored $f(x)$, it doesn't factor for you. For the reverse direction, see <a class="jump" href="#ZEROFX" data-label="ZEROFX">ZEROFX</a>.</p></div>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td>ZEROS list, MULT list, <span class="mono">A</span> (leading coeff)</td><td>degree, lead coeff → <em>pause</em> → each zero+multiplicity, end behavior</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">6</span>
+      <span class="kc ochre">{</span><span class="kc">0</span><span class="kc">,</span><span class="kc">(−)</span><span class="kc">7</span><span class="kc">,</span><span class="kc">5</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+      <span class="kc ochre">{</span><span class="kc">6</span><span class="kc">,</span><span class="kc">2</span><span class="kc">,</span><span class="kc">6</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+      <span class="kc">(−)</span><span class="kc">2</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 24a: f(x)=−2x⁶(x+7)²(x−5)⁶</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">DEGREE: 14
+LEAD COEF: −2
+<span class="pz">[Pause — press ENTER]</span>
+0  mult 6
+−7  mult 2
+5  mult 6
+END: FALLS L, FALLS R</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="ZEROFX">
+    <div class="eyebrow"><span>PRGM SLOT 7</span><span class="path">ZEROFX</span></div>
+    <h2>ZEROFX</h2>
+    <p class="purpose">Builds the complete factored form from zeros/multiplicities plus one off-axis point — the right tool for a cubic or quartic, which has no single vertex.</p>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td>ZEROS list, MULT list, then <span class="mono">X, Y</span> (a point not on the x-axis)</td><td>product at the point → <em>pause</em> → the leading coefficient and full factored f(X)</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">7</span>
+      <span class="kc ochre">{</span><span class="kc">(−)</span><span class="kc">4</span><span class="kc">,</span><span class="kc">(−)</span><span class="kc">1</span><span class="kc">,</span><span class="kc">3</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+      <span class="kc ochre">{</span><span class="kc">1</span><span class="kc">,</span><span class="kc">1</span><span class="kc">,</span><span class="kc">1</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+      <span class="kc">0</span><span class="kc">ENTER</span><span class="kc">(−)</span><span class="kc">3</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 21: zeros −4,−1,3; y-int (0,−3)</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">PRODUCT AT PT=−12
+a=y/product=0.25
+<span class="pz">[Pause — press ENTER]</span>
+f(X)=0.25(X+4)(X+1)(X-3)</div>
+      </div>
+    </div>
+    <div class="warn">ZEROFX prints $a$ as a decimal (<span class="mono">0.25</span>), not the reduced fraction $\tfrac14$ the key writes. Same number — convert it yourself before writing the answer, the way <a class="jump" href="#SYNDIV" data-label="SYNDIV">SYNDIV</a> and <a class="jump" href="#QUADSV" data-label="QUADSV">QUADSV</a> don't need you to.</div>
+  </section>
+
+  <section class="card" id="ZCHAIN">
+    <div class="eyebrow"><span>PRGM SLOT 8</span><span class="path">ZCHAIN</span></div>
+    <h2>ZCHAIN</h2>
+    <p class="purpose">Given one zero $k$, divides it out and solves whatever's left for the rest of the zeros.</p>
+    <div class="prose"><p>Internally this is <a class="jump" href="#SYNDIV" data-label="SYNDIV">SYNDIV</a> feeding straight into the same solver <a class="jump" href="#QUADSV" data-label="QUADSV">QUADSV</a> uses, chained automatically. If the remainder isn't zero, $k$ wasn't actually a root and the program stops there.</p></div>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td>COEF list, then <span class="mono">K</span></td><td>division + remainder check → <em>pause (only if R=0)</em> → quotient, remaining root(s), full zero list</td></tr>
+    </table>
+    <div class="flow-block">
+      <div class="flow-label">Branch</div>
+      <pre class="mermaid">flowchart TD
+A[PRGM 8 ZCHAIN] --> B[Input coeffs, K]
+B --> C[synthetic divide]
+C --> D{remainder = 0?}
+D -- no --> E[Disp NOT A ZERO, stop]
+D -- yes --> F{quotient degree}
+F -- 1 --> G[read root directly]
+F -- 2 --> H[run exact-solve on quotient]
+G & H --> I[Disp full zero list]</pre>
+    </div>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">8</span>
+      <span class="kc ochre">{</span><span class="kc">1</span><span class="kc">,</span><span class="kc">8</span><span class="kc">,</span><span class="kc">(−)</span><span class="kc">3</span><span class="kc">,</span><span class="kc">(−)</span><span class="kc">2</span><span class="kc">4</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+      <span class="kc">(−)</span><span class="kc">8</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 27a: x³+8x²−3x−24, k=−8</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">SYN÷ BY (x+8)
+R=0 ✓
+<span class="pz">[Pause — press ENTER]</span>
+QUOTIENT {1,0,−3}
+REAL ROOT(S):
+x=0 ± √3
+ALL ZEROS: −8, 0 ± √3</div>
+      </div>
+    </div>
+    <div class="note">Read "x=0 ± √3" as $x=\pm\sqrt3$ — the leading 0 is the quotient's missing $x$-term, not a third root. All zeros: $-8,\ \sqrt3,\ -\sqrt3$, matching key 27a.</div>
+  </section>
+
+  <!-- ============ CHAPTER 3 ============ -->
+  <div class="chapter-head"><span class="num">III</span><h2>Rational Functions &amp; Inequalities</h2></div>
+
+  <section class="card" id="RATAN">
+    <div class="eyebrow"><span>PRGM SLOT 9</span><span class="path">RATAN</span></div>
+    <h2>RATAN</h2>
+    <p class="purpose">Domain, intercepts, vertical/horizontal asymptotes, and holes for a rational function given as two coefficient lists.</p>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td>NUM COEF list, DEN COEF list (both high-to-low degree)</td><td>denominator zeros, V.A., holes → <em>pause</em> → x-intercept(s), H.A.</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">9</span>
+      <span class="kc ochre">{</span><span class="kc">7</span><span class="kc">,</span><span class="kc">4</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+      <span class="kc ochre">{</span><span class="kc">(−)</span><span class="kc">2</span><span class="kc">,</span><span class="kc">1</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 31a: f(x)=(7x+4)/(1−2x)</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">DEN=0: 0.5
+V.A.: 0.5
+HOLES: none
+<span class="pz">[Pause — press ENTER]</span>
+X-INT: −0.571
+H.A.: y=-7/2</div>
+      </div>
+    </div>
+    <div class="warn">Asymptote locations and the H.A. come back exact (<span class="mono">y=-7/2</span>). The x-intercept doesn't — <span class="mono">−0.571</span> is $-\tfrac47$ rounded, not simplified. Convert it before writing the answer as $(-\tfrac47,0)$.</div>
+  </section>
+
+  <section class="card" id="RATSLV">
+    <div class="eyebrow"><span>PRGM SLOT 10</span><span class="path">RATSLV</span></div>
+    <h2>RATSLV</h2>
+    <p class="purpose">Checks candidate solutions to a rational equation against both sides, flagging any that make a denominator zero.</p>
+    <div class="prose"><p><strong>This is a checker, not a solver</strong> — it doesn't clear denominators or find roots on its own. Solve the equation by hand first (or guess integer candidates), then hand RATSLV the candidate list; it plugs each one into both your <a class="jump" href="#expr" data-label="typed expressions">typed expressions</a> and reports a match, a mismatch, or "undefined" (an <dfn>extraneous solution</dfn>).</p></div>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td><a class="jump" href="#expr" data-label="LHS, RHS">LHS(X), RHS(X)</a>, then a CANDIDATES list</td><td>for each candidate: match / no match / which side is undefined → <em>pause first</em> → the solution set</td></tr>
+    </table>
+    <div class="flow-block">
+      <div class="flow-label">Branch</div>
+      <pre class="mermaid">flowchart TD
+A[PRGM 10 RATSLV] --> B[Type LHS X expr]
+B --> C[Type RHS X expr]
+C --> D[Input candidate list]
+D --> E[For each candidate x]
+E --> F{LHS, RHS both defined?}
+F -- no --> G[Disp side UNDEF]
+F -- yes --> H{LHS = RHS?}
+H -- yes --> I[Disp SOLUTION]
+H -- no --> J[Disp no match]
+G & I & J --> K[Disp final solution set]</pre>
+    </div>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">10</span><span class="kc sep">(▼ to it, ENTER)</span>
+      <span class="kc">1</span><span class="kc">/</span><span class="kc">X</span><span class="kc">+</span><span class="kc">1</span><span class="kc">/</span><span class="kc">(</span><span class="kc">X</span><span class="kc">−</span><span class="kc">4</span><span class="kc">)</span><span class="kc">ENTER</span>
+      <span class="kc">(</span><span class="kc">X</span><span class="kc">−</span><span class="kc">3</span><span class="kc">)</span><span class="kc">/</span><span class="kc">(</span><span class="kc">X</span><span class="kc">−</span><span class="kc">4</span><span class="kc">)</span><span class="kc">ENTER</span>
+      <span class="kc ochre">{</span><span class="kc">1</span><span class="kc">,</span><span class="kc">4</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 30c: 1/b+1/(b−4)=(b−3)/(b−4)</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">(the problem's "b" becomes "X")
+<span class="pz">[Pause — press ENTER]</span>
+x=1: SOLUTION ✓
+x=4: LHS UNDEF
+SOLUTION SET:
+{1}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="SIGNCH">
+    <div class="eyebrow"><span>PRGM SLOT 11</span><span class="path">SIGNCH</span></div>
+    <h2>SIGNCH</h2>
+    <p class="purpose">Builds a real sign chart for $f(x)$ against a set of critical values and an inequality direction.</p>
+    <div class="prose"><p>You supply $f(X)$ as a typed expression and the critical values (zeros of the numerator and, for a rational inequality, the denominator too). SIGNCH tests a real point in every region — it genuinely evaluates your expression, it doesn't just pattern-match multiplicities the way a shortcut rule would.</p></div>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td><a class="jump" href="#expr" data-label="f(X)">f(X)</a> expression, CRIT VALUES list, then a 4-way <a class="jump" href="#menu" data-label="menu">menu</a> for the inequality sign</td><td><em>pause</em> → each region's sign and whether it's kept → the solution in interval form</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">11</span>
+      <span class="kc">(−)</span><span class="kc">4</span><span class="kc">X</span><span class="kc">(</span><span class="kc">X</span><span class="kc">+</span><span class="kc">2</span><span class="kc">)</span><span class="kc">x²</span><span class="kc">(</span><span class="kc">5</span><span class="kc">−</span><span class="kc">X</span><span class="kc">)</span><span class="kc">ENTER</span>
+      <span class="kc ochre">{</span><span class="kc">(−)</span><span class="kc">2</span><span class="kc">,</span><span class="kc">0</span><span class="kc">,</span><span class="kc">5</span><span class="kc ochre">}</span><span class="kc">ENTER</span>
+      <span class="kc">1</span><span class="kc sep">(f(x)&gt;0)</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 41f: −4u(u+2)²(5−u)&gt;0</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen"><span class="pz">[Pause — press ENTER]</span>
+(-∞,−2) + ✓
+(−2,0) + ✓
+(0,5) -
+(5,∞) + ✓
+SOLUTION:
+(-∞,−2) U (−2,0) U (5,∞)</div>
+      </div>
+    </div>
+    <div class="note">The $(-2,0)$ region reads positive even though $x=-2$ is a critical value of even multiplicity — SIGNCH tests the open interval next to it, not the point itself, so it shows the true sign on both sides of a touch-point correctly.</div>
+  </section>
+
+  <!-- ============ CHAPTER 4 ============ -->
+  <div class="chapter-head"><span class="num">IV</span><h2>Applications, Checking &amp; Transforms</h2></div>
+
+  <section class="card" id="APPMDL">
+    <div class="eyebrow"><span>PRGM SLOT 12</span><span class="path">APPMDL</span></div>
+    <h2>APPMDL</h2>
+    <p class="purpose">Reads a quadratic application: time/value of the vertex, then when the quantity reaches zero.</p>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td><span class="mono">A, B, C</span> of the model</td><td>vertex time + value → <em>pause</em> → both roots, and the larger (positive) one as "ground"</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">12</span>
+      <span class="kc">(−)</span><span class="kc">4</span><span class="kc">.</span><span class="kc">9</span><span class="kc">ENTER</span>
+      <span class="kc">1</span><span class="kc">9</span><span class="kc">.</span><span class="kc">6</span><span class="kc">ENTER</span>
+      <span class="kc">5</span><span class="kc">8</span><span class="kc">.</span><span class="kc">8</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 15: s(t)=−4.9t²+19.6t+58.8</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">VERTEX t=2
+MAX/MIN VAL=78.4
+<span class="pz">[Pause — press ENTER]</span>
+ROOTS: −2,6
+GROUND AT t=6</div>
+      </div>
+    </div>
+    <div class="note">"GROUND AT t=" always takes the larger root, trusting that the negative one is physically meaningless — true for every launch/drop problem in the review, not a general rule for every quadratic model.</div>
+  </section>
+
+  <section class="card" id="CHECK">
+    <div class="eyebrow"><span>PRGM SLOT 13</span><span class="path">CHECK</span></div>
+    <h2>CHECK</h2>
+    <p class="purpose">Substitutes a candidate x into $f(x)$ and reports whether it's genuinely a root.</p>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td><a class="jump" href="#expr" data-label="f(X)">f(X)</a>, then <span class="mono">X</span></td><td>$f(x)$'s value, then VERIFIED or NOT A ROOT</td></tr>
+    </table>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">13</span>
+      <span class="kc">5</span><span class="kc">X</span><span class="kc">^</span><span class="kc">3</span><span class="kc">−</span><span class="kc">X</span><span class="kc">x²</span><span class="kc">−</span><span class="kc">3</span><span class="kc">5</span><span class="kc">X</span><span class="kc">+</span><span class="kc">7</span><span class="kc">ENTER</span>
+      <span class="kc">1</span><span class="kc">/</span><span class="kc">5</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 29f root, x=1/5</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">f(0.2)=0
+VERIFIED ROOT ✓</div>
+      </div>
+    </div>
+    <div class="note">No pause — CHECK is short enough to print straight through. Typing <span class="mono">1/5</span> at the X prompt is fine; it evaluates before the check runs.</div>
+  </section>
+
+  <section class="card" id="XFORM">
+    <div class="eyebrow"><span>PRGM SLOT 14</span><span class="path">XFORM</span></div>
+    <h2>XFORM</h2>
+    <p class="purpose">Fits $f(x)=a\cdot\text{parent}(x-h)+k$ for any of six function families from a known point and a second point.</p>
+    <div class="prose"><p>Generalizes <a class="jump" href="#REBUILD" data-label="REBUILD">REBUILD</a> past parabolas: linear, absolute value, quadratic, square root, cubic, or reciprocal. The "known point" is the vertex for quadratic/absolute-value, the inflection point for cubic, the center for reciprocal, or any point at all for a line.</p></div>
+    <table class="spec"><tr><th>Prompts</th><th>Output</th></tr>
+      <tr><td>a 6-item <a class="jump" href="#menu" data-label="menu">type menu</a>, then <span class="mono">H,K</span> and <span class="mono">X,Y</span></td><td>the a= work → <em>pause</em> → reduced a, then $f(X)$</td></tr>
+    </table>
+    <div class="flow-block">
+      <div class="flow-label">Branch</div>
+      <pre class="mermaid">flowchart TD
+A[PRGM 14 XFORM] --> B[Menu: 6 families]
+B --> C[Prompt H,K]
+C --> D[Prompt X,Y]
+D --> E{parent(X-H) defined, nonzero?}
+E -- no --> F[Disp DOMAIN ERROR, stop]
+E -- yes --> G["a = (Y-K) / parent(X-H)"]
+G --> H[Disp f(X)=a·parent(x-h)+k]</pre>
+    </div>
+    <div class="keyseq">
+      <span class="kc">PRGM</span><span class="kc">14</span>
+      <span class="kc">3</span><span class="kc sep">(QUADRATIC)</span>
+      <span class="kc">3</span><span class="kc">ENTER</span><span class="kc">(−)</span><span class="kc">3</span><span class="kc">ENTER</span>
+      <span class="kc">5</span><span class="kc">ENTER</span><span class="kc">1</span><span class="kc">ENTER</span>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-label">Worked example — key 7a again, type QUADRATIC</div>
+      <div class="calc-case"><div class="top"><span>TI-84 PLUS CE</span><span>RUN</span></div>
+        <div class="screen">a=(y-k)/parent(x-h)
+a=4/4
+<span class="pz">[Pause — press ENTER]</span>
+a=1
+f(X)=1(X-3)²−3</div>
+      </div>
+    </div>
+    <div class="note">Same inputs as the <a class="jump" href="#REBUILD" data-label="REBUILD">REBUILD</a> example, same output — XFORM's quadratic branch is REBUILD's math, generalized. A square-root or reciprocal type will reject a second point that lands outside that family's domain with <span class="mono">DOMAIN ERROR</span> instead of silently producing a wrong answer.</div>
+  </section>
+
+  <p class="foot">All worked examples above were traced by hand against the T2PREP Calculator's actual code, not copied from the earlier field guide's idealized mockups — two of those mockups turned out to have real bugs (a reversed radical ordering in RADCPLX, a sign error in the SIGNCH demo), which are now fixed in both artifacts.</p>
+
+</div></main>
+
+<script>
+(function(){
+  "use strict";
+  var trail=[];
+  var trailRow=document.getElementById('trailRow');
+  var trailEmpty=document.getElementById('trailEmpty');
+  function renderTrail(){
+    Array.from(trailRow.querySelectorAll('.trail-chip')).forEach(function(n){n.remove();});
+    if(trail.length===0){ trailEmpty.hidden=false; return; }
+    trailEmpty.hidden=true;
+    trail.forEach(function(t,i){
+      var chip=document.createElement('span'); chip.className='trail-chip';
+      var b=document.createElement('button'); b.textContent=t.label;
+      b.addEventListener('click',function(){
+        trail=trail.slice(0,i+1);
+        var el=document.getElementById(t.id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+        renderTrail();
+      });
+      chip.appendChild(b); trailRow.appendChild(chip);
+    });
+  }
+  document.getElementById('trailHome').addEventListener('click',function(){
+    trail=[]; renderTrail(); window.scrollTo({top:0,behavior:'smooth'});
+  });
+  document.querySelectorAll('.jump').forEach(function(a){
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      var id=a.getAttribute('href').slice(1);
+      var label=a.getAttribute('data-label')||a.textContent;
+      if(!trail.length || trail[trail.length-1].id!==id){ trail.push({id:id,label:label}); }
+      renderTrail();
+      var target=document.getElementById(id);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+  renderTrail();
+})();
+</script>

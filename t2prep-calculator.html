@@ -222,7 +222,7 @@ async run(c){
     const {out,rem}=simplifyRadical(-n);
     await c.disp('√('+fmtN(n)+')');
     await c.pause();
-    const txt='i'+(out===1?'':out)+(rem===1?'':'√'+rem);
+    const txt=(out===1?'':out)+'i'+(rem===1?'':'√'+rem);
     await c.disp('= i√'+fmtN(-n));
     await c.disp('= '+txt);
   } else {
@@ -316,7 +316,8 @@ Disp "REMAINDER",R`),
 async run(c){
   const coeffs=await c.input('COEF {a,..,c}=?','list');
   await c.prompt('K'); const k=c.vars.K;
-  await c.disp('DIVIDE BY (x-'+fmtN(k)+')');
+  const kS=k>=0?'-'+fmtN(k):'+'+fmtN(Math.abs(k));
+  await c.disp('DIVIDE BY (x'+kS+')');
   await c.pause();
   const {q,r}=synDivide(coeffs,k);
   await c.disp('QUOTIENT COEF:');
@@ -529,7 +530,8 @@ async run(c){
   const coeffs=await c.input('COEF {a,..,c}=?','list');
   await c.prompt('K'); const k=c.vars.K;
   const {q,r}=synDivide(coeffs,k);
-  await c.disp('SYN÷ BY (x-'+fmtN(k)+')');
+  const kS=k>=0?'-'+fmtN(k):'+'+fmtN(Math.abs(k));
+  await c.disp('SYN÷ BY (x'+kS+')');
   await c.disp('R='+fmtN(r)+(Math.abs(r)<1e-9?' ✓':' ✗ NOT A ZERO'));
   if(Math.abs(r)>=1e-9) return;
   await c.pause();
