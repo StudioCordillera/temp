@@ -1,0 +1,1412 @@
+<title>MATHKIT Field Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<style>
+/* Layout: engineering-paper notebook, as in the MATHKIT prototype field guide. Each program is a
+   ruled sheet: how-to cards on the left, a replay calculator pinned in a rail on the right
+   (stacked first on phones). The replay shows screens recorded from the real TI-BASIC. */
+:root{
+  --paper:#e6eee0; --sheet:#f5f8f1; --sheet2:#fbfcf9; --grid:#d6e3cd; --grid-maj:#bdd2ae; --rule:#a3c094;
+  --ink:#1b2920; --muted:#55685b; --faint:#8b9b90; --defbg:rgba(163,192,148,.16);
+  --red:#b02f28; --red-soft:rgba(176,47,40,.12);
+  --blue:#1d5ca6; --blue-soft:rgba(29,92,166,.12);
+  --ochre:#9c6b06; --ochre-soft:rgba(176,124,10,.16);
+  --flash:rgba(176,124,10,.22);
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --util:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  /* the handheld itself keeps one look in both themes */
+  --cbody1:#363940; --cbody2:#1e2024; --ckeyt:#f1f2f4; --lcdbg:#ffffff; --lcdink:#0c0c0c;
+  --sbbg:#dfe3ea; --sbink:#1c4c98; --curve:#1d5ca6; --curve2:#b02f28;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0e1511; --sheet:#131c17; --sheet2:#16211b; --grid:#1a281f; --grid-maj:#22362a; --rule:#335040;
+  --ink:#dce7dd; --muted:#9db0a1; --faint:#6d8274; --defbg:rgba(51,80,64,.35);
+  --red:#ff7d70; --red-soft:rgba(255,125,112,.15);
+  --blue:#7db3ff; --blue-soft:rgba(125,179,255,.15);
+  --ochre:#e8b54e; --ochre-soft:rgba(232,181,78,.17);
+  --flash:rgba(232,181,78,.2);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0e1511; --sheet:#131c17; --sheet2:#16211b; --grid:#1a281f; --grid-maj:#22362a; --rule:#335040;
+  --ink:#dce7dd; --muted:#9db0a1; --faint:#6d8274; --defbg:rgba(51,80,64,.35);
+  --red:#ff7d70; --red-soft:rgba(255,125,112,.15);
+  --blue:#7db3ff; --blue-soft:rgba(125,179,255,.15);
+  --ochre:#e8b54e; --ochre-soft:rgba(232,181,78,.17);
+  --flash:rgba(232,181,78,.2);
+  color-scheme:dark;
+}
+html{scroll-behavior:auto}
+body{
+  background-color:var(--paper); color:var(--ink);
+  background-image:
+    linear-gradient(var(--grid-maj) 1px,transparent 1px),linear-gradient(90deg,var(--grid-maj) 1px,transparent 1px),
+    linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:100px 100px,100px 100px,20px 20px,20px 20px;
+  font:400 15.5px/1.52 var(--body);
+  overflow-wrap:break-word;
+  padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 48px;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--sheet)}
+.wrap{max-width:1200px;margin-inline:auto}
+a{color:inherit}
+.r{color:var(--red)} .b{color:var(--blue)} .o{color:var(--ochre)}
+
+/* back-trail bar */
+.trail{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;display:flex;align-items:center;gap:10px;
+  background:var(--sheet);border:1px solid var(--rule);border-top:0;padding:7px 10px;font:500 12px/1.2 var(--util)}
+.trail .tl-k{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-size:10.5px;flex:none}
+.crumbs{display:flex;align-items:center;gap:4px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:thin;white-space:nowrap}
+.crumbs button{font:inherit;color:var(--ink);background:none;border:0;padding:3px 4px;cursor:pointer;border-radius:3px;white-space:nowrap}
+.crumbs button:hover{background:var(--defbg)}
+.crumbs button[aria-current]{font-weight:700;text-decoration:underline;text-decoration-color:var(--ochre);text-underline-offset:3px}
+.crumbs .sep{color:var(--faint)}
+.tbtn{font:500 12px/1 var(--util);color:var(--ink);background:var(--sheet2);border:1px solid var(--rule);padding:6px 9px;cursor:pointer;border-radius:3px;flex:none}
+.tbtn:disabled{opacity:.4;cursor:default}
+:is(.tbtn,.crumbs button,.btn,.chip,a,summary,.replay):focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* masthead */
+.masthead{padding:34px 0 8px;scroll-margin-top:60px}
+.eyebrow{font:500 11px/1 var(--util);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+h1{font:700 clamp(2.3rem,6vw,3.6rem)/.95 var(--display);letter-spacing:.005em;margin:0 0 12px;text-wrap:balance}
+.lede{max-width:68ch;margin:0 0 10px}
+.tw{overflow-x:auto;max-width:100%}
+table.index,table.tbl{width:100%;border-collapse:collapse;background:var(--sheet)}
+table.index{margin:16px 0 6px;font-size:14.5px}
+table.tbl{margin:6px 0 4px;font-size:14px;max-width:76ch}
+:is(.index,.tbl) :is(th,td){border:1px solid var(--rule);padding:6px 9px;text-align:left;vertical-align:top}
+:is(.index,.tbl) th{font:600 11px/1.2 var(--util);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--sheet2)}
+.index td:first-child,.tbl td.k{font-family:var(--util);font-size:13px;white-space:nowrap}
+.note{font-size:13.5px;color:var(--muted);max-width:72ch}
+
+/* sheets */
+.sheet{background:var(--sheet);border:1px solid var(--rule);margin-block:30px;box-shadow:0 12px 26px -22px rgba(0,0,0,.5);scroll-margin-top:52px}
+.sheet-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 18px;border-bottom:2px solid var(--ink);padding:16px 18px 12px;align-items:end}
+.sheet-head .pname{font:700 12.5px/1 var(--util);color:var(--muted);letter-spacing:.04em;margin:0 0 6px}
+.sheet-head h2{font:700 clamp(1.9rem,4.4vw,2.6rem)/1 var(--display);margin:0;text-wrap:balance}
+.sheet-head .path{font:500 12px/1.3 var(--util);color:var(--muted);text-align:right;margin:0}
+.sheet-head .path b{color:var(--ink)}
+.sheet-head .lede{grid-column:1/-1;margin:8px 0 0;max-width:72ch}
+.sheet-body{display:grid;grid-template-columns:minmax(0,1fr) 356px;gap:22px 26px;padding:6px 18px 20px}
+.sheet-body.full{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sheet-body.full .concept{border-top:1px solid var(--rule)}
+.device{grid-column:2;grid-row:1;position:sticky;top:calc(env(safe-area-inset-top,0px) + 54px);align-self:start;display:grid;gap:10px;padding-top:14px;min-width:0}
+.concepts{grid-column:1;grid-row:1;min-width:0}
+@media (max-width:880px){
+  .sheet-body,.sheet-body.full{grid-template-columns:minmax(0,1fr)}
+  .device{grid-column:1;grid-row:auto;position:static}
+  .concepts{grid-column:1;grid-row:auto}
+  .sheet-head .path{text-align:left;grid-column:1/-1}
+}
+.concept{border-top:1px solid var(--rule);padding:14px 0 16px;scroll-margin-top:58px;border-radius:2px;min-width:0}
+.concepts .concept:first-child{border-top:0}
+.concept h3{font:600 1.42rem/1.1 var(--display);margin:0 0 8px;display:flex;gap:10px;align-items:baseline;text-wrap:balance}
+.cn{font:600 .74rem/1 var(--util);color:var(--muted);letter-spacing:.04em;flex:none}
+.concept p{margin:0 0 8px;max-width:72ch}
+.concept ul,.concept ol{margin:0 0 8px;padding-left:1.25em;max-width:72ch}
+.concept li{margin:2px 0}
+dl.defs{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:5px 12px;margin:4px 0 10px;padding:9px 11px;background:var(--defbg);border:1px dashed var(--rule);max-width:76ch}
+dl.defs dt{font:600 12.5px/1.45 var(--util);color:var(--ink);padding-top:1px}
+dl.defs dd{margin:0;min-width:0}
+@media (max-width:520px){dl.defs{grid-template-columns:minmax(0,1fr)} dl.defs dd{margin:0 0 4px}}
+a.ref{text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--ochre);text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:pointer}
+a.ref:hover{background:var(--flash)}
+.flash{animation:flash 1.6s ease-out}
+@keyframes flash{0%{background:var(--flash)}100%{background:transparent}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}}
+kbd{font:600 11.5px/1 var(--util);border:1px solid var(--rule);border-bottom-width:2px;background:var(--sheet2);padding:2px 5px;border-radius:3px;white-space:nowrap;color:var(--ink)}
+code,.t{font:500 13px/1.3 var(--util);background:var(--defbg);padding:1px 4px;border-radius:2px;white-space:nowrap}
+.keyfix{border:1px solid var(--ochre);background:var(--ochre-soft);padding:7px 10px;font-size:14px;margin:8px 0;max-width:72ch}
+.src{font:600 11.5px/1.35 var(--util);color:var(--ochre);letter-spacing:.03em;margin:0 0 6px}
+ol.keys{margin:4px 0 8px;padding-left:1.4em;max-width:72ch}
+ol.keys li{margin:3px 0}
+pre.mermaid{background:var(--sheet2);border:1px solid var(--rule);padding:10px;overflow-x:auto;margin:6px 0 0;font:12px/1.3 var(--util);color:var(--ink)}
+
+/* page lists: the real step titles of one run */
+ol.pages{list-style:none;margin:6px 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:6px;max-width:76ch}
+ol.pages li{border:1px solid var(--rule);background:var(--sheet2);padding:5px 8px 5px;font:500 12.5px/1.25 var(--util);min-width:0}
+ol.pages li b{color:var(--muted);font-weight:600;margin-right:6px}
+ol.pages li.ans{border-color:var(--ochre);background:var(--ochre-soft)}
+
+/* static screen snapshots */
+.snaps{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+figure.snap{margin:0;flex:0 1 auto;min-width:0;max-width:100%}
+figure.snap figcaption{font:400 12px/1.4 var(--util);color:var(--muted);margin-top:4px;max-width:30ch}
+.scr{margin:0;display:block;background:var(--lcdbg);color:var(--lcdink);border:6px solid #0b0c0e;border-radius:6px;
+  font:500 12.5px/1.32 var(--util);white-space:pre;padding:5px 7px;width:max-content;max-width:100%;overflow-x:auto}
+.scr .ii,.lcd .ii{font-style:italic}
+
+/* the replay calculator */
+.replay{width:min(100%,348px);margin-inline:auto;background:linear-gradient(172deg,var(--cbody1),var(--cbody2));border-radius:20px 20px 30px 30px;
+  padding:12px 11px 14px;color:var(--ckeyt);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 16px 30px -16px rgba(0,0,0,.6);outline:none}
+.replay .brand{display:flex;justify-content:space-between;font:700 8.5px/1 var(--util);letter-spacing:.12em;color:#c3c8cf;padding:2px 7px 9px}
+.replay .bezel{background:#0b0c0e;border-radius:10px;padding:8px}
+.lcd{position:relative;container-type:inline-size;aspect-ratio:4/3;width:100%;max-width:100%;background:var(--lcdbg);color:var(--lcdink);display:flex;flex-direction:column;overflow:hidden;border-radius:2px}
+.lcd .sb{flex:0 0 11%;background:var(--sbbg);color:var(--sbink);display:flex;align-items:center;padding:0 1.6cqw;font:700 3.05cqw/1 var(--util);white-space:nowrap;overflow:hidden}
+.lcd .rows{flex:1;display:grid;grid-template-rows:repeat(10,1fr);padding:.6cqw .9cqw;font-family:var(--util);font-weight:500;font-size:5.75cqw;line-height:1}
+.lcd .row{display:grid;grid-template-columns:repeat(26,1fr);min-height:0}
+.lcd .row span{display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:pre}
+.lcd .row .inv{background:var(--lcdink);color:var(--lcdbg)}
+.lcd .row .cur{animation:blink 1.1s steps(1) infinite}
+@keyframes blink{0%,54%{background:var(--lcdink);color:var(--lcdbg)}55%,100%{background:transparent;color:var(--lcdink)}}
+@media (prefers-reduced-motion:reduce){.lcd .row .cur{animation:none;background:var(--lcdink);color:var(--lcdbg)}}
+.lcd svg.gcv{position:absolute;left:0;bottom:0;width:100%;height:89%;background:var(--lcdbg)}
+.gcv text{font-family:var(--util);font-size:8.4px;fill:var(--lcdink)}
+.gcv .ax{stroke:#555;stroke-width:.8;fill:none}
+.gcv .tk{stroke:#555;stroke-width:.6}
+.gcv .cv{stroke:var(--curve);stroke-width:1.4;fill:none}
+.gcv .va{stroke:#7a7a7a;stroke-width:.8;fill:none}
+.gcv .pt{fill:none;stroke:var(--curve2);stroke-width:1}
+.tape{margin-top:11px;display:grid;gap:8px}
+.scens{display:flex;flex-wrap:wrap;gap:5px}
+.scens button{font:600 10.5px/1.2 var(--util);color:#d9dde3;background:#2b2e35;border:1px solid #4a4e57;border-radius:4px;padding:5px 7px;cursor:pointer;text-align:left}
+.scens button[aria-pressed="true"]{background:#e9eaed;color:#1a1c20;border-color:#e9eaed}
+.cap{font:500 12px/1.45 var(--util);color:#eef0f3;min-height:3.1em;background:#16181c;border-radius:6px;padding:7px 9px}
+.cap .n{color:#9aa3ad;display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.cap kbd{background:#e9eaed;color:#1a1c20;border-color:#bfc3ca;font-size:11px;margin:0 1px}
+.cap kbd.s{background:#2f84d6;color:#fff;border-color:#1f5f9e}
+.cap kbd.a{background:#3d9f4a;color:#fff;border-color:#2b7535}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.nav button{font:600 12px/1 var(--util);color:#f1f2f4;background:#3a3e46;border:0;border-radius:6px 6px 10px 10px;padding:9px 4px;cursor:pointer;box-shadow:0 2px 0 #0a0b0d,inset 0 1px 0 rgba(255,255,255,.1)}
+.nav button.go{background:#2f84d6}
+.nav button:disabled{opacity:.4;cursor:default}
+.nav button:active:not(:disabled){transform:translateY(1px);box-shadow:0 1px 0 #0a0b0d}
+.chips{display:flex;flex-wrap:wrap;gap:4px;max-height:96px;overflow-y:auto;padding:2px}
+.chip{font:600 10.5px/1 var(--util);color:#cfd3d9;background:#25282e;border:1px solid #3c4048;border-radius:3px;padding:4px 5px;cursor:pointer;white-space:nowrap}
+.chip.done{color:#8f969f}
+.chip[aria-current="step"]{background:#e8b54e;color:#1a1c20;border-color:#e8b54e}
+.hint{font:400 12px/1.45 var(--util);color:var(--muted);margin:0}
+.hint b{color:var(--ink);font-weight:600}
+</style>
+<!--BODY-->
+<div class="wrap">
+<nav class="trail" aria-label="Back-trail">
+  <span class="tl-k">Trail</span>
+  <div class="crumbs" id="crumbs"></div>
+  <button class="tbtn" id="stepout" type="button" disabled>Step out</button>
+  <button class="tbtn" id="theme" type="button">Theme</button>
+</nav>
+
+<header class="masthead" id="top" data-label="Field guide">
+  <p class="eyebrow">Math 1414 &middot; Test 2 &middot; TI-84 Plus CE, OS 5.2 or later &middot; MATHKIT 1.0</p>
+  <h1>MATHKIT Field Guide</h1>
+  <p class="lede">How to drive each MATHKIT program on the calculator: which menu option fits which problem, what to type at every prompt, what each page of work shows, and how to read the answer. Each sheet has a replay calculator. Its screens were recorded from the real TI-BASIC programs running in the MATHKIT test harness, one keystroke step at a time, on Form B problems.</p>
+  <p class="lede">Start with <a class="ref" href="#basics">Keys and conventions</a>: it covers the few rules every program shares. Dotted links jump to the card a step relies on, and <b>Step out</b> in the trail bar takes you back.</p>
+  <div class="tw"><table class="index">
+    <thead><tr><th>Program</th><th>Sheet</th><th>From MATHKIT</th><th>Form B problems</th></tr></thead>
+    <tbody>
+      <tr><td>prgmMATHKIT</td><td><a class="ref" href="#mathkit">Launcher and settings</a></td><td>&ndash;</td><td>all</td></tr>
+      <tr><td>prgmZCPLX</td><td><a class="ref" href="#zcplx">Complex numbers</a></td><td>1</td><td>1, 2</td></tr>
+      <tr><td>prgmZQSOLV</td><td><a class="ref" href="#zqsolv">Quadratic equations</a></td><td>2, 1</td><td>8, 10, 11, 12</td></tr>
+      <tr><td>prgmZQUAD</td><td><a class="ref" href="#zquad">Quadratic functions</a></td><td>2, 2</td><td>3&ndash;7, 9, 13&ndash;15</td></tr>
+      <tr><td>prgmZDIV</td><td><a class="ref" href="#zdiv">Polynomial division</a></td><td>3, 1</td><td>16, 17</td></tr>
+      <tr><td>prgmZPOLY</td><td><a class="ref" href="#zpoly">Polynomial behavior</a></td><td>3, 2</td><td>18, 21, 24&ndash;26</td></tr>
+      <tr><td>prgmZZEROS</td><td><a class="ref" href="#zzeros">Zeros of polynomials</a></td><td>3, 3</td><td>27&ndash;29</td></tr>
+      <tr><td>prgmZRATEQ</td><td><a class="ref" href="#zrateq">Rational equations</a></td><td>4, 1</td><td>30</td></tr>
+      <tr><td>prgmZRATFN</td><td><a class="ref" href="#zratfn">Rational functions</a></td><td>4, 2</td><td>31, 34&ndash;37</td></tr>
+      <tr><td>prgmZINEQ</td><td><a class="ref" href="#zineq">Inequalities</a></td><td>5</td><td>38&ndash;44</td></tr>
+      <tr><td>prgmZGRAPH</td><td><a class="ref" href="#zgraph">Graphs</a></td><td>6, 1</td><td>3, 4, 21, 32, 33</td></tr>
+      <tr><td>prgmZCHECK</td><td><a class="ref" href="#zcheck">Check an answer</a></td><td>6, 2</td><td>any</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Looking up a problem by number? The <a class="ref" href="#finder">problem finder</a> at the end lists every Form B problem with its program and menu choice. Using MATHKIT on a test needs your instructor's approval: the course bans calculators that do symbolic manipulation.</p>
+</header>
+
+<!-- ============================ BASICS ============================ -->
+<section class="sheet" id="basics" data-label="Keys and conventions">
+  <div class="sheet-head">
+    <div><p class="pname">every program</p><h2>Keys and conventions</h2></div>
+    <p class="path">read this first</p>
+    <p class="lede">Every MATHKIT program reads its inputs the same way, pages its work the same way and writes answers with the same symbols. Learn these once.</p>
+  </div>
+  <div class="sheet-body full">
+    <article class="concept" id="b-run" data-label="Starting a program">
+      <h3><span class="cn">B.1</span>Starting a program</h3>
+      <ol class="keys">
+        <li>Press <kbd>prgm</kbd>, move to <b>MATHKIT</b> and press <kbd>enter</kbd>. The home screen shows <code>prgmMATHKIT</code>.</li>
+        <li>Press <kbd>enter</kbd> again to run it.</li>
+      </ol>
+      <p>Each program can also run on its own the same way, for example <code>prgmZQSOLV</code>. Programs whose names start with <b>ZL</b>, and <b>ZEXPR</b>, are helpers that the others call: never run them directly.</p>
+      <p>To stop a running program, press <kbd>on</kbd>, then choose <b>1:Quit</b>.</p>
+    </article>
+
+    <article class="concept" id="b-keys" data-label="Keys that matter">
+      <h3><span class="cn">B.2</span>Keys that matter</h3>
+      <dl class="defs">
+        <dt><kbd>(−)</kbd></dt><dd>The negative sign, bottom row. Use it for every negative number: <code>⁻12</code>. The <kbd>−</kbd> key above <kbd>+</kbd> is subtraction and gives ERR:SYNTAX at the start of an entry.</dd>
+        <dt><kbd>x,T,θ,n</kbd></dt><dd>Types <code>X</code>. Always use X in a typed expression, even when the book writes p, t or u.</dd>
+        <dt><kbd>2nd</kbd> <kbd>(</kbd> &nbsp; <kbd>2nd</kbd> <kbd>)</kbd></dt><dd>The list braces <code>{</code> and <code>}</code>.</dd>
+        <dt><kbd>÷</kbd></dt><dd>Types the fraction bar <code>/</code>. <code>⁻13/16</code> stays an exact fraction.</dd>
+        <dt><kbd>x²</kbd> &nbsp; <kbd>^</kbd></dt><dd>Squares, and higher powers: <code>X^4</code>.</dd>
+        <dt><kbd>2nd</kbd> <kbd>math</kbd></dt><dd>The test menu, for <code>=</code> in ZCHECK.</dd>
+        <dt><kbd>alpha</kbd></dt><dd>A letter, for example the function letter <code>N</code> in ZRATFN.</dd>
+      </dl>
+    </article>
+
+    <article class="concept" id="b-type" data-label="Typing values">
+      <h3><span class="cn">B.3</span>Typing values</h3>
+      <p>Every prompt takes text, so any of these forms works wherever a number, a list or a polynomial is asked for:</p>
+      <div class="tw"><table class="tbl">
+        <thead><tr><th>Type</th><th>Means</th></tr></thead>
+        <tbody>
+          <tr><td class="k">5 &nbsp; ⁻12</td><td>a number</td></tr>
+          <tr><td class="k">1/4 &nbsp; ⁻13/16</td><td>a fraction, kept exact</td></tr>
+          <tr><td class="k">4.9 &nbsp; .04</td><td>a decimal. The whole problem then answers in decimals, 4 places.</td></tr>
+          <tr><td class="k">{1,⁻6,⁻7}</td><td>coefficients, highest power first. Put 0 for a missing power: x³ − 2x − 5 is <code>{1,0,⁻2,⁻5}</code>.</td></tr>
+          <tr><td class="k">3(X+1)(X-1)</td><td>the polynomial as printed, multiplied out exactly by MATHKIT</td></tr>
+        </tbody>
+      </table></div>
+      <p>Typed polynomials go up to degree 6 (ZPOLY's COEFFICIENTS option goes to 10). MATHKIT checks its expansion at two extra points. A quotient such as <code>1/(X-5)</code>, or anything that fails the check, gives <code>NOT A POLYNOMIAL OF DEGREE ≤6</code> and returns to the menu.</p>
+      <p>Pressing <kbd>enter</kbd> without typing anything counts as <code>0</code>.</p>
+    </article>
+
+    <article class="concept" id="b-pager" data-label="Paging the work">
+      <h3><span class="cn">B.4</span>Paging the work</h3>
+      <p>The work comes one step per screen. The top line reads <code>page/total TITLE</code>, for example <code>3/6 4*3=12, ADD</code>.</p>
+      <dl class="defs">
+        <dt><kbd>enter</kbd> <kbd>▼</kbd> <kbd>►</kbd></dt><dd>Next page. On the last page, finish.</dd>
+        <dt><kbd>▲</kbd> <kbd>◄</kbd></dt><dd>Previous page.</dd>
+        <dt><kbd>clear</kbd></dt><dd>Jump to the first ANSWER page. Press it again to finish.</dd>
+      </dl>
+      <p>A step longer than 8 lines continues on a page marked <code>(CONT)</code>. A <b>GRAPH</b> page switches to the graph screen; press <kbd>enter</kbd> to go on. Your window settings are put back afterwards.</p>
+    </article>
+
+    <article class="concept" id="b-sym" data-label="Symbols">
+      <h3><span class="cn">B.5</span>Symbols in answers</h3>
+      <p>The calculator has no character for some textbook symbols, so MATHKIT writes them this way:</p>
+      <div class="tw"><table class="tbl">
+        <thead><tr><th>Book</th><th>MATHKIT</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>∞</td><td class="k">INF</td><td class="k">[⁻16,INF)</td></tr>
+          <tr><td>∪</td><td class="k">U</td><td class="k">(⁻INF,⁻6]U[⁻3,⁻1]</td></tr>
+          <tr><td>∅</td><td class="k">NO SOLUTION</td><td>Form B 41d</td></tr>
+          <tr><td>all reals</td><td class="k">(⁻INF,INF)</td><td>with <code>ALL REAL NUMBERS</code></td></tr>
+          <tr><td>±</td><td class="k">+/-</td><td class="k">X=1+/-√(6)</td></tr>
+          <tr><td>→</td><td class="k">-&gt;</td><td class="k">AS X-&gt;60 FROM LEFT</td></tr>
+          <tr><td>·, ×</td><td class="k">*</td><td class="k">4*3=12</td></tr>
+          <tr><td>x⁴</td><td class="k">X^4</td><td class="k">(X-2)^4</td></tr>
+        </tbody>
+      </table></div>
+      <p><code>⁻</code> is a negative number and <code>-</code> is subtraction. The imaginary unit is the calculator's own italic <code>𝑖</code>.</p>
+    </article>
+
+    <article class="concept" id="b-mode" data-label="Show work or answer only">
+      <h3><span class="cn">B.6</span>Show work or answer only</h3>
+      <p>In <a class="ref" href="#mathkit">MATHKIT</a>, <b>7:SETTINGS / QUIT</b> holds the switch: <b>1:SHOW ALL WORK</b> or <b>2:ANSWER ONLY</b>. It stays set, even for programs started on their own.</p>
+      <p>In answer-only mode the first screen is the answer, for example <code>1/1 ANSWER</code>. Use it to check homework quickly; switch back to see how the answer was reached.</p>
+    </article>
+
+    <article class="concept" id="b-wrong" data-label="When something goes wrong">
+      <h3><span class="cn">B.7</span>When something goes wrong</h3>
+      <dl class="defs">
+        <dt>a message</dt><dd>For example <code>A CANNOT BE 0</code> or <code>DENOMINATOR CANNOT BE 0</code>. Press <kbd>enter</kbd>: you return to the program's menu to try again.</dd>
+        <dt>ERR:SYNTAX</dt><dd>A typo, such as <kbd>−</kbd> used for a negative. Choose <b>1:Quit</b> and run the program again. TI-BASIC cannot catch errors, so MATHKIT cannot recover from these itself.</dd>
+        <dt>ERR:DATA TYPE</dt><dd>A list typed where one number belongs. Quit and run again.</dd>
+      </dl>
+      <p>MATHKIT overwrites Str0&ndash;Str9 and the letters A&ndash;W, Y, Z and θ. It never touches your Y= functions, and it puts your X back when a program ends normally.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================ MATHKIT ============================ -->
+<section class="sheet" id="mathkit" data-label="MATHKIT">
+  <div class="sheet-head">
+    <div><p class="pname">prgmMATHKIT</p><h2>Launcher and settings</h2></div>
+    <p class="path"><b>prgm</b> &gt; MATHKIT</p>
+    <p class="lede">MATHKIT routes you to every program by textbook section, two key presses at most, and holds the show-work setting. When a program's BACK is chosen, you return here.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="mk-launch mk-settings" tabindex="0"></div>
+      <p class="hint"><b>Replay:</b> press <b>Next</b> or the → key to step. Each step is one action on the real calculator.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="mk-menu" data-label="Main menu">
+        <h3><span class="cn">M.1</span>Main menu</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Item</th><th>Leads to</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:COMPLEX (1.3)</td><td><a class="ref" href="#zcplx">ZCPLX</a></td></tr>
+            <tr><td class="k">2:QUADRATICS</td><td>1:SOLVE EQ (1.4) = <a class="ref" href="#zqsolv">ZQSOLV</a>, 2:FUNCTION (3.1) = <a class="ref" href="#zquad">ZQUAD</a></td></tr>
+            <tr><td class="k">3:POLYNOMIALS</td><td>1:DIVIDE (3.2) = <a class="ref" href="#zdiv">ZDIV</a>, 2:BEHAVIOR (3.3) = <a class="ref" href="#zpoly">ZPOLY</a>, 3:ZEROS (3.4) = <a class="ref" href="#zzeros">ZZEROS</a></td></tr>
+            <tr><td class="k">4:RATIONAL</td><td>1:EQUATION (1.6) = <a class="ref" href="#zrateq">ZRATEQ</a>, 2:FUNCTION (3.5) = <a class="ref" href="#zratfn">ZRATFN</a></td></tr>
+            <tr><td class="k">5:INEQUALITIES (3.6)</td><td><a class="ref" href="#zineq">ZINEQ</a></td></tr>
+            <tr><td class="k">6:GRAPHS AND CHECK</td><td>1:GRAPHS (ALL UNITS) = <a class="ref" href="#zgraph">ZGRAPH</a>, 2:CHECK AN ANSWER = <a class="ref" href="#zcheck">ZCHECK</a></td></tr>
+            <tr><td class="k">7:SETTINGS / QUIT</td><td>see M.2</td></tr>
+          </tbody>
+        </table></div>
+        <p>Press an item's number, or move with <kbd>▲</kbd> <kbd>▼</kbd> and press <kbd>enter</kbd>. The numbers in parentheses are the textbook sections.</p>
+      </article>
+      <article class="concept" id="mk-set" data-label="Settings">
+        <h3><span class="cn">M.2</span>Settings and quitting</h3>
+        <dl class="defs">
+          <dt>1:SHOW ALL WORK</dt><dd>Every step, one page each. The default.</dd>
+          <dt>2:ANSWER ONLY</dt><dd>Only the ANSWER pages (<a class="ref" href="#b-mode">B.6</a>).</dd>
+          <dt>3:CLEAN UP AND QUIT</dt><dd>Deletes MATHKIT's working lists (all named ⌊MK…) and quits. The next run makes them again.</dd>
+          <dt>4:QUIT</dt><dd>Back to the home screen, lists kept.</dd>
+          <dt>5:BACK</dt><dd>Back to the main menu.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="mk-proc" data-label="MATHKIT procedure">
+        <h3><span class="cn">M.3</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmMATHKIT"]) --> m{"MATHKIT 1.0 menu"}
+  m -- "1 or 5" --> p1["ZCPLX or ZINEQ starts"]
+  m -- "2, 3, 4, 6" --> sub{"Section submenu"}
+  sub -- "pick a program" --> p2["That program starts"]
+  sub -- "BACK" --> m
+  p1 --> back["Program's BACK"]
+  p2 --> back
+  back --> m
+  m -- "7" --> st{"SETTINGS / QUIT"}
+  st -- "1 or 2" --> sw["Set show work or answer only"] --> m
+  st -- "3 or 4" --> q(["Home screen"])
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZCPLX ============================ -->
+<section class="sheet" id="zcplx" data-label="ZCPLX">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZCPLX</p><h2>Complex numbers</h2></div>
+    <p class="path">MATHKIT &gt; <b>1</b></p>
+    <p class="lede">Rewrites (A+B√(⁻N))/D with 𝑖, simplifies the radical and splits the fraction. Adds, subtracts or multiplies two complex numbers with FOIL and 𝑖²=⁻1. Every answer is exact, in a+b𝑖 form.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="cx-1e cx-2e" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> Form B 1e with every page of work, then 2e jumping straight to the answer with <b>clear</b>.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="cx-menu" data-label="ZCPLX menu">
+        <h3><span class="cn">C.1</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Use it for</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:SIMPLIFY (A+B√(⁻N))/D</td><td>one expression with a square root of a negative, possibly over a denominator</td><td>1a&ndash;f</td></tr>
+            <tr><td class="k">2:ADD</td><td>(a+b𝑖)+(c+d𝑖)</td><td>2a</td></tr>
+            <tr><td class="k">3:SUBTRACT</td><td>(a+b𝑖)−(c+d𝑖)</td><td>2b</td></tr>
+            <tr><td class="k">4:MULTIPLY</td><td>(a+b𝑖)(c+d𝑖), including products of √(negative)</td><td>2c&ndash;e</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+      <article class="concept" id="cx-type" data-label="ZCPLX inputs">
+        <h3><span class="cn">C.2</span>What to type</h3>
+        <dl class="defs">
+          <dt>SIMPLIFY</dt><dd><code>A=?</code> <code>B=?</code> <code>N=?</code> <code>D=?</code> for (A+B√(⁻N))/D. Whole numbers, N &gt; 0, D ≠ 0. A minus in front of the root is B = ⁻1; no denominator is D = 1.</dd>
+          <dt>ADD, SUBTRACT, MULTIPLY</dt><dd>The first number as <code>A</code>, <code>B</code>, <code>N</code> for A+B√(⁻N), then the second as <code>C</code>, <code>D</code>, <code>N</code>. For an ordinary a+b𝑖 use N = 1. N must be a perfect square (1, 4, 9, …) because √(⁻9) = 3𝑖.</dd>
+        </dl>
+        <p class="keyfix">Form B 1e, (−12 − √(−144))/(−4), is A=⁻12, B=⁻1, N=144, D=⁻4. Form B 2e, (8 − √(−9))(4 + √(−16)), is A=8, B=⁻1, N=9 and C=4, D=1, N=16.</p>
+      </article>
+      <article class="concept" id="cx-pages" data-label="ZCPLX work pages">
+        <h3><span class="cn">C.3</span>The work pages</h3>
+        <p>For SIMPLIFY, Form B 1e produces these pages:</p>
+        <!--PAGES cx-1e-->
+        <p>MULTIPLY shows CONVERT √(NEGATIVE), then FOIL (the four products F, O, I, L), then USE 𝑖²=⁻1, then the answer:</p>
+        <!--PAGES cx-2e-->
+      </article>
+      <article class="concept" id="cx-ans" data-label="ZCPLX answers">
+        <h3><span class="cn">C.4</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP cx-1e -1--><figcaption>The problem as entered, then the standard form.</figcaption></figure>
+          <figure class="snap"><!--SNAP cx-2e -1--><figcaption>Each √(negative) already converted to 𝑖.</figcaption></figure>
+        </div>
+        <p>A fractional part is written in parentheses before the 𝑖, for example <code>3/4+(7/8)𝑖</code>. A radical part keeps its root after the 𝑖: <code>6𝑖√(5)</code>.</p>
+      </article>
+      <article class="concept" id="cx-msg" data-label="ZCPLX messages">
+        <h3><span class="cn">C.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>USE WHOLE NUMBERS, N&gt;0 AND D≠0</dt><dd>SIMPLIFY got a fraction, a decimal, N ≤ 0 or D = 0.</dd>
+          <dt>N MUST BE A PERFECT SQUARE</dt><dd>Arithmetic needs N = 1, 4, 9, … Simplify a root like √(⁻12) with option 1 first.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="cx-proc" data-label="ZCPLX procedure">
+        <h3><span class="cn">C.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZCPLX"]) --> m{"COMPLEX menu"}
+  m -- "1 SIMPLIFY" --> a["A, B, N, D"] --> b["Split off ⁻1: √(⁻N) = 𝑖√(N)"]
+  b --> c["Pull the square factor out of N"] --> d["Rewrite the numerator"] --> e["Divide each term by D"] --> f["ANSWER in a+b𝑖 form"]
+  m -- "2, 3 or 4" --> g["1ST: A, B, N then 2ND: C, D, N"] --> h["Convert each √(⁻N) to 𝑖√N"]
+  h --> k["Combine like parts, or FOIL and 𝑖² = ⁻1"] --> f
+  f --> p["Page with enter, clear jumps to the answer"] --> m
+  m -- "5 BACK" --> q(["MATHKIT"])
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZQSOLV ============================ -->
+<section class="sheet" id="zqsolv" data-label="ZQSOLV">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZQSOLV</p><h2>Quadratic equations</h2></div>
+    <p class="path">MATHKIT &gt; <b>2</b> &gt; <b>1</b></p>
+    <p class="lede">Tests the discriminant, or solves by the square root property, by completing the square or by the quadratic formula. Answers come as reduced fractions, simplified radicals and a+b𝑖. TYPE IT takes each side of the equation as printed.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="qs-8d qs-12i qs-10c" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 8d typed as printed, 12i by the formula from coefficients, and 10c with fractions.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="qs-menu" data-label="ZQSOLV menu">
+        <h3><span class="cn">S.1</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Use it for</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:DISCRIMINANT</td><td>how many solutions, and what kind</td><td>8</td></tr>
+            <tr><td class="k">2:SQUARE ROOT PROP</td><td>a(x+h)²+k = c</td><td>10</td></tr>
+            <tr><td class="k">3:COMPLETE SQUARE</td><td>solve by completing the square</td><td>11</td></tr>
+            <tr><td class="k">4:QUAD FORMULA</td><td>solve by the formula</td><td>12</td></tr>
+            <tr><td class="k">5:TYPE IT</td><td>any of the above, typed as printed: <code>(⁻2+3X)²</code> = <code>47</code></td><td>8d, 12e, 12h, 12j</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+      <article class="concept" id="qs-type" data-label="ZQSOLV inputs">
+        <h3><span class="cn">S.2</span>What to type</h3>
+        <dl class="defs">
+          <dt>options 1, 3, 4</dt><dd><code>LEFT  AX²+BX+C</code> asks A, B, C; <code>RIGHT  DX²+EX+F</code> asks D, E, F. Put 0 for a missing term. The program moves everything to the left itself.</dd>
+          <dt>option 2</dt><dd><code>A(X+H)²+K=C</code> asks A, H, K, C. For (t − ¼)² type H = <code>⁻1/4</code>.</dd>
+          <dt>option 5</dt><dd><code>LEFT=</code> and <code>RIGHT=</code>, each side as printed with X (<a class="ref" href="#b-type">B.3</a>). Then the <code>METHOD</code> menu: 1:DISCRIMINANT, 2:COMPLETE SQUARE, 3:QUAD FORMULA.</dd>
+        </dl>
+        <p class="keyfix">Form B 12i, 2x² + 10x = −3: option 4, left side A=2, B=10, C=0, right side D=0, E=0, F=⁻3.</p>
+      </article>
+      <article class="concept" id="qs-pages" data-label="ZQSOLV work pages">
+        <h3><span class="cn">S.3</span>The work pages</h3>
+        <p>Typed input starts with what you typed and its standard form. Form B 8d, discriminant:</p>
+        <!--PAGES qs-8d-->
+        <p>Form B 12i, quadratic formula. The radical is simplified and the fraction reduced on separate pages:</p>
+        <!--PAGES qs-12i-->
+      </article>
+      <article class="concept" id="qs-ans" data-label="ZQSOLV answers">
+        <h3><span class="cn">S.4</span>Reading the answer</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Discriminant</th><th>The answer says</th></tr></thead>
+          <tbody>
+            <tr><td>D &gt; 0, a perfect square</td><td class="k">TWO REAL RATIONAL SOLUTIONS (D IS A SQUARE)</td></tr>
+            <tr><td>D &gt; 0, not a square</td><td class="k">TWO REAL IRRATIONAL SOLUTIONS (D NOT A SQUARE)</td></tr>
+            <tr><td>D = 0</td><td class="k">ONE REAL SOLUTION (A DOUBLE ROOT)</td></tr>
+            <tr><td>D &lt; 0</td><td class="k">TWO NONREAL SOLUTIONS (COMPLEX CONJUGATES)</td></tr>
+          </tbody>
+        </table></div>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP qs-12i -1--><figcaption>Two irrational roots in one line with +/-.</figcaption></figure>
+          <figure class="snap"><!--SNAP qs-10c -1--><figcaption>Complex roots: real part, then (imaginary part)𝑖.</figcaption></figure>
+        </div>
+        <p>Rational roots are listed in increasing order: <code>X=⁻3, 1/3</code>.</p>
+      </article>
+      <article class="concept" id="qs-msg" data-label="ZQSOLV messages">
+        <h3><span class="cn">S.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>NOT QUADRATIC, X² TERMS CANCEL</dt><dd>After moving everything left there is no X² term.</dd>
+          <dt>A CANNOT BE 0</dt><dd>Square root property with A = 0.</dd>
+          <dt>NOT A POLYNOMIAL OF DEGREE ≤2</dt><dd>A typed side has X³ or higher, or is not a polynomial.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="qs-proc" data-label="ZQSOLV procedure">
+        <h3><span class="cn">S.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZQSOLV"]) --> m{"QUADRATIC EQUATION menu"}
+  m -- "1, 3, 4" --> c["LEFT A, B, C and RIGHT D, E, F"]
+  m -- "5 TYPE IT" --> t["LEFT= and RIGHT= as printed"] --> mt{"METHOD"}
+  m -- "2" --> sq["A, H, K, C"] --> iso["Isolate the square, take ± roots"] --> ans
+  c --> std["Standard form AX²+BX+C=0"]
+  mt --> std
+  std --> d{"Which method"}
+  d -- "discriminant" --> dd["D = B² − 4AC, classify"] --> ans["ANSWER"]
+  d -- "complete square" --> cs["Divide by A, add (B/2A)², take ± roots"] --> ans
+  d -- "formula" --> qf["X = (−B ± √D)/(2A), simplify, reduce"] --> ans
+  ans --> m
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZQUAD ============================ -->
+<section class="sheet" id="zquad" data-label="ZQUAD">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZQUAD</p><h2>Quadratic functions</h2></div>
+    <p class="path">MATHKIT &gt; <b>2</b> &gt; <b>2</b></p>
+    <p class="lede">A full analysis of f(x) = ax²+bx+c: opening, vertex, axis, intercepts, maximum or minimum, domain and range, vertex form, plot points and a graph. Also builds f from a graph, and labels answers for word problems.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="qd-9b qd-15 qd-4" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 9b through all 12 pages, including the graph page; 15 as an application in time; 4 read off a graph.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="qd-menu" data-label="ZQUAD menu">
+        <h3><span class="cn">F.1</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Use it for</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:STANDARD FORM</td><td>f given as ax²+bx+c</td><td>5, 6, 9</td></tr>
+            <tr><td class="k">2:VERTEX FORM</td><td>f given as a(x−h)²+k</td><td>&ndash;</td></tr>
+            <tr><td class="k">3:FROM GRAPH</td><td>a formula from the vertex and one more point</td><td>3, 4, 7</td></tr>
+            <tr><td class="k">4:APPLICATION</td><td>height, profit or count problems with labeled answers</td><td>13&ndash;15</td></tr>
+            <tr><td class="k">5:TYPE IT F(X)</td><td>f typed as printed, for example <code>⁻3(X+2)²-5</code></td><td>5, 9a</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+      <article class="concept" id="qd-type" data-label="ZQUAD inputs">
+        <h3><span class="cn">F.2</span>What to type</h3>
+        <dl class="defs">
+          <dt>1 and 4</dt><dd><code>F(X)=AX²+BX+C</code>: A, B, C. Option 4 then asks <code>THE VARIABLE IS</code>: 1:TIME T (negative times are rejected) or 2:A COUNT X.</dd>
+          <dt>2</dt><dd><code>F(X)=A(X-H)²+K</code>: A, H, K. For (x+3)² type H = <code>⁻3</code>.</dd>
+          <dt>3</dt><dd><code>VERTEX (H,K)</code>, then <code>OTHER POINT (X,Y)</code>, both read off the graph. An x-intercept works as the other point.</dd>
+          <dt>5</dt><dd><code>F(X)=</code> typed as printed.</dd>
+        </dl>
+        <p class="keyfix">Decimals such as <code>⁻4.9</code> switch the whole problem to decimal answers (<a class="ref" href="#b-type">B.3</a>).</p>
+      </article>
+      <article class="concept" id="qd-pages" data-label="ZQUAD work pages">
+        <h3><span class="cn">F.3</span>The work pages</h3>
+        <p>STANDARD FORM, Form B 9b, f(x) = x² − 6x − 7. Page 10 is the graph, drawn with the vertex and y-intercept marked:</p>
+        <!--PAGES qd-9b-->
+        <p>APPLICATION, Form B 15, runs the same steps in T and puts the labeled meaning on the answer page:</p>
+        <!--PAGES qd-15-->
+      </article>
+      <article class="concept" id="qd-ans" data-label="ZQUAD answers">
+        <h3><span class="cn">F.4</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP qd-9b p11--><figcaption>Everything a "graph and analyze" question asks, on one page.</figcaption></figure>
+          <figure class="snap"><!--SNAP qd-15 -1--><figcaption>Application answers in words, with the rejected negative time.</figcaption></figure>
+        </div>
+        <p>The last page, <code>ANSWER (POINTS)</code>, lists two points on each side of the vertex for a hand sketch.</p>
+      </article>
+      <article class="concept" id="qd-msg" data-label="ZQUAD messages">
+        <h3><span class="cn">F.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>A CANNOT BE 0</dt><dd>Not a quadratic.</dd>
+          <dt>X MUST DIFFER FROM H</dt><dd>FROM GRAPH: the other point is on the axis of symmetry, so it cannot fix a.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="qd-proc" data-label="ZQUAD procedure">
+        <h3><span class="cn">F.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZQUAD"]) --> m{"QUADRATIC FUNCTION menu"}
+  m -- "1 or 4" --> a["A, B, C"]
+  m -- "2" --> v["A, H, K"] --> abc["Expand to A, B, C"]
+  m -- "5" --> t["F(X)= as printed"] --> abc
+  m -- "3" --> g["Vertex H, K and another point"] --> fa["Solve for a, give a(x−h)²+k"] --> m
+  a --> an["Direction, vertex, axis, intercepts, max or min"]
+  abc --> an
+  an --> dr["Domain and range, vertex form, points, graph"]
+  dr --> ap{"Option 4?"}
+  ap -- "yes" --> lab["Labeled meaning: MAX AT T, HITS GROUND"] --> ans["ANSWER"]
+  ap -- "no" --> ans
+  ans --> m
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZDIV ============================ -->
+<section class="sheet" id="zdiv" data-label="ZDIV">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZDIV</p><h2>Polynomial division</h2></div>
+    <p class="path">MATHKIT &gt; <b>3</b> &gt; <b>1</b></p>
+    <p class="lede">Synthetic division by x − k fills the tableau one column per screen: bring down, multiply, add. Long division by any divisor shows one divide, multiply and subtract round per screen.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="dv-17a dv-16d" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 17a column by column, then 16d by long division with typed input.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="dv-menu" data-label="ZDIV menu">
+        <h3><span class="cn">D.1</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Use it for</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:SYNTHETIC</td><td>dividing by x − k (or x + k)</td><td>17</td></tr>
+            <tr><td class="k">2:LONG DIVISION</td><td>any divisor, such as x² − 2</td><td>16</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+      <article class="concept" id="dv-type" data-label="ZDIV inputs">
+        <h3><span class="cn">D.2</span>What to type</h3>
+        <dl class="defs">
+          <dt>DIVIDEND=</dt><dd>A coefficient list with 0 for every missing power, or the polynomial typed as printed.</dd>
+          <dt>K=?</dt><dd>SYNTHETIC only, for the divisor <code>X-K</code>. For x + 4 type <code>⁻4</code>.</dd>
+          <dt>DIVISOR=</dt><dd>LONG DIVISION only: a list or typed.</dd>
+        </dl>
+        <p class="keyfix">Form B 17c, (x⁵ + x² + 7) ÷ (x − 3), is <code>{1,0,0,1,0,7}</code> with K = 3. Forgetting the zeros is the most common mistake.</p>
+      </article>
+      <article class="concept" id="dv-pages" data-label="ZDIV work pages">
+        <h3><span class="cn">D.3</span>The work pages</h3>
+        <p>Synthetic division, Form B 17a. Each page adds one column to the tableau and names the arithmetic in its title:</p>
+        <!--PAGES dv-17a-->
+        <div class="snaps">
+          <figure class="snap"><!--SNAP dv-17a p3--><figcaption>Page 3: the tableau so far, then the step in words.</figcaption></figure>
+        </div>
+      </article>
+      <article class="concept" id="dv-ans" data-label="ZDIV answers">
+        <h3><span class="cn">D.4</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP dv-17a -1--><figcaption>Remainder 0: x − 3 is a factor.</figcaption></figure>
+          <figure class="snap"><!--SNAP dv-16d -1--><figcaption>The last line writes quotient + remainder/divisor.</figcaption></figure>
+        </div>
+      </article>
+      <article class="concept" id="dv-msg" data-label="ZDIV messages">
+        <h3><span class="cn">D.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>DIVISOR CANNOT BE 0</dt><dd>The divisor list was all zeros.</dd>
+          <dt>DIVIDEND DEGREE IS BELOW DIVISOR DEGREE</dt><dd>Nothing to divide; check the order of the inputs.</dd>
+          <dt>NEED DEGREE ≥ 1</dt><dd>Synthetic division of a constant.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="dv-proc" data-label="ZDIV procedure">
+        <h3><span class="cn">D.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZDIV"]) --> m{"DIVISION menu"}
+  m -- "1 SYNTHETIC" --> a["DIVIDEND, then K for X−K"] --> su["Set up the tableau"]
+  su --> bd["Bring down the first coefficient"] --> lp["Multiply by K, add, one column per page"]
+  lp --> ans["QUOTIENT and REMAINDER"]
+  m -- "2 LONG DIVISION" --> b["DIVIDEND and DIVISOR"] --> r["Divide leading terms, multiply, subtract, one round per page"] --> ans
+  ans --> m
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZPOLY ============================ -->
+<section class="sheet" id="zpoly" data-label="ZPOLY">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZPOLY</p><h2>Polynomial behavior</h2></div>
+    <p class="path">MATHKIT &gt; <b>3</b> &gt; <b>2</b></p>
+    <p class="lede">Degree and leading coefficient (multiplied out from the factors, never copied), end behavior, the y-intercept, the most turning points, and each zero with its multiplicity and whether the graph crosses or touches. Also builds f from zeros and a point.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="pl-25 pl-21" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 25 from factored form, then 21 from three zeros and the y-intercept.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="pl-menu" data-label="ZPOLY menu">
+        <h3><span class="cn">P.1</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Use it for</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:COEFFICIENTS</td><td>f in expanded form (up to degree 10)</td><td>18a, 18b</td></tr>
+            <tr><td class="k">2:FACTORED FORM</td><td>f as a product such as −3(x−6)(4x+1)²(x−2)⁴</td><td>18c, 24, 25</td></tr>
+            <tr><td class="k">3:FROM ZEROS+POINT</td><td>a formula from zeros, multiplicities and one point</td><td>21, 26</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+      <article class="concept" id="pl-type" data-label="ZPOLY inputs">
+        <h3><span class="cn">P.2</span>What to type</h3>
+        <dl class="defs">
+          <dt>COEFFICIENTS</dt><dd><code>F(X)=</code>: a list or typed.</dd>
+          <dt>FACTORED FORM</dt><dd>Shows <code>A(PX+Q)^M(PX+Q)^M ETC</code>. Type the constant <code>A</code>, the number of <code>FACTORS</code> (1&ndash;6), then <code>P</code>, <code>Q</code>, <code>M</code> for each. (4x+1)² is P=4, Q=1, M=2; x⁶ is P=1, Q=0, M=6.</dd>
+          <dt>FROM ZEROS+POINT</dt><dd><code>ZEROS=?</code>, then each <code>ZERO</code> and <code>MULT</code>. Then <code>A (0=FIND)</code>: 1 for a leading coefficient of 1, or 0 to find A from a point, which it then asks for.</dd>
+        </dl>
+        <p class="keyfix">Form B 18c's leading coefficient is −3 · 1 · 4² · 1⁴ = −48. ZPOLY shows that product on its own page, so the −3 you typed is never mistaken for it.</p>
+      </article>
+      <article class="concept" id="pl-pages" data-label="ZPOLY work pages">
+        <h3><span class="cn">P.3</span>The work pages</h3>
+        <p>Form B 25, f(x) = 2(x+5)(x+2)²:</p>
+        <!--PAGES pl-25-->
+        <p>Form B 21, zeros −3, 1, 4 through (0, 2):</p>
+        <!--PAGES pl-21-->
+      </article>
+      <article class="concept" id="pl-ans" data-label="ZPOLY answers">
+        <h3><span class="cn">P.4</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP pl-25 -1--><figcaption>The y-intercept is on the answer page, with each zero's behavior.</figcaption></figure>
+          <figure class="snap"><!--SNAP pl-21 -1--><figcaption>A found from the point: 1/6.</figcaption></figure>
+        </div>
+        <p>CROSSES means odd multiplicity; TOUCHES means even. End behavior reads left to right: <code>FALLS LEFT, RISES RIGHT</code>.</p>
+      </article>
+      <article class="concept" id="pl-msg" data-label="ZPOLY messages">
+        <h3><span class="cn">P.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>NEED A≠0 AND 1 TO 6 FACTORS</dt><dd>FACTORED FORM with A = 0 or a bad factor count.</dd>
+          <dt>NEED P≠0 AND M A WHOLE NUMBER ≥ 1</dt><dd>A factor with P = 0, or a multiplicity like 0 or 1/2.</dd>
+          <dt>NEED M A WHOLE NUMBER ≥ 1, DEGREE ≤10</dt><dd>FROM ZEROS: a bad multiplicity, or total degree above 10.</dd>
+          <dt>POINT IS A ZERO, CHOOSE ANOTHER</dt><dd>A point on the x-axis cannot fix A.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="pl-proc" data-label="ZPOLY procedure">
+        <h3><span class="cn">P.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZPOLY"]) --> m{"POLYNOMIAL menu"}
+  m -- "1" --> c["F(X)= list or typed"] --> beh
+  m -- "2" --> f["A, then P, Q, M per factor"] --> lc["Degree = sum of M, leading = A·P^M···"] --> beh
+  m -- "3" --> z["Zeros and multiplicities"] --> a{"A = 0?"}
+  a -- "yes" --> pt["Point X, Y, then solve for A"] --> fz["F(X) in factored form"]
+  a -- "no" --> fz
+  fz --> m
+  beh["End behavior, Y-intercept, turning points, zeros cross or touch"] --> ans["ANSWER"] --> m
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZZEROS ============================ -->
+<section class="sheet" id="zzeros" data-label="ZZEROS">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZZEROS</p><h2>Zeros of polynomials</h2></div>
+    <p class="path">MATHKIT &gt; <b>3</b> &gt; <b>3</b></p>
+    <p class="lede">Finds every zero, real or complex, with or without a given one, and the complete factored form. It then substitutes each zero back into f and shows that F(zero) = 0.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="zz-28c zz-29f zz-27e" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 28c with the zero −3 given, through the check page; 29f found from nothing; 27e from the complex zero 3𝑖.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="zz-menu" data-label="ZZEROS menu">
+        <h3><span class="cn">Z.1</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Use it for</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:GIVEN ONE ZERO</td><td>"given that k is a zero, find the rest"; k may be complex</td><td>27, 28</td></tr>
+            <tr><td class="k">2:FIND ALL ZEROS</td><td>no zero given</td><td>29</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+      <article class="concept" id="zz-type" data-label="ZZEROS inputs">
+        <h3><span class="cn">Z.2</span>What to type</h3>
+        <dl class="defs">
+          <dt>F(X)=</dt><dd>A coefficient list or the polynomial typed, degree 6 or less.</dd>
+          <dt>ZERO K=R+S𝑖</dt><dd>GIVEN ONE ZERO: <code>R=?</code> and <code>S=?</code>. The real zero −6 is R=⁻6, S=0. 3𝑖 is R=0, S=3. 2−𝑖 is R=2, S=⁻1.</dd>
+        </dl>
+        <p>For a complex zero, ZZEROS divides by the conjugate-pair quadratic, so both 3𝑖 and −3𝑖 come out together.</p>
+      </article>
+      <article class="concept" id="zz-pages" data-label="ZZEROS work pages">
+        <h3><span class="cn">Z.3</span>The work pages</h3>
+        <p>Form B 28c, 2x³ − 5x² − 21x + 36 with the zero −3:</p>
+        <!--PAGES zz-28c-->
+        <div class="snaps">
+          <figure class="snap"><!--SNAP zz-28c p4--><figcaption>The automatic check: each zero substituted into f.</figcaption></figure>
+        </div>
+        <p>FIND ALL factors out xⁿ, tests the rational candidates ±p/q (showing the last three tried), divides out each zero it finds and solves the last quadratic exactly. Form B 29f:</p>
+        <!--PAGES zz-29f-->
+      </article>
+      <article class="concept" id="zz-ans" data-label="ZZEROS answers">
+        <h3><span class="cn">Z.4</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP zz-28c -1--><figcaption>Zeros in increasing order, then the factored form.</figcaption></figure>
+          <figure class="snap"><!--SNAP zz-27e -1--><figcaption>A complex pair stays as the real quadratic factor.</figcaption></figure>
+        </div>
+        <p>Repeated zeros carry their multiplicity, as in <code>1 (MULT 3)</code>. A polynomial above degree 2 with no rational zeros falls back to decimals marked <code>(DECIMALS ARE APPROX)</code>.</p>
+      </article>
+      <article class="concept" id="zz-msg" data-label="ZZEROS messages">
+        <h3><span class="cn">Z.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>… IS NOT A ZERO (REMAINDER IS NOT 0)</dt><dd>The given k does not make f zero. Check its sign and the coefficient list.</dd>
+          <dt>NEED DEGREE ≥ 1</dt><dd>f is a constant.</dd>
+        </dl>
+        <p>A degree-5 FIND ALL is the slowest run in the kit; expect several seconds before the first page.</p>
+      </article>
+      <article class="concept" id="zz-proc" data-label="ZZEROS procedure">
+        <h3><span class="cn">Z.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZZEROS"]) --> m{"ZEROS menu"}
+  m -- "1" --> g["F(X), then R and S of the zero"] --> k{"S = 0?"}
+  k -- "yes" --> sd["Synthetic division by X − R"] --> rest
+  k -- "no" --> cp["Divide by the conjugate pair X² − 2RX + R² + S²"] --> rest
+  m -- "2" --> fa["F(X)"] --> xn["Factor out Xⁿ"] --> rz["Test ±p/q, divide out each zero"] --> rest
+  rest["Solve what is left: quadratic formula, or decimals"] --> ck["Check: F(zero) = 0 for each"] --> ans["ANSWER: zeros and factored form"] --> m
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZRATEQ ============================ -->
+<section class="sheet" id="zrateq" data-label="ZRATEQ">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZRATEQ</p><h2>Rational equations</h2></div>
+    <p class="path">MATHKIT &gt; <b>4</b> &gt; <b>1</b></p>
+    <p class="lede">Solves an equation of fraction terms: restrictions, the LCD, the equation multiplied through, solving, and a check of every candidate. Excluded values are marked extraneous; each kept root is substituted into both sides.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="re-30f re-30c" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 30f through all eight pages; 30c, where 5 is rejected, ending on its CHECK page.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="re-type" data-label="ZRATEQ inputs">
+        <h3><span class="cn">E.1</span>What to type</h3>
+        <dl class="defs">
+          <dt>1:SOLVE EQUATION</dt><dd>The only option besides BACK.</dd>
+          <dt>LEFT TERMS=? RIGHT TERMS=?</dt><dd>How many fraction terms on each side: 1&ndash;4 per side, 5 in all.</dd>
+          <dt>NUM= DEN=</dt><dd>For each term, its numerator and denominator, as a list or typed. A term with no denominator has DEN = 1.</dd>
+        </dl>
+        <p class="keyfix">Put a term's minus sign on its numerator: −8/(x+3) is NUM = <code>⁻8</code>, DEN = <code>X+3</code>. Form B 30f is 2 terms left, 1 right: 11 over X−3, ⁻8 over X+3, and 9 over X²−9.</p>
+      </article>
+      <article class="concept" id="re-pages" data-label="ZRATEQ work pages">
+        <h3><span class="cn">E.2</span>The work pages</h3>
+        <!--PAGES re-30f-->
+        <p>RESTRICTIONS factors each denominator and lists the excluded values. MULTIPLY BY THE LCD shows each term after its denominator cancels. CHECK handles every candidate.</p>
+      </article>
+      <article class="concept" id="re-check" data-label="Extraneous roots">
+        <h3><span class="cn">E.3</span>The check page</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP re-30c -1--><figcaption>Form B 30c: 1 is kept with both sides shown; 5 is excluded.</figcaption></figure>
+          <figure class="snap"><!--SNAP re-30f -1--><figcaption>The answer is the solution set.</figcaption></figure>
+        </div>
+        <p>A root equal to an excluded value is never substituted (it would divide by zero). It is reported as extraneous, and the answer lists it after the solution set: <code>{1}</code>, <code>5 IS EXTRANEOUS</code>. When every candidate is excluded the answer is <code>NO SOLUTION</code>.</p>
+      </article>
+      <article class="concept" id="re-msg" data-label="ZRATEQ messages">
+        <h3><span class="cn">E.4</span>Messages and speed</h3>
+        <dl class="defs">
+          <dt>USE 1 TO 4 TERMS PER SIDE</dt><dd>A term count of 0, or more than 4.</dd>
+          <dt>DENOMINATOR CANNOT BE 0</dt><dd>A DEN of 0.</dd>
+        </dl>
+        <p>ZRATEQ does the most work in the kit; expect about five seconds before the first page.</p>
+      </article>
+      <article class="concept" id="re-proc" data-label="ZRATEQ procedure">
+        <h3><span class="cn">E.5</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZRATEQ"]) --> m{"RATIONAL EQUATION menu"}
+  m -- "1" --> n["Terms per side, then NUM and DEN for each"] --> r["Factor denominators, list excluded values"]
+  r --> l["LCD"] --> mu["Multiply every term by the LCD"] --> co["Collect on one side"] --> so["Solve the polynomial"]
+  so --> ck{"Each candidate excluded?"}
+  ck -- "yes" --> ex["Extraneous"] --> ans
+  ck -- "no" --> sub["Substitute into both sides, show MATCH"] --> ans["ANSWER: solution set"]
+  ans --> m
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZRATFN ============================ -->
+<section class="sheet" id="zratfn" data-label="ZRATFN">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZRATFN</p><h2>Rational functions</h2></div>
+    <p class="path">MATHKIT &gt; <b>4</b> &gt; <b>2</b></p>
+    <p class="lede">Load f = numerator/denominator once, then analyze it, evaluate it, solve f(x) = C, make a table for sketching, or get labeled statements for an application. The function stays loaded between choices.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="rf-31d rf-34" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 31d analyzed from typed input; 34 evaluated at 48, then read as a queue-length application.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="rf-type" data-label="ZRATFN inputs">
+        <h3><span class="cn">R.1</span>Load the function</h3>
+        <p>ZRATFN asks <code>NUMERATOR=</code> and <code>DENOMINATOR=</code> first, each a list or typed (<a class="ref" href="#b-type">B.3</a>). Form B 34, x²/(3600 − 60x), is <code>{1,0,0}</code> over <code>{⁻60,3600}</code>. Form B 36's (60+24t)/(1+0.04t) is <code>{24,60}</code> over <code>{.04,1}</code>; the <code>.04</code> turns on decimal answers.</p>
+      </article>
+      <article class="concept" id="rf-menu" data-label="ZRATFN menu">
+        <h3><span class="cn">R.2</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Gives</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:ANALYZE</td><td>domain, intercepts, V.A., H.A. by the degree rule, holes with their points, and a graph</td><td>31, 34b</td></tr>
+            <tr><td class="k">2:EVALUATE F(X)</td><td>F(x) exact and as a decimal; an excluded x is refused</td><td>34a, 35a, 36a, 37a</td></tr>
+            <tr><td class="k">3:SOLVE F(X)=C</td><td>every x with f(x) = C</td><td>35b, 37b</td></tr>
+            <tr><td class="k">4:TABLE FOR GRAPH</td><td>integer rows around the asymptotes</td><td>&ndash;</td></tr>
+            <tr><td class="k">5:APPLICATION</td><td>labeled one-sided and long-run statements</td><td>34c, 35c, 36b</td></tr>
+            <tr><td class="k">6:NEW FUNCTION</td><td>load another numerator and denominator</td><td></td></tr>
+          </tbody>
+        </table></div>
+        <p>APPLICATION asks what f measures (VALUE, COST, AVERAGE COST, POPULATION, QUEUE LENGTH, PERCENT), then <code>LETTER=</code>: the function's letter, typed with <kbd>alpha</kbd>.</p>
+      </article>
+      <article class="concept" id="rf-pages" data-label="ZRATFN work pages">
+        <h3><span class="cn">R.3</span>The work pages</h3>
+        <p>ANALYZE, Form B 31d, (2x²+7x+3)/(x²−9):</p>
+        <!--PAGES rf-31d-->
+      </article>
+      <article class="concept" id="rf-ans" data-label="ZRATFN answers">
+        <h3><span class="cn">R.4</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP rf-31d -1--><figcaption>x = −3 cancels, so it is a hole, not an asymptote.</figcaption></figure>
+          <figure class="snap"><!--SNAP rf-34 -1--><figcaption>The application statements for Form B 34c.</figcaption></figure>
+        </div>
+        <p>A slant asymptote is named <code>NONE (SLANT)</code> but not computed.</p>
+      </article>
+      <article class="concept" id="rf-msg" data-label="ZRATFN messages">
+        <h3><span class="cn">R.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>DENOMINATOR CANNOT BE 0</dt><dd>The denominator list was all zeros.</dd>
+          <dt>X=… IS EXCLUDED</dt><dd>EVALUATE at a value outside the domain. Nothing is substituted.</dd>
+          <dt>NO REAL SOLUTION</dt><dd>SOLVE found no x, or only excluded ones.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="rf-proc" data-label="ZRATFN procedure">
+        <h3><span class="cn">R.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZRATFN"]) --> ld["NUMERATOR= and DENOMINATOR="] --> m{"FUNCTION menu"}
+  m -- "1" --> an["Factor, cancel common factors: holes"] --> as["V.A., H.A., intercepts, graph"] --> m
+  m -- "2" --> ev["X=?: excluded? else F(X)"] --> m
+  m -- "3" --> sv["C=?: solve N(X) = C·D(X), drop excluded"] --> m
+  m -- "4" --> tb["Table of integer X"] --> m
+  m -- "5" --> ap["What f measures, its letter"] --> st["AS X-> statements"] --> m
+  m -- "6" --> ld
+  m -- "7 BACK" --> q(["MATHKIT"])
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZINEQ ============================ -->
+<section class="sheet" id="zineq" data-label="ZINEQ">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZINEQ</p><h2>Inequalities</h2></div>
+    <p class="path">MATHKIT &gt; <b>5</b></p>
+    <p class="lede">Solves polynomial and rational inequalities with a sign chart and answers in interval notation: brackets for ≤ and ≥ at zeros, always parentheses at undefined points, and an isolated zero written as {r}.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="iq-44 iq-41g iq-42b" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 44 through its sign chart, 41g typed, and 42b read off a graph.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="iq-menu" data-label="ZINEQ menu">
+        <h3><span class="cn">I.1</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Use it for</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:POLY COEFS</td><td>a polynomial inequality, typed or as lists</td><td>41</td></tr>
+            <tr><td class="k">2:POLY FACTORS</td><td>a polynomial already factored</td><td>41</td></tr>
+            <tr><td class="k">3:RATIONAL</td><td>a fraction compared with 0</td><td>43, 44</td></tr>
+            <tr><td class="k">4:FROM GRAPH</td><td>only a graph is given: read its zeros and asymptotes</td><td>38&ndash;40, 42</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+      <article class="concept" id="iq-type" data-label="ZINEQ inputs">
+        <h3><span class="cn">I.2</span>What to type</h3>
+        <dl class="defs">
+          <dt>1</dt><dd><code>F(X)=</code> and <code>RIGHT SIDE=</code>. ZINEQ moves everything left: x³+10x²+27x ≤ −18 is <code>X^3+10X²+27X</code> and <code>⁻18</code>.</dd>
+          <dt>2</dt><dd>A, the number of factors, then P, Q, M for each, as in <a class="ref" href="#pl-type">ZPOLY</a>.</dd>
+          <dt>3</dt><dd><code>NUMERATOR=</code> and <code>DENOMINATOR=</code>.</dd>
+          <dt>4</dt><dd><code>HOW MANY ZEROS</code> and <code>HOW MANY V.A.</code>, then <code>X</code> and <code>MULT</code> for each. Then <code>SIGN AT FAR RIGHT</code>: + if the graph ends above the axis on the right, − if below.</dd>
+          <dt>then</dt><dd>The menu <code>F(X) ? 0</code>: 1:&gt; 2:≥ 3:&lt; 4:≤.</dd>
+        </dl>
+        <p class="keyfix">Reading a graph for option 4: a curve that crosses the axis has odd multiplicity (use 1); one that touches and turns back has even multiplicity (use 2).</p>
+      </article>
+      <article class="concept" id="iq-pages" data-label="ZINEQ work pages">
+        <h3><span class="cn">I.3</span>The work pages</h3>
+        <!--PAGES iq-44-->
+        <div class="snaps">
+          <figure class="snap"><!--SNAP iq-44 p3--><figcaption>The sign chart: each interval, its test point and the sign there.</figcaption></figure>
+        </div>
+      </article>
+      <article class="concept" id="iq-ans" data-label="ZINEQ answers">
+        <h3><span class="cn">I.4</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP iq-44 -1--><figcaption>−2 is undefined, so it stays open; 2/3 is a zero of ≤, so it is closed.</figcaption></figure>
+          <figure class="snap"><!--SNAP iq-41g -1--><figcaption>Brackets at every zero of a ≤ inequality.</figcaption></figure>
+        </div>
+        <p>No real zeros gives <code>(⁻INF,INF)</code> with <code>ALL REAL NUMBERS</code>, or <code>NO SOLUTION</code> (<a class="ref" href="#b-sym">B.5</a>).</p>
+      </article>
+      <article class="concept" id="iq-msg" data-label="ZINEQ messages">
+        <h3><span class="cn">I.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>USE 0 TO 8 IN ALL</dt><dd>FROM GRAPH with too many zeros and asymptotes.</dd>
+          <dt>NEED M A WHOLE NUMBER ≥ 1, DEGREE ≤10</dt><dd>A multiplicity of 0 or 1/2.</dd>
+          <dt>DENOMINATOR CANNOT BE 0</dt><dd>RATIONAL with a zero denominator.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="iq-proc" data-label="ZINEQ procedure">
+        <h3><span class="cn">I.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZINEQ"]) --> m{"INEQUALITY menu"}
+  m -- "1, 2, 3" --> f["F(X) and right side, factors, or NUM and DEN"] --> os["Move everything to one side"]
+  m -- "4" --> g["Zeros, V.A., multiplicities, sign at far right"] --> os
+  os --> rel{"F(X) ? 0"}
+  rel --> cv["Critical values: zeros and undefined points"] --> sc["Sign chart: test one X per interval"]
+  sc --> ch["Choose intervals; brackets for ≤ ≥ at zeros only"] --> ans["ANSWER in interval notation"] --> m
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZGRAPH ============================ -->
+<section class="sheet" id="zgraph" data-label="ZGRAPH">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZGRAPH</p><h2>Graphs</h2></div>
+    <p class="path">MATHKIT &gt; <b>6</b> &gt; <b>1</b></p>
+    <p class="lede">Parent functions and their transformations, both ways: a formula from points read off a graph, or the transformations, key points and drawing for a formula. Also builds polynomials from zeros or through points. Families: linear, quadratic, absolute value, square root, cubic, 1/x and 1/x².</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="gr-32a gr-pts" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> 32a, f(x) = 4 − 1/(x+3), through its graph page; then a cubic through four points.</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="gr-menu" data-label="ZGRAPH menu">
+        <h3><span class="cn">G.1</span>Pick the option</h3>
+        <div class="tw"><table class="tbl">
+          <thead><tr><th>Option</th><th>Use it for</th><th>Form B</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1:FUNCTION FROM GRAPH</td><td>the formula of a transformed parent graph</td><td>3, 4</td></tr>
+            <tr><td class="k">2:GRAPH FROM FUNCTION</td><td>the transformations and graph of a formula</td><td>32, 33</td></tr>
+            <tr><td class="k">3:POLY FROM ZEROS</td><td>a polynomial from its zeros and one point, with a graph</td><td>21</td></tr>
+            <tr><td class="k">4:POLY THROUGH POINTS</td><td>the polynomial through 2&ndash;6 points</td><td>&ndash;</td></tr>
+          </tbody>
+        </table></div>
+        <p>Options 1 and 2 then ask the <code>FUNCTION TYPE</code>: 1:LINEAR, 2:QUADRATIC, 3:ABSOLUTE VALUE, 4:SQUARE ROOT, 5:MORE TYPES (1:CUBIC, 2:RECIPROCAL 1/X, 3:RECIPROCAL 1/X²).</p>
+      </article>
+      <article class="concept" id="gr-type" data-label="ZGRAPH inputs">
+        <h3><span class="cn">G.2</span>What to type</h3>
+        <dl class="defs">
+          <dt>from a graph</dt><dd>The anchor point (VERTEX, START POINT, CENTER or ASYMPTOTE CROSSING, as H and K), then <code>ANOTHER POINT</code>. LINEAR asks for two points instead.</dd>
+          <dt>from a function</dt><dd><code>A</code>, <code>H</code>, <code>K</code> for Y = A·parent(X − H) + K. LINEAR asks M and B.</dd>
+          <dt>through points</dt><dd>How many points, then each X and Y.</dd>
+        </dl>
+        <p class="keyfix">Form B 32a, f(x) = 4 − 1/(x+3), is RECIPROCAL 1/X with A = ⁻1, H = ⁻3, K = 4: keys <kbd>2</kbd> <kbd>5</kbd> <kbd>2</kbd>, then the three values.</p>
+      </article>
+      <article class="concept" id="gr-pages" data-label="ZGRAPH work pages">
+        <h3><span class="cn">G.3</span>The work pages</h3>
+        <!--PAGES gr-32a-->
+        <p>TRANSLATIONS splits the changes into INSIDE (acts on x: shifts left or right) and OUTSIDE (acts on y: reflect, stretch, shift up or down). KEY POINTS moves the parent's points: <code>(⁻1,⁻1)-&gt;(⁻4,5)</code>.</p>
+      </article>
+      <article class="concept" id="gr-ans" data-label="ZGRAPH answers">
+        <h3><span class="cn">G.4</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP gr-32a -1--><figcaption>The formula, asymptotes, domain and range.</figcaption></figure>
+          <figure class="snap"><!--SNAP gr-pts -1--><figcaption>Through (0,1), (1,0), (2,5), (3,22).</figcaption></figure>
+        </div>
+      </article>
+      <article class="concept" id="gr-msg" data-label="ZGRAPH messages">
+        <h3><span class="cn">G.5</span>Messages</h3>
+        <dl class="defs">
+          <dt>THAT POINT CANNOT FIX A, CHOOSE ANOTHER</dt><dd>The second point is the anchor itself, or outside a square root's domain.</dd>
+          <dt>TWO POINTS SHARE AN X</dt><dd>THROUGH POINTS with a repeated x.</dd>
+          <dt>USE 2 TO 6 POINTS</dt><dd>A bad point count.</dd>
+        </dl>
+      </article>
+      <article class="concept" id="gr-proc" data-label="ZGRAPH procedure">
+        <h3><span class="cn">G.6</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZGRAPH"]) --> m{"GRAPHS menu"}
+  m -- "1 or 2" --> ty{"FUNCTION TYPE"}
+  ty -- "from graph" --> fg["Anchor H, K and another point"] --> sa["Solve for A"] --> fx["F(X) and features"]
+  ty -- "from function" --> ff["A, H, K"] --> tr["Translations inside and outside"] --> kp["Key points moved"] --> fx
+  m -- "3" --> pz["Zeros, multiplicities, a point"] --> fx
+  m -- "4" --> pp["Points"] --> dd["Divided differences, Newton form"] --> fx
+  fx --> gp["Graph page"] --> ans["ANSWER"] --> m
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ZCHECK ============================ -->
+<section class="sheet" id="zcheck" data-label="ZCHECK">
+  <div class="sheet-head">
+    <div><p class="pname">prgmZCHECK</p><h2>Check an answer</h2></div>
+    <p class="path">MATHKIT &gt; <b>6</b> &gt; <b>2</b></p>
+    <p class="lede">Substitutes an x value into any expression or equation and shows each side's value and whether they match. Use it on your own answers to any problem.</p>
+  </div>
+  <div class="sheet-body">
+    <aside class="device">
+      <div class="replay" data-scens="ck-12j ck-guard" tabindex="0"></div>
+      <p class="hint"><b>On screen:</b> checking x = 1/3 in 3x²+8x−3 = 0, then refusing x = 5 in 1/(x−5).</p>
+    </aside>
+    <div class="concepts">
+      <article class="concept" id="ck-type" data-label="ZCHECK inputs">
+        <h3><span class="cn">K.1</span>What to type</h3>
+        <ol class="keys">
+          <li>At <code>?</code> type the expression or equation with X. Get <code>=</code> from <kbd>2nd</kbd> <kbd>math</kbd>.</li>
+          <li><code>CAN IT BE UNDEFINED?</code> 1:NO, or 2:YES, LIST BAD X if X appears in a denominator. Then type the bad values at <code>EXCLUDED=</code>, as a list <code>{5}</code> or a number.</li>
+          <li><code>X VALUE=</code>, for example <code>1/3</code>.</li>
+        </ol>
+        <p>Afterwards a menu offers 1:SAME, NEW X, 2:NEW EXPRESSION or 3:BACK.</p>
+      </article>
+      <article class="concept" id="ck-ans" data-label="ZCHECK answers">
+        <h3><span class="cn">K.2</span>Reading the answer</h3>
+        <div class="snaps">
+          <figure class="snap"><!--SNAP ck-12j -1--><figcaption>An equation: both sides, and the verdict.</figcaption></figure>
+          <figure class="snap"><!--SNAP ck-guard -1--><figcaption>An excluded value is never substituted.</figcaption></figure>
+        </div>
+        <p>For an expression without <code>=</code>, the answer is its value, for example <code>F(7)=1/2</code>.</p>
+      </article>
+      <article class="concept" id="ck-why" data-label="Why declare excluded values">
+        <h3><span class="cn">K.3</span>Why it asks about undefined points</h3>
+        <p>TI-BASIC cannot catch errors. Substituting x = 5 into 1/(x−5) would stop the program with ERR:DIVIDE BY 0. Declaring the bad values lets ZCHECK say <code>X=5 IS EXCLUDED</code> instead, which is also the right conclusion for a rational equation: that root is extraneous (see <a class="ref" href="#re-check">E.3</a>).</p>
+      </article>
+      <article class="concept" id="ck-proc" data-label="ZCHECK procedure">
+        <h3><span class="cn">K.4</span>Procedure</h3>
+        <pre class="mermaid">
+flowchart TD
+  s(["prgmZCHECK"]) --> e["Expression or equation"] --> u{"CAN IT BE UNDEFINED?"}
+  u -- "NO" --> x["X VALUE="]
+  u -- "YES" --> b["EXCLUDED= values"] --> x
+  x --> c{"X excluded?"}
+  c -- "yes" --> no["X IS EXCLUDED, no substitution"] --> nx
+  c -- "no" --> sv["Evaluate each side"] --> mt["SIDES MATCH or SIDES DIFFER"] --> nx{"SAME, NEW X / NEW EXPRESSION / BACK"}
+  nx -- "1" --> x
+  nx -- "2" --> e
+        </pre>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FINDER ============================ -->
+<section class="sheet" id="finder" data-label="Problem finder">
+  <div class="sheet-head">
+    <div><p class="pname">Form B</p><h2>Problem finder</h2></div>
+    <p class="path">every computational problem</p>
+    <p class="lede">Each Form B problem, the program and option that solve it, and the first keys from MATHKIT. Problems 19, 20, 22, 23 and 33 ask what a printed picture shows, so they stay by hand.</p>
+  </div>
+  <div class="sheet-body full" style="display:block">
+    <div class="tw"><table class="tbl" style="max-width:none">
+      <thead><tr><th>Problem</th><th>Topic</th><th>Program and option</th><th>Keys from MATHKIT</th></tr></thead>
+      <tbody>
+        <tr><td class="k">1</td><td>simplify with 𝑖</td><td><a class="ref" href="#zcplx">ZCPLX</a> 1:SIMPLIFY</td><td class="k">1 1</td></tr>
+        <tr><td class="k">2</td><td>add, subtract, multiply complex numbers</td><td><a class="ref" href="#zcplx">ZCPLX</a> 2, 3 or 4</td><td class="k">1 2 / 1 3 / 1 4</td></tr>
+        <tr><td class="k">3, 4, 7</td><td>a quadratic's formula from its graph</td><td><a class="ref" href="#zquad">ZQUAD</a> 3:FROM GRAPH (or ZGRAPH 1, 2)</td><td class="k">2 2 3</td></tr>
+        <tr><td class="k">5, 6, 9</td><td>analyze and graph a quadratic</td><td><a class="ref" href="#zquad">ZQUAD</a> 1:STANDARD FORM or 5:TYPE IT</td><td class="k">2 2 1 / 2 2 5</td></tr>
+        <tr><td class="k">8</td><td>the discriminant</td><td><a class="ref" href="#zqsolv">ZQSOLV</a> 1, or 5 then METHOD 1</td><td class="k">2 1 1 / 2 1 5</td></tr>
+        <tr><td class="k">10</td><td>square root property</td><td><a class="ref" href="#zqsolv">ZQSOLV</a> 2</td><td class="k">2 1 2</td></tr>
+        <tr><td class="k">11</td><td>completing the square</td><td><a class="ref" href="#zqsolv">ZQSOLV</a> 3</td><td class="k">2 1 3</td></tr>
+        <tr><td class="k">12</td><td>quadratic formula</td><td><a class="ref" href="#zqsolv">ZQSOLV</a> 4, or 5 then METHOD 3</td><td class="k">2 1 4 / 2 1 5</td></tr>
+        <tr><td class="k">13&ndash;15</td><td>applications: maximum, ground, profit</td><td><a class="ref" href="#zquad">ZQUAD</a> 4:APPLICATION</td><td class="k">2 2 4</td></tr>
+        <tr><td class="k">16</td><td>long division</td><td><a class="ref" href="#zdiv">ZDIV</a> 2</td><td class="k">3 1 2</td></tr>
+        <tr><td class="k">17</td><td>synthetic division</td><td><a class="ref" href="#zdiv">ZDIV</a> 1</td><td class="k">3 1 1</td></tr>
+        <tr><td class="k">18</td><td>degree, leading coefficient, end behavior</td><td><a class="ref" href="#zpoly">ZPOLY</a> 1 or 2</td><td class="k">3 2 1 / 3 2 2</td></tr>
+        <tr><td class="k">19, 20</td><td>read a printed graph</td><td>by hand</td><td>&ndash;</td></tr>
+        <tr><td class="k">21</td><td>polynomial from zeros and a point</td><td><a class="ref" href="#zpoly">ZPOLY</a> 3, or <a class="ref" href="#zgraph">ZGRAPH</a> 3 for a graph</td><td class="k">3 2 3 / 6 1 3</td></tr>
+        <tr><td class="k">22, 23</td><td>multiplicities from a printed graph</td><td>by hand</td><td>&ndash;</td></tr>
+        <tr><td class="k">24, 25</td><td>zeros, multiplicity, behavior of a factored f</td><td><a class="ref" href="#zpoly">ZPOLY</a> 2</td><td class="k">3 2 2</td></tr>
+        <tr><td class="k">26</td><td>polynomial from zeros</td><td><a class="ref" href="#zpoly">ZPOLY</a> 3</td><td class="k">3 2 3</td></tr>
+        <tr><td class="k">27, 28</td><td>remaining zeros, given one</td><td><a class="ref" href="#zzeros">ZZEROS</a> 1</td><td class="k">3 3 1</td></tr>
+        <tr><td class="k">29</td><td>all zeros</td><td><a class="ref" href="#zzeros">ZZEROS</a> 2</td><td class="k">3 3 2</td></tr>
+        <tr><td class="k">30</td><td>rational equations</td><td><a class="ref" href="#zrateq">ZRATEQ</a> 1</td><td class="k">4 1 1</td></tr>
+        <tr><td class="k">31</td><td>analyze a rational function</td><td><a class="ref" href="#zratfn">ZRATFN</a>, load f, then 1</td><td class="k">4 2</td></tr>
+        <tr><td class="k">32</td><td>graph a transformed 1/x or 1/x²</td><td><a class="ref" href="#zgraph">ZGRAPH</a> 2, 5 MORE TYPES</td><td class="k">6 1 2 5</td></tr>
+        <tr><td class="k">33</td><td>match formulas to graphs</td><td>by hand; ZGRAPH 2 can draw each to compare</td><td class="k">6 1 2 5</td></tr>
+        <tr><td class="k">34&ndash;37</td><td>rational applications</td><td><a class="ref" href="#zratfn">ZRATFN</a> 2, 3 or 5</td><td class="k">4 2</td></tr>
+        <tr><td class="k">38&ndash;40, 42</td><td>an inequality from a graph</td><td><a class="ref" href="#zineq">ZINEQ</a> 4:FROM GRAPH</td><td class="k">5 4</td></tr>
+        <tr><td class="k">41</td><td>polynomial inequalities</td><td><a class="ref" href="#zineq">ZINEQ</a> 1 or 2</td><td class="k">5 1 / 5 2</td></tr>
+        <tr><td class="k">43, 44</td><td>rational inequalities</td><td><a class="ref" href="#zineq">ZINEQ</a> 3</td><td class="k">5 3</td></tr>
+        <tr><td class="k">any</td><td>check a solution</td><td><a class="ref" href="#zcheck">ZCHECK</a></td><td class="k">6 2</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="margin-top:10px">Screens on this page were recorded from MATHKIT 1.0's TI-BASIC running in its PC test harness, which passes all 385 test cases. They have not yet been compared with a physical calculator; see HARDWARE-TEST.md in the repository.</p>
+  </div>
+</section>
+</div>
+
+<script type="application/json" id="frames">/*FRAMES*/</script>
+<script>
+(function(){
+"use strict";
+var DATA = JSON.parse(document.getElementById("frames").textContent);
+
+/* ---------- typed text to calculator keys ---------- */
+var KEYMAP = {"⁻":["(−)"],"-":["−"],"+":["+"],"*":["×"],"/":["÷"],"{":["2nd","{"],"}":["2nd","}"],
+  "(":["("],")":[")"],",":[","],".":["."],"²":["x²"],"^":["^"],"=":["2nd","test","="],"X":["x,T,θ,n"],"√":["2nd","√"]};
+function keyList(text){
+  var out=[]; Array.from(text).forEach(function(c){
+    if(KEYMAP[c]) out.push.apply(out,KEYMAP[c]);
+    else if(/[A-Z]/.test(c)) out.push("alpha",c);
+    else out.push(c);
+  });
+  return out;
+}
+function kbd(k){
+  var cls = k==="2nd"||k==="test"?"s":(k==="alpha"?"a":"");
+  return '<kbd'+(cls?' class="'+cls+'"':'')+'>'+esc(k)+'</kbd>';
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+function caption(sc, i){
+  var f = sc.frames[i], k = f.key, prog = sc.prog;
+  if(!k) return "Run prgm"+prog+": "+kbd("prgm")+" choose "+esc(prog)+", "+kbd("enter")+" "+kbd("enter")+".";
+  switch(k.k){
+    case "type": return "At "+esc(k.prompt.trim())+" type "+keyList(k.t).map(kbd).join("")+".";
+    case "enter": return k.prompt!==undefined ? "Press "+kbd("enter")+" to store the entry." : "Press "+kbd("enter")+" for the next page.";
+    case "menu": return "Press "+kbd(k.t)+" for "+esc(k.item)+".";
+    case "clear": return "Press "+kbd("clear")+" to jump to the answer.";
+    case "up": return "Press "+kbd("▲")+" to go back one page.";
+    case "down": return "Press "+kbd("▼")+".";
+    case "key": return "Press "+kbd(k.t)+".";
+  }
+  return "";
+}
+function chipText(k){
+  if(!k) return "start";
+  if(k.k==="type") return k.t;
+  if(k.k==="menu") return k.t;
+  return {enter:"enter",clear:"clear",up:"▲",down:"▼"}[k.k]||k.t;
+}
+
+/* ---------- the LCD ---------- */
+function buildLCD(lcd){
+  lcd.innerHTML='<div class="sb">NORMAL FLOAT AUTO REAL RADIAN MP</div><div class="rows"></div>';
+  var rows = lcd.querySelector(".rows"), cells=[];
+  for(var r=0;r<10;r++){
+    var row=document.createElement("div"); row.className="row"; var rc=[];
+    for(var c=0;c<26;c++){var sp=document.createElement("span"); row.appendChild(sp); rc.push(sp);}
+    rows.appendChild(row); cells.push(rc);
+  }
+  var svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+  svg.setAttribute("class","gcv"); svg.setAttribute("viewBox","0 0 265 165"); svg.setAttribute("preserveAspectRatio","none");
+  svg.style.display="none"; lcd.appendChild(svg);
+  return {cells:cells, svg:svg, rows:rows};
+}
+function paint(L, f){
+  if(f.graph){ L.svg.style.display="block"; L.rows.style.visibility="hidden"; drawGraph(L.svg, f.graph); return; }
+  L.svg.style.display="none"; L.rows.style.visibility="visible";
+  var last=-1;
+  for(var r=0;r<10;r++){ if(f.rows[r].trim()) last=r; }
+  for(var r=0;r<10;r++){
+    var ch = Array.from(f.rows[r]);
+    for(var c=0;c<26;c++){
+      var sp=L.cells[r][c], t=ch[c]||" ";
+      sp.className="";
+      if(t==="𝑖"){ sp.textContent="i"; sp.className="ii"; } else sp.textContent=t;
+      if(f.menu && (r===0 || (r===1 && c<2))) sp.className+=" inv";
+    }
+  }
+  if(f.wait==="Input" && last>=0){
+    var len = Array.from(f.rows[last].replace(/\s+$/,"")).length;
+    if(len<26) L.cells[last][len].className+=" cur";
+  }
+}
+function drawGraph(svg, g){
+  var W=265,H=165,w=g.win;
+  function X(x){return (x-w.Xmin)/(w.Xmax-w.Xmin)*W;}
+  function Y(y){return H-(y-w.Ymin)/(w.Ymax-w.Ymin)*H;}
+  var s="";
+  var xs=Math.pow(10,Math.floor(Math.log10(w.Xmax-w.Xmin))-1), ys=Math.pow(10,Math.floor(Math.log10(w.Ymax-w.Ymin))-1);
+  if(w.Ymin<0&&w.Ymax>0){ s+='<line class="ax" x1="0" x2="'+W+'" y1="'+Y(0)+'" y2="'+Y(0)+'"/>';
+    for(var t=Math.ceil(w.Xmin/xs)*xs;t<=w.Xmax;t+=xs) s+='<line class="tk" x1="'+X(t)+'" x2="'+X(t)+'" y1="'+(Y(0)-2)+'" y2="'+(Y(0)+2)+'"/>'; }
+  if(w.Xmin<0&&w.Xmax>0){ s+='<line class="ax" y1="0" y2="'+H+'" x1="'+X(0)+'" x2="'+X(0)+'"/>';
+    for(var t=Math.ceil(w.Ymin/ys)*ys;t<=w.Ymax;t+=ys) s+='<line class="tk" y1="'+Y(t)+'" y2="'+Y(t)+'" x1="'+(X(0)-2)+'" x2="'+(X(0)+2)+'"/>'; }
+  g.va.forEach(function(v){ s+='<line class="va" x1="'+X(v)+'" x2="'+X(v)+'" y1="0" y2="'+H+'"/>'; });
+  var d="", pen=false, n=g.curve.length-1, prev=null;
+  for(var k=0;k<=n;k++){
+    var x=w.Xmin+(w.Xmax-w.Xmin)*k/n, y=g.curve[k];
+    var cut = y===null || (prev!==null && g.va.some(function(v){return (prev.x-v)*(x-v)<=0;}));
+    if(y===null){pen=false; prev=null; continue;}
+    var py=Math.max(-40,Math.min(H+40,Y(y)));
+    d += (pen&&!cut?"L":"M")+X(x).toFixed(1)+" "+py.toFixed(1);
+    pen=true; prev={x:x,y:y};
+  }
+  s+='<path class="cv" d="'+d+'"/>';
+  g.pts.forEach(function(p){ s+='<rect class="pt" x="'+(X(p[0])-2)+'" y="'+(Y(p[1])-2)+'" width="4" height="4"/>'; });
+  s+='<text x="2" y="9">'+esc(g.title)+'</text><text x="2" y="161">ENTER=NEXT  CLEAR=ANSWER</text>';
+  svg.innerHTML=s;
+}
+
+/* ---------- a replay device ---------- */
+function Replay(el){
+  var ids = el.getAttribute("data-scens").split(/\s+/), cur=0, i=0;
+  el.innerHTML='<div class="brand"><span>MATHKIT 1.0</span><span>RECORDED SCREENS</span></div>'+
+    '<div class="bezel"><div class="lcd" role="img"></div></div>'+
+    '<div class="tape"><div class="scens"></div><div class="cap" aria-live="polite"></div>'+
+    '<div class="nav"><button type="button" data-a="first" aria-label="First step">⏮</button><button type="button" data-a="prev" aria-label="Previous step">◀</button>'+
+    '<button type="button" class="go" data-a="next" aria-label="Next step">Next ▶</button><button type="button" data-a="last" aria-label="Last step">⏭</button></div>'+
+    '<div class="chips"></div></div>';
+  var lcd=el.querySelector(".lcd"), L=buildLCD(lcd), cap=el.querySelector(".cap"), chips=el.querySelector(".chips"), sc=el.querySelector(".scens");
+  ids.forEach(function(id,n){
+    var b=document.createElement("button"); b.type="button"; b.textContent=DATA[id].title;
+    b.addEventListener("click",function(){ cur=n; i=0; render(true); }); sc.appendChild(b);
+  });
+  function render(rebuild){
+    var s=DATA[ids[cur]], fs=s.frames;
+    Array.from(sc.children).forEach(function(b,n){b.setAttribute("aria-pressed", n===cur?"true":"false");});
+    if(rebuild){
+      chips.innerHTML="";
+      fs.forEach(function(f,n){
+        var c=document.createElement("button"); c.type="button"; c.className="chip"; c.textContent=chipText(f.key);
+        c.addEventListener("click",function(){i=n; render(false);}); chips.appendChild(c);
+      });
+    }
+    paint(L, fs[i]);
+    lcd.setAttribute("aria-label", fs[i].graph ? "Graph screen: "+fs[i].graph.title : fs[i].rows.map(function(r){return r.trim();}).filter(Boolean).join(". "));
+    cap.innerHTML='<span class="n">'+esc(s.title)+' &middot; step '+(i+1)+' of '+fs.length+'</span>'+caption(s,i);
+    Array.from(chips.children).forEach(function(c,n){
+      if(n===i){c.setAttribute("aria-current","step");} else c.removeAttribute("aria-current");
+      c.classList.toggle("done", n<i);
+    });
+    var cc=chips.children[i]; if(cc && chips.scrollHeight>chips.clientHeight){ chips.scrollTop = cc.offsetTop - chips.offsetTop - 30; }
+    el.querySelector('[data-a="first"]').disabled = el.querySelector('[data-a="prev"]').disabled = i===0;
+    el.querySelector('[data-a="last"]').disabled = el.querySelector('[data-a="next"]').disabled = i===fs.length-1;
+  }
+  function act(a){
+    var n=DATA[ids[cur]].frames.length;
+    if(a==="first") i=0; else if(a==="prev") i=Math.max(0,i-1); else if(a==="next") i=Math.min(n-1,i+1); else if(a==="last") i=n-1;
+    render(false);
+  }
+  el.querySelectorAll(".nav button").forEach(function(b){ b.addEventListener("click",function(){act(b.getAttribute("data-a"));}); });
+  el.addEventListener("keydown",function(e){
+    if(e.target.closest(".scens")) return;
+    if(e.key==="ArrowRight"||e.key==="Enter"&&e.target===el){act("next"); e.preventDefault();}
+    else if(e.key==="ArrowLeft"){act("prev"); e.preventDefault();}
+    else if(e.key==="Home"){act("first"); e.preventDefault();}
+    else if(e.key==="End"){act("last"); e.preventDefault();}
+  });
+  render(true);
+}
+document.querySelectorAll(".replay").forEach(Replay);
+
+/* ---------- back-trail ---------- */
+var crumbs=document.getElementById("crumbs"), stepout=document.getElementById("stepout"), stack=[];
+var sheets=Array.from(document.querySelectorAll("header.masthead,section.sheet"));
+function where(){
+  var y=window.scrollY+80, cur=sheets[0];
+  sheets.forEach(function(s){ if(s.offsetTop<=y) cur=s; });
+  return cur;
+}
+function drawCrumbs(){
+  var here=where(), html="";
+  stack.forEach(function(st,n){
+    html+='<button type="button" data-n="'+n+'">'+esc(st.label)+'</button><span class="sep">›</span>';
+  });
+  html+='<button type="button" aria-current="location">'+esc(here.getAttribute("data-label"))+'</button>';
+  crumbs.innerHTML=html; stepout.disabled=!stack.length;
+  crumbs.querySelectorAll("button[data-n]").forEach(function(b){
+    b.addEventListener("click",function(){ var n=+b.getAttribute("data-n"); var st=stack[n]; stack=stack.slice(0,n); window.scrollTo(0,st.y); drawCrumbs(); });
+  });
+}
+document.querySelectorAll("a.ref").forEach(function(a){
+  a.addEventListener("click",function(e){
+    var id=a.getAttribute("href").slice(1), t=document.getElementById(id); if(!t) return;
+    e.preventDefault();
+    var from=a.closest("[data-label]");
+    stack.push({y:window.scrollY, label:(from||where()).getAttribute("data-label")});
+    if(stack.length>6) stack.shift();
+    t.scrollIntoView({block:"start"});
+    t.classList.remove("flash"); void t.offsetWidth; t.classList.add("flash");
+    drawCrumbs();
+  });
+});
+stepout.addEventListener("click",function(){ var st=stack.pop(); if(st){ window.scrollTo(0,st.y); } drawCrumbs(); });
+var ticking=false;
+window.addEventListener("scroll",function(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ticking=false; drawCrumbs();}); } },{passive:true});
+drawCrumbs();
+
+/* ---------- theme ---------- */
+var root=document.documentElement, themeBtn=document.getElementById("theme");
+function setTheme(t){ if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme"); themeBtn.textContent = t ? (t==="dark"?"Dark":"Light") : "Theme"; }
+try{ var saved=localStorage.getItem("mk-theme"); if(saved) setTheme(saved); }catch(e){}
+themeBtn.addEventListener("click",function(){
+  var cur=root.getAttribute("data-theme");
+  var dark = cur ? cur==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  var next = dark ? "light" : "dark"; setTheme(next);
+  try{ localStorage.setItem("mk-theme",next); }catch(e){}
+});
+})();
+</script>

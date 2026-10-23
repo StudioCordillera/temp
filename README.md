@@ -4,6 +4,7 @@ Programs for the **TI-84 Plus CE** (OS 5.2.0 or later). They solve the Test 2 re
 
 | Start here | |
 |---|---|
+| [MATHKIT-Field-Guide.html](MATHKIT-Field-Guide.html) | open in a browser: how to use every program, with replay calculators showing screens recorded from the real programs |
 | [INSTALL.md](INSTALL.md) | check your OS, send the kit, archive it, memory, uninstall, Press-to-Test |
 | [MANUAL.md](MANUAL.md) | every program, keystroke by keystroke, with Form B examples and limits |
 | [HARDWARE-TEST.md](HARDWARE-TEST.md) | 33-item checklist to run on a real calculator |
@@ -18,7 +19,8 @@ Programs for the **TI-84 Plus CE** (OS 5.2.0 or later). They solve the Test 2 re
 src/        NAME.txt TI-BASIC source for all 33 programs; GLOBALS.md (shared variables)
 build/      NAME.8xp per program, MATHKIT.8xg (all of them), sizes.txt
 tools/      build.py (tokenize, lint, round trip, sizes), tibasic.py (test interpreter),
-            profile.py (speed profile of one run), screens.py (sample screens)
+            profile.py (speed profile of one run), screens.py (sample screens),
+            guide_frames.py + build_guide.py + guide_template.html (the field guide)
 tests/      cases_review.py, cases_formb.py, cases_robust.py, cases_work.py,
             test_static.py, fuzz.py, run_tests.py, run.sh, results.txt
 ```
@@ -28,6 +30,7 @@ tests/      cases_review.py, cases_formb.py, cases_robust.py, cases_work.py,
 ```sh
 ./build.sh          # makes .venv with tivars 1.1.1, builds build/, checks every round trip
 ./tests/run.sh      # build + static checks + random sweep + all four suites -> tests/results.txt
+.venv/bin/python tools/build_guide.py   # re-record the field guide's screens
 ```
 
 ## Programs
